@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_25"
+    android:id="@+id/clubCreateScroll"
+    android:fillViewport="true"
+    android:orientation="vertical"
+    tools:context=".ui.club.create.ClubCreateFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/clubCreateAppbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/gray_25"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/clubCreateToolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:paddingRight="10dp"
+                app:contentInsetEnd="0dp"
+                app:contentInsetLeft="0dp"
+                app:contentInsetRight="0dp"
+                app:contentInsetStart="0dp"
+                app:contentInsetStartWithNavigation="0dp"
+                app:menu="@menu/club_create_menu"
+                app:navigationIcon="@drawable/icon_outline_back"
+                app:title="클럽 생성"
+                app:titleTextAppearance="@style/Title41824Medium" />
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/topThumbnailContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/gray_25"
+            app:layout_constraintTop_toBottomOf="@id/clubCreateAppbar">
+
+            <FrameLayout
+                android:id="@+id/flClubThumbnail"
+                android:layout_width="match_parent"
+                android:layout_height="140dp"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/ivClubBannerThumbnail"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/gray_50"
+                    android:scaleType="fitXY"
+                    app:layout_constraintTop_toBottomOf="@id/clubCreateAppbar" />
+
+                <ImageView
+                    android:id="@+id/ivCameraIcon"
+                    android:layout_width="34dp"
+                    android:layout_height="34dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/icon_outline_camera"
+                    app:layout_constraintTop_toBottomOf="@id/clubCreateAppbar"
+                    app:tint="@color/gray_400" />
+            </FrameLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/clubMyThumbnail"
+                android:layout_width="54dp"
+                android:layout_height="54dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="-16dp"
+                android:background="@drawable/bg_border_radius_16_c_no"
+                android:backgroundTint="@color/gray_200"
+                app:layout_constraintBottom_toBottomOf="@id/flClubThumbnail"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <ImageView
+                    android:id="@+id/ivClubProfileImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/profile_club_character_l"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/ivClubProfileIcon"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:background="@drawable/bg_border_radius_12_c_gray25_stroke"
+                    android:padding="5dp"
+                    android:src="@drawable/icon_fill_camera"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="topThumbnailContainer" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clBgContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/bg_light_gray_50"
+            android:paddingBottom="8dp"
+            app:layout_constraintTop_toBottomOf="@id/barrier1">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/clInputClubNameContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/gray_25"
+                android:paddingHorizontal="20dp"
+                android:paddingTop="24dp"
+                android:paddingBottom="22dp"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/tvClubNameTitle"
+                    style="@style/Caption11218Regular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="true"
+                    android:text="@string/k_club_name"
+                    android:textColor="@color/gray_800"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvClubNameCount"
+                    style="@style/Caption11218Regular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="true"
+                    android:text="0/30"
+                    android:textColor="@color/gray_300"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.constraintlayout.widget.Barrier
+                    android:id="@+id/barrier2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:barrierDirection="bottom"
+                    app:constraint_referenced_ids="tvClubNameTitle,tvClubNameCount" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/edtClubNameContainer"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/barrier2"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/btnCheckDuplicate"
+                    android:background="@drawable/bg_border_radius_8_c_gray50_s_gray100"
+                    >
+                    <EditText
+                        android:id="@+id/edtClubName"
+                        style="@style/singleLine_editText"
+                        android:layout_width="0dp"
+                        android:layout_height="42dp"
+                        android:hint="@string/se_k_write_club_name"
+                        android:paddingStart="12dp"
+                        app:layout_goneMarginEnd="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:gravity="center_vertical"
+                        android:maxLength="30"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/ivClearText"
+                        tools:ignore="RtlSymmetry" />
+
+                    <ImageView
+                        android:id="@+id/isDuplicateCheckIcon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="6dp"
+                        android:src="@drawable/icon_check_login"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="@id/edtClubName"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/ivClearText"
+                        app:layout_constraintTop_toTopOf="@id/edtClubName" />
+
+                    <ImageView
+                        android:id="@+id/ivClearText"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_marginEnd="6dp"
+                        android:padding="4dp"
+                        android:src="@drawable/icon_outline_cancel"
+                        app:tint="@color/gray_25"
+                        android:background="@drawable/bg_border_radius_16_c_grey200"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="@id/edtClubName"
+                        app:layout_constraintStart_toEndOf="@id/edtClubName"
+                        app:layout_constraintEnd_toStartOf="@id/isDuplicateCheckIcon"
+                        app:layout_constraintTop_toTopOf="@id/edtClubName" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnCheckDuplicate"
+                    style="@style/Buttons1420Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:minWidth="0dp"
+                    android:minHeight="0dp"
+                    android:paddingHorizontal="17dp"
+                    android:text="@string/j_check_duplicate"
+                    app:backgroundTint="@color/primary_default"
+                    app:cornerRadius="6dp"
+                    android:layout_marginStart="8dp"
+                    app:layout_constraintBottom_toBottomOf="@id/edtClubNameContainer"
+                    app:layout_constraintStart_toEndOf="@id/edtClubNameContainer"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/edtClubNameContainer" />
+
+                <TextView
+                    android:id="@+id/tvClubNameAlert"
+                    style="@style/Caption21116Regular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text=""
+                    android:visibility="gone"
+                    app:layout_constraintTop_toBottomOf="@id/btnCheckDuplicate" />
+
+                <TextView
+                    android:id="@+id/tvClubNameExplain"
+                    style="@style/Caption21116Regular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="@string/se_k_can_change_club_name"
+                    app:layout_constraintTop_toBottomOf="@id/tvClubNameAlert" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    app:layout_constraintTop_toBottomOf="@id/tvClubNameExplain">
+
+                    <CheckBox
+                        android:id="@+id/checkPolicy"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:background="@drawable/round_checkbox_selector"
+                        android:button="@null" />
+
+                    <TextView
+                        style="@style/Caption21116Regular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:text="@string/se_p_agree_privacy_term_of_fantoo"
+                        android:textColor="@color/gray_900" />
+                </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcSettingList"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@id/clBgContainer"
+            tools:itemCount="3"
+            tools:layout_editor_absoluteX="16dp"
+            android:overScrollMode="never"
+            tools:listitem="@layout/tab_club_create_setting_list_layout" />
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrierRc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="rcSettingList"
+            app:barrierDirection="bottom"
+            />
+        <TextView
+            android:id="@+id/tvClubCreateDescription"
+            style="@style/Caption21116Regular"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/gray_25"
+            android:paddingHorizontal="20dp"
+            android:layout_marginTop="117dp"
+            android:gravity="bottom"
+            app:layout_constraintTop_toBottomOf="@id/barrierRc"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:text="@string/se_c_detail_setting_can_in_club_settings"
+            android:textColor="@color/gray_600"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/flMyView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.community.mypage.CommunityMyPageFragment">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/state_active_gray_25" >
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/communityAppbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/state_active_gray_25">
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:id="@+id/collapsingToolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_scrollFlags="scroll|enterAlwaysCollapsed"
+                >
+                <com.google.android.material.appbar.MaterialToolbar
+                    android:id="@+id/myCommunityToolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:paddingEnd="10dp"
+                    app:contentInsetEnd="0dp"
+                    app:contentInsetLeft="0dp"
+                    app:contentInsetRight="0dp"
+                    app:contentInsetStart="0dp"
+                    app:menu="@menu/community_my_menu"
+                    android:background="@color/state_active_gray_25"
+                    app:navigationIcon="@drawable/icon_arrow_head_left"
+                    tools:ignore="RtlSymmetry" />
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/myPageTabLayout"
+                style="@style/ThemeCustom.TabLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/communityAppbar"
+                android:background="@color/gray_25"
+                app:tabIndicator="@drawable/my_page_top_tablayout_indicator"
+                app:tabIndicatorColor="@color/primary_500"
+                app:tabIndicatorFullWidth="true"
+                app:tabIndicatorHeight="2dp"
+                app:tabPaddingBottom="-10dp"
+                app:tabRippleColor="@color/gray_200"
+                app:tabSelectedTextColor="@color/primary_500"
+                app:tabTextAppearance="@style/Buttons1420Medium"
+                app:tabTextColor="@color/gray_900">
+
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/j_wrote_post" />
+
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/j_wrote_rely" />
+
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/j_save" />
+            </com.google.android.material.tabs.TabLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="-1dp"
+                android:background="@color/primary_600_opacity12"
+                />
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/vpCommunityMyPage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:background="@color/bg_light_gray_50" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</FrameLayout>

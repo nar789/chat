@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@null">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/gray_25"
+        android:outlineProvider="@null"
+        android:stateListAnimator="@null"
+        app:elevation="0dp">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/gray_25"
+            app:collapsedTitleGravity="left"
+            app:contentScrim="@color/gray_25"
+            app:expandedTitleGravity="top"
+            app:expandedTitleMarginStart="87dp"
+            app:expandedTitleMarginTop="74dp"
+            app:expandedTitleTextAppearance="@style/Title51622RobotoMedium"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:titleCollapseMode="scale">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="80dp"
+                app:layout_collapseMode="parallax">
+
+                <ImageView
+                    android:id="@+id/ivProfile"
+                    android:layout_width="54dp"
+                    android:layout_height="54dp"
+                    android:layout_marginLeft="20dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/profile_character_l"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvMemberGrade"
+                    style="@style/Body21420Regular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginBottom="2dp"
+                    android:textColor="@color/gray_500"
+                    app:layout_constraintBottom_toBottomOf="@id/ivProfile"
+                    app:layout_constraintLeft_toRightOf="@id/ivProfile" />
+
+                <TextView
+                    android:id="@+id/tv_givingTitle"
+                    style="@style/Caption11218Regular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="86dp"
+                    android:layout_marginTop="16dp"
+                    android:textColor="@color/gray_400"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvMemberGrade" />
+
+                <TextView
+                    android:id="@+id/tvGivingAmount"
+                    style="@style/Caption11218Regular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="14dp"
+                    android:layout_marginTop="16dp"
+                    android:textColor="@color/gray_800"
+                    app:layout_constraintLeft_toRightOf="@id/tv_givingTitle"
+                    app:layout_constraintTop_toBottomOf="@id/tvMemberGrade" />
+
+                <View
+                    android:id="@+id/v_Divider2"
+                    android:layout_width="match_parent"
+                    android:layout_height="8dp"
+                    android:layout_marginTop="30dp"
+                    android:background="@color/bg_light_gray_50"
+                    app:layout_constraintTop_toBottomOf="@id/tv_givingTitle" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="42dp"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="11dp"
+                android:background="@color/transparent"
+                android:paddingStart="2dp"
+                app:contentInsetStartWithNavigation="0dp"
+                app:layout_collapseMode="pin"
+                app:layout_constraintLeft_toRightOf="@id/ivProfile"
+                app:layout_constraintTop_toTopOf="parent"
+                app:navigationIcon="@drawable/icon_arrow_head_left"
+                app:popupTheme="@style/AppTheme.PopupOverlay"
+                app:titleTextAppearance="@style/Title51622RobotoMedium">
+
+                <ImageView
+                    android:id="@+id/ivMore"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center_vertical|end"
+                    android:layout_marginEnd="18dp"
+                    android:background="?actionBarItemBackground"
+                    android:src="@drawable/icon_outline_more" />
+            </com.google.android.material.appbar.MaterialToolbar>
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!--<View
+        android:id="@+id/v_Divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="66dp"
+        android:background="@color/primary_600_opacity12" />-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:layout_collapseMode="pin">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/gray_25"
+            android:orientation="horizontal"
+            android:weightSum="3">
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabLayout"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="2"
+                android:background="@color/gray_25"
+                app:tabIndicator="@drawable/tab_indicator_w80"
+                app:tabIndicatorColor="@color/primary_500"
+                app:tabRippleColor="@color/gray_200"
+                app:tabSelectedTextColor="@color/primary_500"
+                app:tabTextAppearance="@style/Buttons1420Medium"
+                app:tabTextColor="@color/state_active_gray_900" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/primary_600_opacity12"
+            app:layout_constraintTop_toBottomOf="@id/tabLayout" />
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/vp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/bg_light_gray_50"
+            app:layout_constraintTop_toBottomOf="@id/tabLayout" />
+    </LinearLayout>
+
+    <com.rndeep.fns_fantoo.ui.common.viewgroup.FantooLoadingView
+        android:id="@+id/loadingView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="gone"
+        />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".ui.menu.invite.InviteFriendFragment">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/white"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            app:contentInsetStartWithNavigation="0dp"
+            app:navigationIcon="@drawable/back"
+            app:title="@string/c_invite_friend" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/layout_margin"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/appbar">
+
+        <TextView
+            android:id="@+id/invite_code_title"
+            style="@style/Buttons1420Medium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/n_my_referral_code"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/my_invite_code"
+            style="@style/Buttons1420Medium"
+            android:layout_width="226dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_refferal_code_input_field"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="11dp"
+            android:textColor="@color/primary_500"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/invite_code_title"
+            tools:text="EUJDNJ93JNS" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/code_copy_btn"
+            style="@style/Buttons1420Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:contentDescription="@string/b_copy"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:paddingHorizontal="30dp"
+            android:paddingVertical="11dp"
+            android:text="@string/b_copy"
+            android:textColor="@color/white"
+            app:backgroundTint="@color/primary_default"
+            app:cornerRadius="8dp"
+            app:layout_constraintBottom_toBottomOf="@id/my_invite_code"
+            app:layout_constraintStart_toEndOf="@id/my_invite_code"
+            app:layout_constraintTop_toTopOf="@id/my_invite_code"
+            app:rippleColor="@color/primary_300" />
+
+        <TextView
+            android:id="@+id/recommend_desc_title"
+            style="@style/Caption11218Regular"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/se_c_recommend_at_friend"
+            android:textColor="@color/gray_800"
+            app:layout_constraintTop_toBottomOf="@id/my_invite_code" />
+
+        <TextView
+            android:id="@+id/recommend_desc"
+            style="@style/Caption11218Regular"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:text="@string/invite_friend_code_desc_2"
+            android:textColor="@color/gray_500"
+            app:layout_constraintTop_toBottomOf="@id/recommend_desc_title" />
+
+        <TextView
+            android:id="@+id/recommender_code_input_title"
+            style="@style/Buttons1420Medium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="@string/c_write_referral_code"
+            app:layout_constraintTop_toBottomOf="@id/recommend_desc" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/recommender_code_input_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="9dp"
+            app:counterEnabled="false"
+            app:boxCornerRadiusBottomEnd="8dp"
+            app:boxCornerRadiusBottomStart="8dp"
+            app:boxCornerRadiusTopEnd="8dp"
+            app:boxCornerRadiusTopStart="8dp"
+            app:boxStrokeColor="@color/box_stroke_color"
+            app:boxBackgroundColor="@color/gray_50"
+            app:boxStrokeWidth="0.3dp"
+            app:boxStrokeWidthFocused="0.3dp"
+            app:hintAnimationEnabled="false"
+            app:hintEnabled="false"
+            app:endIconMode="none"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/recommender_code_input_title">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/recommender_code_input"
+                style="@style/Body21420Regular"
+                android:layout_width="226dp"
+                android:layout_height="wrap_content"
+                android:hint="@string/se_c_write_referral_code"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="11dp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+<!--        <com.google.android.material.textfield.TextInputEditText-->
+<!--            android:id="@+id/recommender_code_input"-->
+<!--            style="@style/Body21420Regular"-->
+<!--            android:layout_width="226dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="8dp"-->
+<!--            android:background="@drawable/input_field"-->
+<!--            android:hint="@string/invite_friend_code_input_hint"-->
+<!--            android:padding="12dp"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/recommender_code_input_title" />-->
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/code_register_btn"
+            style="@style/Buttons1420Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="9dp"
+            android:contentDescription="@string/d_registration"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:paddingHorizontal="30dp"
+            android:paddingVertical="11dp"
+            android:text="@string/d_registration"
+            android:textColor="@color/white"
+            app:backgroundTint="@color/primary_default"
+            app:cornerRadius="8dp"
+            app:layout_constraintBottom_toBottomOf="@id/recommender_code_input_layout"
+            app:layout_constraintStart_toEndOf="@id/recommender_code_input_layout"
+            app:layout_constraintTop_toTopOf="@id/recommender_code_input_layout"
+            app:rippleColor="@color/primary_300" />
+
+        <TextView
+            android:id="@+id/recommend_input_desc"
+            style="@style/Caption11218Regular"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/se_h_valid_12hours"
+            android:textColor="@color/gray_500"
+            app:layout_constraintTop_toBottomOf="@id/recommender_code_input_layout" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

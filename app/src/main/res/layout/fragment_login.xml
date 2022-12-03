@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_light_gray_50"
+    tools:context="com.rndeep.fns_fantoo.ui.login.LoginMainActivity">
+
+    <ImageView
+        android:id="@+id/ivTranslate"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="12dp"
+        android:background="?actionBarItemBackground"
+        android:scaleType="center"
+        android:src="@drawable/translate"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="70dp"
+        android:src="@drawable/logo"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_baby"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="17dp"
+        android:layout_marginTop="60dp"
+        android:src="@drawable/character_main1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_logo" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_MainLogin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_baby">
+
+        <LinearLayout
+            android:id="@+id/llRecentLogin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="34dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:visibility="invisible"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/icon_bang" />
+
+            <TextView
+                style="@style/Caption11218Regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="1dp"
+                android:text="최근 로그인 계정 : "
+                android:textColor="@color/gray_500" />
+
+            <TextView
+                android:id="@+id/tvRecentlyLogin"
+                style="@style/Caption11218Regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/gray_500" />
+        </LinearLayout>
+
+        <!-- 그라데이션 백그라운드 이미지표시로 height를 가이드보다 추가 -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/llMainLogin"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_marginLeft="42dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginRight="42dp"
+            android:background="@drawable/bg_btn_login"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toTopOf="@+id/llRecentLogin">
+
+            <ImageView
+                android:id="@+id/ivMainSocial"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="34dp"
+                android:src="@drawable/login_google"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvMainSocial"
+                style="@style/Body21420Regular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:gravity="center"
+                android:maxLines="1"
+                android:text="@string/r_continue_at"
+                android:textColor="@color/gray_870"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- socail's -->
+    <LinearLayout
+        android:id="@+id/ll_Socials"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cl_MainLogin">
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/btnFacebook"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/login_facebook" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/btnLine"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_marginLeft="12dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/login_line" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/btnKakao"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_marginLeft="12dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/login_kakaotalk" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/btnApple"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_marginLeft="12dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/login_apple" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/btnTwitter"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_marginLeft="12dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/login_twitter" />
+
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="42dp"
+        android:layout_marginTop="18dp"
+        android:addStatesFromChildren="true"
+        android:background="@drawable/login_email_bg"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ll_Socials">
+
+        <LinearLayout
+            android:id="@+id/llLoginEmail"
+            android:layout_width="240dp"
+            android:layout_height="42dp"
+            android:background="@drawable/button_email_login"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:src="@drawable/icon_email_login"
+                app:tint="@color/gray_800"/>
+
+            <TextView
+                style="@style/Body21420Regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:textColor="@color/gray_800"
+                android:text="@string/a_continue_email" />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/tvLoginGuest"
+        style="@style/Body21420Regular"
+        android:layout_width="wrap_content"
+        android:layout_height="42dp"
+        android:layout_marginBottom="31dp"
+        android:background="@drawable/login_guest_bg"
+        android:gravity="center"
+        android:minWidth="90dp"
+        android:text="@string/d_look_around"
+        android:textColor="@color/gray_800"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+    <com.rndeep.fns_fantoo.ui.common.viewgroup.FantooLoadingView
+        android:id="@+id/loadingView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="gone"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

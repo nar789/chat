@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/llCategoryContainer"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@drawable/bg_border_radius_20_c_no"
+    android:clipToPadding="true"
+    >
+    <TextView
+        android:id="@+id/tvCategoryName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/state_enable_primary_100"
+        android:paddingVertical="4dp"
+        android:paddingHorizontal="10dp"
+        android:text="전체"
+        />
+</LinearLayout>

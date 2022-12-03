@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+<!--    <style name="MainTheme_status_bg_main"  parent="Theme.AppCompat.Light.NoActionBar">-->
+    <style name="MainTheme_status_bg_main"  parent="Theme.Material3.Light.NoActionBar">
+        <item name="colorPrimary">@color/primary_default</item>
+        <item name="colorPrimaryDark">@color/primary_300</item>
+        <item name="android:statusBarColor">@color/primary_300</item> <!--  statusBar 색상-->
+        <item name="android:windowLightStatusBar">false</item> <!--  true: 검정색에 약간의 투명도 , false : 흰색에 약간의 투명도 -->
+        <item name="android:navigationBarColor">@color/gray_25</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
+        <item name="switchStyle">@style/Widget.App.Switch</item>
+        <item name="snackbarStyle">@style/Widget.App.Snackbar</item>
+        <item name="toolbarStyle">@style/Toolbar_style</item>
+        <item name="linearProgressIndicatorStyle">@style/Widget.App.linearProgressIndicatorStyle</item>
+    </style>
+
+    <style name="Toolbar_style" parent="Widget.AppCompat.Toolbar">
+        <item name="maxButtonHeight">26dp</item>
+        <item name="paddingEnd">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+    </style>
+
+    <style name="BottomSheetDialog" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:navigationBarColor">@color/gray_25</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="bottomSheetStyle">@style/bottomSheetStyleWrapper</item>
+        <item name="android:windowAnimationStyle">@null</item><!-- dim컬러 커스텀시 상단 윈도우가 cut되어 올라가는게 보여지는 문제로 애니메이션처리 block -->
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowBackground">@color/gray_900_opacity30</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
+    </style>
+
+    <style name="bottomSheetStyleWrapper" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="ThemeCustom.TabLayout" parent="Theme.MaterialComponents.Light"/>
+
+    <style name="button_blue">
+        <item name="android:textColor">@color/state_enable_gray_25</item>
+        <item name="android:background">@drawable/button_blue</item>
+        <item name="android:fontFamily">@font/noto_sans_kr_medium</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:lineSpacingExtra">6sp</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:stateListAnimator">@null</item>
+    </style>
+
+    <style name="button_grey">
+        <item name="android:textColor">@color/state_enable_gray_25</item>
+        <item name="android:background">@drawable/button_grey</item>
+        <item name="android:backgroundTint">@color/state_disabled_gray_200</item>
+        <item name="android:fontFamily">@font/noto_sans_kr_medium</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:lineSpacingExtra">6sp</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:stateListAnimator">@null</item>
+    </style>
+
+    <style name="input_field">
+        <item name="android:paddingLeft">12dp</item>
+        <item name="android:paddingRight">12dp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:background">@drawable/input_field</item>
+        <item name="android:fontFamily">@font/noto_sans_kr</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:textColorHint">@color/gray_400</item>
+        <item name="maxLines">1</item>
+    </style>
+
+    <style name="input_button" parent="@style/Buttons1420Medium">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:background">@drawable/input_button</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:stateListAnimator">@null</item>
+    </style>
+
+    <style name="common_edittext_button" parent="@style/Buttons1420Medium">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:background">@drawable/input_button_r8</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:stateListAnimator">@null</item>
+    </style>
+
+    <style name="editText">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColorHint">@color/state_enable_gray_400</item>
+        <item name="android:textColor">@color/state_active_gray_900</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:paddingRight">12dp</item>
+        <item name="android:paddingLeft">12dp</item>
+        <item name="android:lineSpacingExtra">6sp</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:fontFamily">@font/noto_sans_kr</item>
+    </style>
+
+    <style name="Widget.App.Switch" parent="Widget.Material3.CompoundButton.Switch">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.Switch</item>
+        <item name="track">@drawable/switch_track</item>
+        <item name="android:thumb">@drawable/switch_thumb</item>
+    </style>
+
+    <style name="ThemeOverlay.App.Switch" parent="">
+        <item name="colorOnSurface">@color/white</item>
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorSecondary">@color/primary_100</item>
+        <item name="colorOutline">@color/gray_200</item>
+        <item name="colorPrimaryContainer">@color/primary_default</item>
+        <item name="android:textColorPrimary">@color/primary_default</item>
+        <item name="android:textColorPrimaryDisableOnly">@color/gray_500</item>
+    </style>
+
+    <style name="ShapeAppearanceOverlay.App.CornerSize50Percent" parent="">
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="RoundedBottomSheetDialog" parent="@style/ThemeOverlay.MaterialComponents.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/RoundedBottomSheet</item>
+        <item name="android:navigationBarColor">@color/gray_25</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
+    </style>
+
+    <style name="RoundedBottomSheet" parent="Widget.MaterialComponents.BottomSheet">
+        <item name="backgroundTint">@color/gray_25</item>
+        <item name="shapeAppearanceOverlay">@style/RoundedShapeAppearanceBottomSheetDialog</item>
+        <item name="gestureInsetBottomIgnored">true</item>
+    </style>
+
+    <style name="RoundedShapeAppearanceBottomSheetDialog" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopRight">24dp</item>
+        <item name="cornerSizeTopLeft">24dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+    </style>
+
+    <style name="Widget.App.Snackbar" parent="Widget.MaterialComponents.Snackbar">
+        <item name="android:fontFamily">@font/noto_sans_kr</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <style name="Widget.App.linearProgressIndicatorStyle" parent="Widget.MaterialComponents.LinearProgressIndicator">
+        <item name="colorPrimary">@color/primary_300</item>
+        <item name="trackColor">@color/gray_50</item>
+        <item name="trackThickness">8dp</item>
+    </style>
+
+    <style name="Widget.App.Library.TabLayout" parent="Widget.MaterialComponents.TabLayout">
+        <item name="tabMaxWidth">0dp</item>
+        <item name="tabGravity">fill</item>
+        <item name="tabBackground">@drawable/bg_library_tab</item>
+        <item name="tabTextColor">@color/gray_900</item>
+        <item name="tabSelectedTextColor">@color/primary_500</item>
+        <item name="tabIndicator">@drawable/bg_rectangle_3022</item>
+        <item name="tabTextAppearance">@style/Buttons1420Medium</item>
+    </style>
+
+    <style name="Widget.App.Club.TabLayout" parent="Widget.MaterialComponents.TabLayout">
+        <item name="tabMaxWidth">0dp</item>
+        <item name="tabGravity">fill</item>
+        <item name="tabIndicatorFullWidth">false</item>
+        <item name="tabRippleColor">@null</item>
+        <item name="tabBackground">@drawable/bg_club_tab_underline</item>
+        <item name="tabTextColor">@color/gray_400</item>
+        <item name="tabSelectedTextColor">@color/gray_900</item>
+        <item name="tabIndicatorColor">@color/gray_900</item>
+        <item name="tabTextAppearance">@style/Buttons1420Medium</item>
+    </style>
+
+    <style name="Widget.App.FloatingActionButton" parent="Widget.MaterialComponents.FloatingActionButton">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.App.SmallComponent</item>
+    </style>
+
+    <style name="ShapeAppearance.App.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50dp</item>
+    </style>
+
+    <style name="Widget.App.BottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView">
+        <item name="itemIconSize">28dp</item>
+        <item name="itemPaddingTop">4dp</item>
+        <item name="itemPaddingBottom">9dp</item>
+        <item name="itemIconTint">@color/menu_icon_selector_color</item>
+        <item name="itemTextColor">@color/menu_text_selector_color</item>
+        <item name="itemTextAppearanceInactive">@style/CaptionBottomBar</item>
+        <item name="itemTextAppearanceActive">@style/CaptionBottomBar</item>
+        <item name="labelVisibilityMode">labeled</item>
+        <item name="backgroundTint">@color/gray_25</item>
+<!--        <item name="android:background">@drawable/bg_bottom_bar</item>-->
+    </style>
+
+    <style name="Widget.App.Button.OutlinedButton.IconOnly" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="iconPadding">0dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:paddingLeft">12dp</item>
+        <item name="android:paddingRight">12dp</item>
+        <item name="android:minWidth">42dp</item>
+        <item name="android:minHeight">42dp</item>
+        <item name="strokeWidth">0dp</item>
+    </style>
+
+    <style name="Widget.App.Dialog" parent="@style/Theme.AppCompat.Dialog">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:minWidth">276dp</item>
+        <item name="dialogCornerRadius">24dp</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="clubSettingListItemArrow">
+        <item name="android:layout_width">20dp</item>
+        <item name="android:layout_height">20dp</item>
+        <item name="android:src">@drawable/icon_outline_dropdown</item>
+        <item name="android:rotation">-90</item>
+        <item name="android:alpha">0.3</item>
+    </style>
+
+    <style name="singleLine_editText">
+        <item name="android:inputType">text</item>
+        <item name="android:imeOptions">actionDone</item>
+        <item name="android:lines">1</item>
+        <item name="maxLines">1</item>
+        <item name="android:background">@null</item>
+        <item name="android:textColorHint">@color/gray_400</item>
+        <item name="fontFamily">@font/noto_sans_kr</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <style name="ExoStyledControls.Button.Center.PlayPause">
+        <item name="android:src">@drawable/exo_styled_controls_pause</item>
+        <item name="android:contentDescription">@string/exo_controls_play_description</item>
+        <item name="android:padding">@dimen/exo_icon_padding</item>
+    </style>
+
+    <style name="ExoStyledControls.Button.Bottom.FullScreen">
+        <item name="android:src">@drawable/exo_styled_controls_fullscreen_enter</item>
+        <item name="android:contentDescription">@string/exo_controls_fullscreen_enter_description</item>
+    </style>
+
+    <drawable name="exo_styled_controls_pause">@drawable/icon_fill_stop</drawable>
+    <drawable name="exo_styled_controls_play">@drawable/icon_outline_play</drawable>
+    <drawable name="exo_styled_controls_fullscreen_enter">@drawable/icon_outline_full</drawable>
+    <drawable name="exo_styled_controls_fullscreen_exit">@drawable/icon_outline_full</drawable>
+</resources>
+

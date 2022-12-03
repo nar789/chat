@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/club_comment"
+    app:startDestination="@id/clubCommentFragment2">
+
+    <fragment
+        android:id="@+id/clubCommentFragment2"
+        android:name="com.rndeep.fns_fantoo.ui.club.comment.ClubCommentFragment"
+        android:label="ClubCommentFragment" >
+        <argument
+            android:name="isMember"
+            app:argType="boolean"
+            />
+        <argument
+            android:name="postId"
+            app:argType="integer" />
+        <argument
+            android:name="replyId"
+            app:argType="integer" />
+        <argument
+            android:name="categoryCode"
+            app:argType="string"
+            app:nullable="true"
+            />
+        <argument
+            android:name="clubId"
+            app:argType="string"
+            />
+        <action
+            android:id="@+id/action_clubCommentFragment2_to_profileImageViewerFragment4"
+            app:destination="@id/profileImageViewerFragment4" >
+            <argument
+                android:name="imageUrl"
+                app:argType="string" />
+        </action>
+    </fragment>
+    <fragment
+        android:id="@+id/profileImageViewerFragment4"
+        android:name="com.rndeep.fns_fantoo.ui.common.ProfileImageViewerFragment"
+        android:label="fragment_profile_image_viewer"
+        tools:layout="@layout/fragment_profile_image_viewer" />
+</navigation>

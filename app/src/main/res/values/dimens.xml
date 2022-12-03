@@ -1,0 +1,33 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <dimen name="app_bar_height">180dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
+
+    <dimen name="layout_margin">20dp</dimen>
+    <dimen name="layout_margin_top">16dp</dimen>
+    <dimen name="toolbar_header_margin">52dp</dimen>
+    <dimen name="layout_bottom_margin">16dp</dimen>
+    <dimen name="padding_margin">16dp</dimen>
+    <dimen name="divider_height">1dp</dimen>
+    <dimen name="library_divider_height">8dp</dimen>
+    <dimen name="spacing_five">5dp</dimen>
+    <dimen name="spacing_eight">8dp</dimen>
+    <dimen name="spacing_ten">10dp</dimen>
+    <dimen name="spacing_twelve">12dp</dimen>
+    <dimen name="spacing_small">4dp</dimen>
+    <dimen name="spacing_medium">16dp</dimen>
+    <dimen name="spacing_large">32dp</dimen>
+    <dimen name="club_setting_ban_positive_button_width">116dp</dimen>
+    <dimen name="club_setting_ban_negative_button_width">84dp</dimen>
+    <dimen name="margin_small">4dp</dimen>
+    <dimen name="margin_normal">16dp</dimen>
+    <dimen name="bottom_sheet_corner_radius">24dp</dimen>
+    <dimen name="menu_list_height">48dp</dimen>
+    <dimen name="actionBarSize">50dp</dimen>
+    <dimen name="club_app_bar_height">150dp</dimen>
+    <dimen name="toolbar_elevation">5dp</dimen>
+    <dimen name="snackbar_margin_bottom">35dp</dimen>
+    <dimen name="snackbar_height">38dp</dimen>
+    <dimen name="club_setting_list_item_height">48dp</dimen>
+    <dimen name="club_setting_list_right_item_margin_right">4dp</dimen>
+    <dimen name="design_bottom_navigation_height" tools:override="true">52dp</dimen>
+</resources>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CommonEditTextLayout">
+        <attr name="buttonText" format="string" />
+        <attr name="hintText" format="string" />
+        <attr name="maxLength" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="CommonTopbar">
+        <attr name="titleText" format="string" />
+        <attr name="backButtonImageResource" format="integer" />
+        <attr name="tailText" format="string" />
+        <attr name="tailTextColor" format="integer" />
+        <attr name="tailImageResource" format="integer" />
+        <attr name="tailImageTint" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="CommonSearchableTopbar" parent="CommonTopbar">
+        <attr name="titleText" />
+        <attr name="editTextHint" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="InputFiled">
+        <attr name="state_warning" format="boolean" />
+        <attr name="state_success" format="boolean" />
+    </declare-styleable>
+
+</resources>

@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_25"
+    tools:context=".ui.menu.editprofile.nickname.NicknameFragment">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/gray_25"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            app:contentInsetStartWithNavigation="0dp"
+            app:navigationIcon="@drawable/back"
+            app:title="@string/n_nickname">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/nickname_save_btn"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginEnd="20dp"
+                android:enabled="false"
+                android:minWidth="26dp"
+                android:minHeight="20dp"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="4dp"
+                android:fontFamily="@font/noto_sans_kr"
+                android:includeFontPadding="false"
+                android:textSize="14sp"
+                android:textStyle="normal"
+                android:text="@string/j_save"
+                android:textColor="@color/state_disabled_gray_200"
+                app:rippleColor="@color/primary_300"
+                app:strokeWidth="0dp"/>
+        </com.google.android.material.appbar.MaterialToolbar>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/layout_margin"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <TextView
+            android:id="@+id/user_name_nickname"
+            style="@style/Caption11218Regular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/gray_800"
+            android:text="@string/n_nickname"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="닉네임" />
+
+        <TextView
+            android:id="@+id/edit_counter"
+            style="@style/Caption11218Regular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/gray_300"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="3/20" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/user_name_nickname_edit_field"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:counterEnabled="false"
+            app:counterMaxLength="20"
+            app:boxCornerRadiusBottomEnd="8dp"
+            app:boxCornerRadiusBottomStart="8dp"
+            app:boxCornerRadiusTopEnd="8dp"
+            app:boxCornerRadiusTopStart="8dp"
+            app:boxStrokeColor="@color/box_stroke_color"
+            app:boxBackgroundColor="@color/gray_50"
+            app:boxStrokeWidth="0.3dp"
+            app:boxStrokeWidthFocused="0.3dp"
+            app:hintAnimationEnabled="false"
+            app:hintEnabled="false"
+            app:endIconMode="clear_text"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintEnd_toStartOf="@id/duplicate_check_btn"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/user_name_nickname">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/user_name_nickname_edit"
+                style="@style/Body21420Regular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLength="20"
+                android:singleLine="true"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="11dp"
+                android:textColorHint="@color/gray_400"
+                android:hint="@string/se_n_write_nickname"
+                tools:text="NicknameNicknameaaaa" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/duplicate_check_btn"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:contentDescription="@string/j_check_duplicate"
+            android:minWidth="84dp"
+            android:minHeight="42dp"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="11dp"
+            android:fontFamily="@font/noto_sans_kr_medium"
+            android:includeFontPadding="false"
+            android:textSize="14sp"
+            android:textStyle="normal"
+            android:text="@string/j_check_duplicate"
+            android:textColor="@color/gray_25"
+            app:backgroundTint="@color/state_active_primary_default"
+            app:cornerRadius="8dp"
+            app:layout_constraintStart_toEndOf="@id/user_name_nickname_edit_field"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/user_name_nickname_edit_field"
+            app:layout_constraintBottom_toBottomOf="@id/user_name_nickname_edit_field"
+            app:rippleColor="@color/primary_100" />
+
+        <TextView
+            android:id="@+id/nickname_change_desc"
+            style="@style/Caption21116Regular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="@string/se_n_change_nickname_notice_2"
+            android:textColor="@color/gray_600"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/user_name_nickname_edit_field" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

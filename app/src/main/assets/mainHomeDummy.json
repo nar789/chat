@@ -1,0 +1,234 @@
+{
+  "code": 200,
+  "msg": "success",
+  "dataObj": {
+    "post": [
+      {
+        "type": "community",
+        "data": {
+          "postId": 6810730,
+          "code": "C_KPOP",
+          "subCode": "C_KPOP_NEWS",
+          "title": "이미지 테스트 제목 18",
+          "content": "이미지로 검색을 통해 이미지 또는 주변 사물에 대해 자세히 알아볼 수 있습니다. 예를 들어, 식물 사진을 찍어 이를 사용해 정보나 기타 유사한 이미지를 검색할 수 있습니다.",
+          "integUid": "ft_u_c67fc66fc77b11ec873a2bc647492dd7_2022_04_29_14_18_16_681",
+          "langCode": "kr",
+          "activeStatus": 1,
+          "likeCnt": 2,
+          "dislikeCnt": 0,
+          "honorCnt": 10,
+          "replyCnt": 20,
+          "attachYn": true,
+          "attachList": [
+            {
+              "attachType": "image",
+              "id": "https://byline.network/wp-content/uploads/2018/05/cat.png"
+            },
+            {
+              "attachType": "image",
+              "id": "https://t1.daumcdn.net/cfile/tistory/2463694C53D0A5D806"
+            },
+            {
+              "attachType": "image",
+              "id": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtzfgVAiFqLmcrULkb5qDJ16hlDgsMsB83EQ&usqp=CAU"
+            },
+            {
+              "attachType": "image",
+              "id": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0XiinDtbqzfRqo6MlJyEO2fRkXO9S3fG21w&usqp=CAU"
+            }
+          ],
+          "anonymYn": false,
+          "likeYn": false,
+          "dislikeYn": true,
+          "userNick": "test1",
+          "userPhoto": "",
+          "createDate": "2022-07-19T11:21:12",
+          "isBlockYN": false,
+          "clubName":  "testClub1",
+          "boardName": "test1Board",
+          "honorYn": false
+        }
+      },
+      {
+        "type": "community",
+        "data": {
+          "postId": 6810730,
+          "code": "C_KPOP",
+          "subCode": "C_KPOP_NEWS",
+          "title": "이미지 없이 테스트 27",
+          "content": "가장 인기 있는 디자인 프로그램, 인터넷 쇼핑몰, 컴퓨터 환경에서 이용 가능한 버전과 플러그인을 제공해드립니다. 지금 Remove.bg의 API를 사용하시고 이미지 편집 업무의 효율을 더욱 높여보세요!",
+          "integUid": "ft_u_c67fc66fc77b11ec873a2bc647492dd7_2022_04_29_14_18_16_681",
+          "langCode": "kr",
+          "activeStatus": 1,
+          "likeCnt": 2,
+          "dislikeCnt": 0,
+          "honorCnt": 10,
+          "replyCnt": 20,
+          "attachYn": true,
+          "attachList": [],
+          "anonymYn": false,
+          "likeYn": false,
+          "dislikeYn": true,
+          "userNick": "test1",
+          "userPhoto": "",
+          "createDate": "2022-07-19T11:21:12",
+          "isBlockYN": false,
+          "clubName":  "testClub2",
+          "boardName": "test1Board2",
+          "honorYn": true
+        }
+      },
+      {
+        "type": "club",
+        "clubData": {
+          "attachList" :  [
+            {
+              "attachType": 0,
+              "attach": "https://byline.network/wp-content/uploads/2018/05/cat.png",
+              "attachId" : 1
+            }
+          ],
+          "attachType" : 1,
+          "blockType" :  "0",
+          "boardType1" : 1,
+          "boardType2" :  2,
+          "categoryCode" : "home",
+          "clubId" :  58,
+          "clubName" : "testClub3",
+          "categoryName1" :  "codeName",
+          "categoryName2" : "codeName2",
+          "content" :  "클럽 58 포스트 177, 인터넷 쇼핑몰, 컴퓨터 환경에서 이용 가능한 버전과 플러그인을 제공해드립니다. 지금 Remove.bg의 API를 사용하시고 이미지 편집 업무의 효율을 더욱 높여보세요!",
+          "createDate" : "2022-07-19T11:21:12",
+          "deleteType" :  0,
+          "firstImage" :  "image",
+          "integUid" :  "ft_u_c67fc66fc77b11ec873a2bc647492dd7_2022_04_29_14_18_16_681",
+          "langCode" : "kr",
+          "honor" :  null,
+          "memberId" :  42,
+          "memberLevel" : 1,
+          "memberUrl" :  "ㅁㄴㅇ",
+          "nickname" : "NickName22",
+          "postId" :  264,
+          "profileImg" : "string",
+          "replyCount" :  0,
+          "status" : 0,
+          "subject" :  "이미지 없이 테스트 26",
+          "url" : ""
+        }
+      },
+      {
+        "type": "community",
+        "data": {
+          "postId": 6810730,
+          "code": "C_KPOP",
+          "subCode": "C_KPOP_NEWS",
+          "title": "이미지 없이 테스트 25",
+          "content": "가장 인기 있는 디자인 프로그램, 인터넷 쇼핑몰, 컴퓨터 환경에서 이용 가능한 버전과 플러그인을 제공해드립니다. 지금 Remove.bg의 API를 사용하시고 이미지 편집 업무의 효율을 더욱 높여보세요!",
+          "integUid": "ft_u_c67fc66fc77b11ec873a2bc647492dd7_2022_04_29_14_18_16_681",
+          "langCode": "kr",
+          "activeStatus": 1,
+          "likeCnt": 2,
+          "dislikeCnt": 0,
+          "honorCnt": 10,
+          "replyCnt": 20,
+          "attachYn": true,
+          "attachList": [
+            {
+              "attachType": "image",
+              "id": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJkXTWf03XTqrIazPUc4xR1rawtsnQXeQwKA&usqp=CAU"
+            }
+          ],
+          "anonymYn": false,
+          "likeYn": false,
+          "dislikeYn": true,
+          "userNick": "test1",
+          "userPhoto": "",
+          "createDate": "2022-07-19T11:21:12",
+          "isBlockYN": false,
+          "clubName":  "testClub4",
+          "boardName": "test1Board4",
+          "honorYn": false
+        }
+      },
+      {
+        "type": "community",
+        "data": {
+          "postId": 6810730,
+          "code": "C_KPOP",
+          "subCode": "C_KPOP_NEWS",
+          "title": "이미지 없이 테스트 24",
+          "content": "가장 인기 있는 디자인 프로그램, 인터넷 쇼핑몰, 컴퓨터 환경에서 이용 가능한 버전과 플러그인을 제공해드립니다. 지금 Remove.bg의 API를 사용하시고 이미지 편집 업무의 효율을 더욱 높여보세요!",
+          "integUid": "ft_u_c67fc66fc77b11ec873a2bc647492dd7_2022_04_29_14_18_16_681",
+          "langCode": "kr",
+          "activeStatus": 1,
+          "likeCnt": 2,
+          "dislikeCnt": 0,
+          "honorCnt": 10,
+          "replyCnt": 20,
+          "attachYn": true,
+          "attachList": [
+            {
+              "attachType": "image",
+              "id": "https://byline.network/wp-content/uploads/2018/05/cat.png"
+            }
+          ],
+          "anonymYn": false,
+          "likeYn": false,
+          "dislikeYn": true,
+          "userNick": "test1",
+          "userPhoto": "",
+          "createDate": "2022-07-19T11:21:12",
+          "isBlockYN": false,
+          "clubName":  "testClub5",
+          "boardName": "test1Board5",
+          "honorYn": false
+        }
+      },
+      {
+        "type": "club",
+        "clubData": {
+          "attachList" :  [
+            {
+              "attachType": 3,
+              "attach": "https://byline.network/wp-content/uploads/2018/05/cat.png",
+              "attachId" : 1
+            },
+            {
+              "attachType": 3,
+              "attach": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtI6DYKPAyX3Pi5oLyzBStvwzaY8Tx6zuchw&usqp=CAU",
+              "attachId" : 1
+            }
+          ],
+          "attachType" : 1,
+          "blockType" :  "0",
+          "boardType1" : 1,
+          "boardType2" :  2,
+          "categoryCode" : "home",
+          "clubId" :  51,
+          "clubName" : "testClub3",
+          "categoryName1" :  "codeName",
+          "categoryName2" : "codeName2",
+          "content" :  "가장 인기 있는 디자인 프로그램, 인터넷 쇼핑몰, 컴퓨터 환경에서 이용 가능한 버전과 플러그인을 제공해드립니다. 지금 Remove.bg의 API를 사용하시고 이미지 편집 업무의 효율을 더욱 높여보세요!",
+          "createDate" : "2022-07-19T11:21:12",
+          "deleteType" :  0,
+          "firstImage" :  "image",
+          "integUid" :  "ft_u_c67fc66fc77b11ec873a2bc647492dd7_2022_04_29_14_18_16_681",
+          "langCode" : "kr",
+          "honor" : null,
+          "memberId" :  42,
+          "memberLevel" : 1,
+          "memberUrl" :  "ㅁㄴㅇ",
+          "nickname" : "NickName22",
+          "postId" :  6810730,
+          "profileImg" : "string",
+          "replyCount" :  0,
+          "status" : 0,
+          "subject" :  "이미지 없이 테스트 26",
+          "url" : ""
+        }
+      }
+    ]
+  },
+  "listSize" : 10,
+  "nextId" : 0
+}

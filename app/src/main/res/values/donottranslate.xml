@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="TAG_LOGIN_TYPE" type="id"/>
+    <item name="fantoo_logo" type="string">FANTOO</item>
+
+    <item name="lang_port" type="string">"Português"</item>
+    <item name="lang_ind" type="string">"Bahasa Indonesia"</item>
+    <item name="lang_viet" type="string">"tiếng Việt"</item>
+    <item name="lang_thai" type="string">"ภาษาไทย"</item>
+    <item name="lang_ar" type="string">"العربية"</item>
+    <item name="lang_kr" type="string">"한국어"</item>
+    <item name="lang_cn" type="string">"中國語 (简体)"</item>
+    <item name="lang_tr" type="string">"中國語 (繁體, 台灣)"</item>
+    <item name="lang_jp" type="string">"日本語"</item>
+    <item name="lang_en" type="string">"English"</item>
+    <item name="lang_es" type="string">"Español"</item>
+    <item name="lang_fr" type="string">"Français"</item>
+    <item name="lang_pol" type="string">"język polski"</item>
+    <item name="lang_it" type="string">"Lingua italiana"</item>
+    <item name="lang_ru" type="string">"русский"</item>
+    <item name="lang_de" type="string">"Deutsch"</item>
+    <item name="lang_hi" type="string">"हिन्दी"</item>
+
+    <!-- 회원가입 특수문자 -->
+    <item name="star_mark" type="string">"*"</item>
+
+    <item name="slash" type="string">"/"</item>
+
+    <!-- 프로필,클럽 포토설정 -->
+    <item name="photo_max_size" type="string">"5"</item>
+
+    <string name="imageThumbnailUrl">https://imagedelivery.net/peZXyXogT-VgnN1sGn2T-Q/%1$s/thumbnail</string>
+    <string name="imageUrlBase" translatable="false">https://imagedelivery.net/peZXyXogT-VgnN1sGn2T-Q/%1$s/public</string>
+    <string name="videoUrlHLSBase" translatable="false">https://customer-y628kmdfbqq6rn1n.cloudflarestream.com/%1$s/manifest/video.m3u8</string>
+    <string name="videoThumbnail" translatable="false">https://customer-y628kmdfbqq6rn1n.cloudflarestream.com/%1$s/thumbnails/thumbnail.jpg</string> <!-- 정상작동 확인중 -->
+
+    <string name="club_banner_default" translatable="false">2e4767fe-fe5a-40ba-fcef-7c77e58e6c00</string>
+    <string-array name="club_profile_default_list" translatable="false">
+        <item>81e3dca2-5877-4944-f342-741b0b30ad00</item>
+        <item>3a0ad96c-a0b9-4a5c-b6af-575d8185a600</item>
+        <item>3da709b5-9132-4b42-fed5-59e055c0ee00</item>
+        <item>4ceaa2c8-14cc-46e2-5ee0-9b35563f6c00</item>
+        <item>a9f8be06-b6e4-4145-7e60-f66c4dbdd800</item>
+        <item>3020bbc4-2330-4d40-9aa3-ae9399ae6c00</item>
+    </string-array>
+
+    <string name="google">Google</string>
+    <string name="menu_profile_edit_text">"프로필 수정"</string>
+    <string name="five_hundred_fanit">"500 FANiT"</string>
+
+    <string name="club_search_member_count">%1$d</string>
+
+
+    <!--
+지원언어 리스트 22/04/14
+1.포르투갈어
+2.인도네시아어
+3.베트남어
+4.태국어
+5.아랍어
+6.한국어
+7.중국어(간체)
+8.중국어(번체)
+9.일본어
+10.영어
+11.스페인어
+12.프랑스어
+13.폴란드어
+14.이탈리아
+15.러시아어
+16.독일어
+17.힌디어 (편집됨)
+-->
+</resources>

@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_900_opacity30"
+    android:paddingHorizontal="37dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clDialogContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_border_radius_32_c_no_s_darkblue10"
+        android:backgroundTint="@color/gray_25"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/ivClubBookmark"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="12dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="4dp"
+            android:src="@drawable/icon_fill_bookmark"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/state_enable_secondary_default" />
+
+        <TextView
+            android:id="@+id/tvClubTitle"
+            style="@style/Title41824Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="45dp"
+            android:text="클럽 이름"
+            android:textColor="@color/gray_870"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvClubOwnerName"
+            style="@style/Caption21116Regular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="클럽장 닉네임"
+            android:textColor="@color/gray_400"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvClubTitle" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clClubInfoContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="18dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_border_radius_12_c_no"
+            android:backgroundTint="@color/bg_light_gray_50"
+            app:layout_constraintTop_toBottomOf="@id/tvClubOwnerName">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/titleGuideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.26" />
+
+            <TextView
+                android:id="@+id/tvClubCreateDateTitle"
+                style="@style/Caption11218Regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="11dp"
+                android:text="개설일"
+                android:textColor="@color/gray_400"
+                app:layout_constraintStart_toStartOf="@id/titleGuideline"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvClubCreateDate"
+                style="@style/Caption11218Regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="9dp"
+                android:layout_marginTop="11dp"
+                android:text="날짜 입력"
+                android:textColor="@color/gray_700"
+                app:layout_constraintStart_toEndOf="@id/tvClubCreateDateTitle"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvClubMemberTitle"
+                style="@style/Caption11218Regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="멤버"
+                android:textColor="@color/gray_400"
+                app:layout_constraintStart_toStartOf="@id/titleGuideline"
+                app:layout_constraintTop_toBottomOf="@id/tvClubCreateDateTitle" />
+
+            <TextView
+                android:id="@+id/tvClubMember"
+                style="@style/Caption11218Regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="9dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="11dp"
+                android:text="멤버수 입력"
+                android:textColor="@color/gray_700"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tvClubCreateDateTitle"
+                app:layout_constraintTop_toBottomOf="@id/tvClubCreateDateTitle" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/tvClubDescription"
+            style="@style/Caption11218Regular"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="18dp"
+            android:layout_marginTop="14dp"
+            android:gravity="center_horizontal"
+            android:text="클럽에 대한 자세한 설명이 들어가는 곳클럽에 대한 자세한 설명이 들어가는 곳클럽에 대한 자세한 설명이 들어가는 곳클럽에 대한 자세한 설명이 들어가는 곳클럽에 대한 자세한 설명이 들어가는 곳클럽에 대한 자세한 설명이 들어가는 곳클럽에 대한 자세한 설명이 들어가는 곳클럽에 대한 자세한 설명이 들어가는 곳 "
+            android:textAlignment="center"
+            android:textColor="@color/gray_700"
+            app:layout_constraintTop_toBottomOf="@id/clClubInfoContainer" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnClubShare"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="55dp"
+            android:layout_marginTop="20dp"
+            android:includeFontPadding="false"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:minHeight="0dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="@string/g_to_share"
+            android:textAppearance="@style/Buttons1420Medium"
+            app:backgroundTint="@color/state_active_primary_default"
+            app:cornerRadius="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvClubDescription"
+            app:rippleColor="@color/primary_300" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnDialogClose"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="55dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:background="?attr/selectableItemBackground"
+            android:includeFontPadding="false"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:minHeight="0dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="닫기"
+            android:textAppearance="@style/Buttons1420Medium"
+            android:textColor="@color/state_enable_gray_400"
+            app:backgroundTint="@color/transparent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btnClubShare" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageView
+        android:id="@+id/ivClubThumbnail"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_marginBottom="-27dp"
+        android:src="@drawable/profile_club_character"
+        android:background="@drawable/bg_border_radius_16_c_white"
+        android:padding="2dp"
+        app:layout_constraintBottom_toTopOf="@+id/clDialogContainer"
+        app:layout_constraintEnd_toEndOf="@id/clDialogContainer"
+        app:layout_constraintStart_toStartOf="@id/clDialogContainer" />
+</androidx.constraintlayout.widget.ConstraintLayout>

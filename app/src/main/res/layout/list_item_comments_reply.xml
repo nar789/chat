@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/gray_50_opacity_80">
+
+    <ImageView
+        android:id="@+id/avatar"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        android:layout_marginStart="52dp"
+        android:layout_marginTop="17dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@drawable/profile_character1" />
+
+    <TextView
+        android:id="@+id/nickname"
+        style="@style/Caption11218Regular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:textColor="@color/gray_900"
+        app:layout_constraintStart_toEndOf="@id/avatar"
+        app:layout_constraintTop_toTopOf="@id/avatar"
+        app:layout_constraintBottom_toBottomOf="@id/avatar"
+        tools:text="Nickname" />
+
+    <ImageView
+        android:id="@+id/dot"
+        android:layout_width="6dp"
+        android:layout_height="6dp"
+        android:layout_marginStart="8dp"
+        android:src="@drawable/dot_grey"
+        app:layout_constraintBottom_toBottomOf="@id/nickname"
+        app:layout_constraintStart_toEndOf="@id/nickname"
+        app:layout_constraintTop_toTopOf="@id/nickname"
+        app:tint="@color/gray_200" />
+
+    <TextView
+        android:id="@+id/created_at"
+        style="@style/Caption11218Regular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:textColor="@color/gray_400"
+        app:layout_constraintBottom_toBottomOf="@id/nickname"
+        app:layout_constraintStart_toEndOf="@id/dot"
+        app:layout_constraintTop_toTopOf="@id/nickname"
+        tools:text="2일 전" />
+
+    <TextView
+        android:id="@+id/body"
+        style="@style/Body21420Regular"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="20dp"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:textColor="@color/gray_870"
+        app:layout_constraintStart_toStartOf="@id/nickname"
+        app:layout_constraintTop_toBottomOf="@id/nickname"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="consectetur adipiscing elit. Aenean euismod bconsectetur adipiscing elit. Aenean euisad" />
+
+    <TextView
+        android:id="@+id/translate"
+        style="@style/Caption11218Regular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:textColor="@color/gray_500"
+        android:text="@string/b_do_translate"
+        app:layout_constraintTop_toBottomOf="@id/body"
+        app:layout_constraintStart_toStartOf="@id/body" />
+
+    <ImageView
+        android:id="@+id/comment_img"
+        android:layout_width="164dp"
+        android:layout_height="154dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@id/translate"
+        app:layout_constraintTop_toBottomOf="@id/translate"
+        tools:src="@drawable/profile_character1" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/like"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="18dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/icon_fill_like"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:layout_constraintStart_toStartOf="@id/comment_img"
+        app:layout_constraintTop_toBottomOf="@id/comment_img"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:tint="@color/state_disabled_gray_200" />
+
+    <TextView
+        android:id="@+id/like_count"
+        style="@style/Caption11218Regular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:textColor="@color/gray_800"
+        app:layout_constraintBottom_toBottomOf="@id/like"
+        app:layout_constraintStart_toEndOf="@id/like"
+        app:layout_constraintTop_toTopOf="@id/like"
+        tools:text="1,3k" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/dislike"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_marginStart="4dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/icon_fill_dislike"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:layout_constraintBottom_toBottomOf="@id/like_count"
+        app:layout_constraintStart_toEndOf="@id/like_count"
+        app:layout_constraintTop_toTopOf="@id/like_count"
+        app:tint="@color/state_disabled_gray_200" />
+</androidx.constraintlayout.widget.ConstraintLayout>

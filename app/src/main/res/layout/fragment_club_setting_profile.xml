@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_25">
+
+    <com.rndeep.fns_fantoo.ui.common.viewgroup.CommonTopbar
+        android:id="@+id/topbar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tailText="@string/j_save"
+        app:tailTextColor="@color/state_active_primary_default"
+        app:titleText="@string/p_setting_profile" />
+
+    <RelativeLayout
+        android:id="@+id/rlClubImage"
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/gray_50"
+        app:layout_constraintTop_toBottomOf="@id/topbar">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivClubBackgroundImage"
+            android:layout_width="match_parent"
+            android:layout_height="140dp" />
+
+        <ImageView
+            android:id="@+id/ivDefaultIcon"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/icon_outline_camera"
+            app:tint="@color/state_enable_gray_400" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlProfileThumbnail"
+        android:layout_width="54dp"
+        android:layout_height="54dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="102dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="@id/rlClubImage">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivProfileThumbnail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/profile_club_character_l" />
+
+        <ImageView
+            android:id="@+id/ivBadge"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/bg_border_radius_12_c_gray25_stroke"
+            android:padding="4.83dp"
+            android:src="@drawable/icon_fill_camera" />
+    </RelativeLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginRight="20dp"
+        app:layout_constraintTop_toBottomOf="@id/rlProfileThumbnail">
+
+        <RelativeLayout
+            android:id="@+id/rl_clubName_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                style="@style/Caption11218Regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/k_club_name"
+                android:textColor="@color/gray_800" />
+
+            <TextView
+                android:id="@+id/tvClubNameCount"
+                style="@style/Caption11218Regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:textColor="@color/gray_300" />
+        </RelativeLayout>
+
+        <com.rndeep.fns_fantoo.ui.common.viewgroup.CommonEditTextLayout
+            android:id="@+id/cEtLayout"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:layout_marginTop="4dp"
+            app:buttonText="@string/j_check_duplicate"
+            app:hintText="@string/se_k_write_club_name"
+            app:layout_constraintTop_toBottomOf="@id/rl_clubName_title"
+            app:maxLength="30" />
+
+        <TextView
+            android:id="@+id/tvClubNameDesc"
+            style="@style/Caption21116Regular"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="@string/se_k_can_change_club_name"
+            android:textColor="@color/gray_600"
+            app:layout_constraintTop_toBottomOf="@id/cEtLayout" />
+
+        <TextView
+            android:id="@+id/tvClubNameWarning"
+            style="@style/Caption21116Regular"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginEnd="12dp"
+            android:textColor="@color/text_color_selector_primary500_state_danger"
+            app:layout_constraintTop_toBottomOf="@id/cEtLayout" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- 클럽소개 -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="22dp"
+        android:layout_marginRight="20dp"
+        app:layout_constraintTop_toBottomOf="@id/cl_input">
+
+        <RelativeLayout
+            android:id="@+id/rl_clubIntroduce"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tv_ClubIntroduce"
+                style="@style/Caption11218Regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/k_club_introduce"
+                android:textColor="@color/gray_800" />
+
+            <TextView
+                android:id="@+id/tvClubIntroduceCount"
+                style="@style/Caption11218Regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:textColor="@color/gray_300" />
+        </RelativeLayout>
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etClubIntroduce"
+            style="@style/input_field"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/input_field"
+            android:gravity="top|left"
+            android:hint="@string/se_k_write_club_introduction"
+            android:minHeight="116dp"
+            android:paddingLeft="12dp"
+            android:paddingTop="10dp"
+            android:paddingRight="12dp"
+            android:paddingBottom="10dp"
+            android:scrollHorizontally="false"
+            app:layout_constraintTop_toBottomOf="@id/rl_clubIntroduce" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.rndeep.fns_fantoo.ui.common.viewgroup.FantooLoadingView
+        android:id="@+id/loadingView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="gone"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

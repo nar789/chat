@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/club"
+    app:startDestination="@id/clubTabFragment">
+
+    <fragment
+        android:id="@+id/clubTabFragment"
+        android:name="com.rndeep.fns_fantoo.ui.club.ClubTabFragment"
+        android:label="fragment_club_tab"
+        tools:layout="@layout/fragment_club_tab" >
+        <action
+            android:id="@+id/action_clubTabFragment_to_myClubListFragment2"
+            app:destination="@id/myClubListFragment2" />
+        <action
+            android:id="@+id/action_clubTabFragment_to_clubJoinFragment"
+            app:destination="@id/clubJoinFragment" />
+        <action
+            android:id="@+id/action_clubTabFragment_to_clubCreateFragment"
+            app:destination="@id/clubCreateFragment" />
+        <action
+            android:id="@+id/action_clubTabFragment_to_clubSearchFragment"
+            app:destination="@id/clubSearchFragment" />
+        <action
+            android:id="@+id/action_clubTabFragment_to_club_page_detail"
+            app:destination="@id/club_detail_page" >
+            <argument
+                android:name="clubId"
+                app:argType="string"
+                />
+        </action>
+        <action
+            android:id="@+id/action_clubTabFragment_to_clubChallengeFragment"
+            app:destination="@id/clubChallengeFragment" />
+        <action
+            android:id="@+id/action_clubTabFragment_to_club_post"
+            app:destination="@id/club_post" >
+            <argument
+                android:name="previewType"
+                app:argType="string"
+                />
+            <argument
+                android:name="categoryCode"
+                app:argType="string"
+                />
+            <argument
+                android:name="clubId"
+                app:argType="string"
+                />
+            <argument
+                android:name="postId"
+                app:argType="integer" />
+        </action>
+    </fragment>
+    <fragment
+        android:id="@+id/myClubListFragment2"
+        android:name="com.rndeep.fns_fantoo.ui.menu.myclub.MyClubListFragment"
+        android:label="fragment_my_club_list"
+        tools:layout="@layout/fragment_my_club_list" >
+        <action
+            android:id="@+id/action_myClubListFragment_to_club_page_detail"
+            app:destination="@id/club_detail_page" >
+            <argument
+                android:name="clubId"
+                app:argType="string" />
+        </action>
+    </fragment>
+    <fragment
+        android:id="@+id/clubJoinFragment"
+        android:name="com.rndeep.fns_fantoo.ui.club.join.ClubJoinFragment"
+        android:label="fragment_club_join"
+        tools:layout="@layout/fragment_club_join" >
+        <argument
+            android:name="clubId"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_clubJoinFragment_to_club_page_detail"
+            app:popUpTo="@id/clubJoinFragment"
+            app:popUpToInclusive="true"
+            app:destination="@id/club_detail_page" >
+            <argument
+                android:name="clubId"
+                app:argType="string" />
+        </action>
+    </fragment>
+    <fragment
+        android:id="@+id/clubCreateFragment"
+        android:name="com.rndeep.fns_fantoo.ui.club.create.ClubCreateFragment"
+        android:label="fragment_club_create"
+        tools:layout="@layout/fragment_club_create" >
+        <action
+            android:id="@+id/action_clubCreateFragment_to_clubCreateInterestFragment"
+            app:destination="@id/clubCreateInterestFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/clubSearchFragment"
+        android:name="com.rndeep.fns_fantoo.ui.club.search.ClubSearchFragment"
+        android:label="fragment_club_search"
+        tools:layout="@layout/fragment_club_search" >
+        <action
+            android:id="@+id/action_clubSearchFragment_to_club_page_detail"
+            app:destination="@id/club_detail_page" >
+            <argument
+                android:name="clubId"
+                app:argType="string"
+                />
+        </action>
+    </fragment>
+    <fragment
+        android:id="@+id/clubCreateInterestFragment"
+        android:name="com.rndeep.fns_fantoo.ui.club.create.ClubCreateInterestFragment"
+        android:label="fragment_club_create_interest"
+        tools:layout="@layout/fragment_club_create_interest" >
+        <argument
+            android:name="clubCreateInfo"
+            app:argType="com.rndeep.fns_fantoo.data.local.model.ClubCreateSendItem" />
+        <action
+            android:id="@+id/action_clubCreateInterestFragment_to_club_page_detail"
+            app:popUpToInclusive="true"
+            app:popUpTo="@id/clubCreateFragment"
+            app:destination="@id/club_detail_page" >
+            <argument
+                android:name="clubId"
+                app:argType="string"
+                />
+        </action>
+        <action
+            android:id="@+id/action_clubCreateInterestFragment_to_clubTabFragment"
+            app:popUpToInclusive="true"
+            app:popUpTo="@id/clubTabFragment"
+            app:destination="@id/clubTabFragment" />
+    </fragment>
+    <include app:graph="@navigation/club_detail_page" />
+    <fragment
+        android:id="@+id/clubChallengeFragment"
+        android:name="com.rndeep.fns_fantoo.ui.club.challenge.ClubChallengeFragment"
+        android:label="ClubChallengeFragment" >
+        <action
+            android:id="@+id/action_clubChallengeFragment_to_club_post"
+            app:destination="@id/club_post" >
+            <argument
+                android:name="previewType"
+                app:argType="string"
+                />
+            <argument
+                android:name="categoryCode"
+                app:argType="string"
+                />
+            <argument
+                android:name="clubId"
+                app:argType="string"
+                />
+            <argument
+                android:name="postId"
+                app:argType="integer" />
+        </action>
+    </fragment>
+    <include app:graph="@navigation/club_post" />
+</navigation>

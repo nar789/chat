@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/bg_border_radius_20_c_darkblue50_s_no"
+    >
+    <TextView
+        android:id="@+id/tvSearchText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/Caption11218Regular"
+        android:textColor="@color/gray_800"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:autoSizeTextType="uniform"
+        android:layout_marginStart="12dp"
+        android:paddingVertical="8dp"
+        android:lines="1"
+        android:ellipsize="end"
+        android:maxWidth="280dp"
+        android:text="케이팝"
+        />
+
+    <ImageView
+        android:id="@+id/ivDeleteSearch"
+        android:layout_width="24dp"
+        android:layout_height="22dp"
+        android:src="@drawable/icon_outline_cancel"
+        app:tint="@color/gray_300"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/tvSearchText"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:paddingEnd="12dp"
+        android:paddingVertical="5dp"
+        android:layout_marginStart="8dp"
+        tools:ignore="RtlSymmetry" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

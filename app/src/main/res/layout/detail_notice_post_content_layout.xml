@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/rlAuthInfoContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="14dp"
+        app:layout_constraintBottom_toTopOf="@id/tvPostTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/ivPostAuthThumbnail"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvPostNickname"
+            style="@style/Caption11218Regular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@+id/ivPostAuthThumbnail"
+            android:text=""
+            android:textColor="@color/gray_400"
+            app:layout_constraintStart_toEndOf="@id/ivPostAuthThumbnail"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/nickGroup1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="tvGroupName,ivDot" />
+
+        <TextView
+            android:id="@+id/tvGroupName"
+            style="@style/Caption11218Regular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@+id/ivPostAuthThumbnail"
+            android:text=""
+            android:textColor="@color/gray_900"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/ivPostAuthThumbnail"
+            app:layout_constraintTop_toBottomOf="@id/tvPostNickname" />
+
+        <ImageView
+            android:id="@+id/ivDot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="7.8dp"
+            android:layout_toEndOf="@+id/tvGroupName"
+            android:src="@drawable/dot_grey"
+            app:layout_constraintBottom_toBottomOf="@id/tvGroupName"
+            app:layout_constraintStart_toEndOf="@id/tvGroupName"
+            app:layout_constraintTop_toTopOf="@id/tvGroupName" />
+
+        <TextView
+            android:id="@+id/tvCreateTime"
+            style="@style/Caption11218Regular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="7.8dp"
+            android:layout_toEndOf="@+id/ivDot"
+            android:text=""
+            android:textColor="@color/gray_400"
+            app:layout_constraintBottom_toBottomOf="@id/tvGroupName"
+            app:layout_constraintStart_toEndOf="@id/ivDot"
+            app:layout_constraintTop_toTopOf="@id/tvGroupName"
+            app:layout_goneMarginStart="10dp" />
+
+        <ImageView
+            android:id="@+id/ivTranslate"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginEnd="16dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="3dp"
+            android:src="@drawable/icon_outline_translate1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/gray_700" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/tvPostTitle"
+        style="@style/Title51622RobotoMedium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="16dp"
+        android:text=""
+        android:textColor="@color/gray_870"
+        app:layout_constraintBottom_toTopOf="@id/tvPostContent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rlAuthInfoContainer" />
+
+    <TextView
+        android:id="@+id/tvPostContent"
+        style="@style/Body21420Regular"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="10dp"
+        android:text=""
+        android:textColor="@color/gray_600"
+        app:layout_constraintBottom_toTopOf="@id/rcPostImage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvPostTitle" />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcPostImage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:nestedScrollingEnabled="false"
+        app:layout_constraintBottom_toTopOf="@id/rcPostHashTag"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvPostContent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcPostHashTag"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toTopOf="@id/rlBottomContainer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rcPostImage" />
+
+    <RelativeLayout
+        android:id="@+id/rlBottomContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rcPostHashTag"
+        app:layout_goneMarginTop="20dp">
+
+        <LinearLayout
+            android:id="@+id/llLikeContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="20dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:id="@+id/ivLikeIcon"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/icon_fill_like"
+                app:tint="@color/gray_200" />
+
+            <TextView
+                android:id="@+id/tvLikeCount"
+                style="@style/Caption11218Regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text=""
+                android:textColor="@color/gray_800" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/ivDisLikeIcon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="4dp"
+            android:layout_toEndOf="@+id/llLikeContainer"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/icon_fill_dislike"
+            app:tint="@color/gray_200" />
+
+        <LinearLayout
+            android:id="@+id/llHonorContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="20dp"
+            android:layout_toEndOf="@+id/ivDisLikeIcon"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/ivHonorIcon"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@drawable/icon_fill_honor"
+                app:tint="@color/gray_200" />
+
+            <TextView
+                android:id="@+id/tvHonorCount"
+                style="@style/Caption11218Regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text=""
+                android:textColor="@color/gray_800" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/ivCommentIcon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="20dp"
+            android:layout_toEndOf="@+id/llHonorContainer"
+            android:src="@drawable/icon_fill_comment"
+            app:tint="@color/gray_200" />
+
+        <TextView
+            android:id="@+id/tvCommentCount"
+            style="@style/Caption11218Regular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="4dp"
+            android:layout_toEndOf="@+id/ivCommentIcon"
+            android:text=""
+            android:textColor="@color/gray_800" />
+
+        <ImageView
+            android:id="@+id/ivShareIcon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="16dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:scaleType="center"
+            android:src="@drawable/icon_outline_share" />
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/ivAD"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        app:layout_constraintTop_toBottomOf="@id/rlBottomContainer" />
+
+    <View
+        android:id="@+id/viewDivider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="18dp"
+        android:background="@color/gray_400_opacity25"
+        app:layout_constraintTop_toBottomOf="@id/ivAD" />
+</androidx.constraintlayout.widget.ConstraintLayout>

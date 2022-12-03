@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_25">
+
+    <com.rndeep.fns_fantoo.ui.common.viewgroup.CommonTopbar
+        android:id="@+id/topbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:titleText="@string/k_close_delete_club" />
+
+    <TextView
+        android:id="@+id/tvClosingTitle"
+        style="@style/Title32028Bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/se_k_club_closure"
+        android:textColor="@color/gray_900"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/topbar" />
+
+    <TextView
+        android:id="@+id/tvDesc"
+        style="@style/Body21420Regular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="7dp"
+        android:textColor="@color/primary_500"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvClosingTitle" />
+
+
+    <TextView
+        android:id="@+id/tvHoldPeriod"
+        style="@style/Caption21116Regular"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        android:text="@string/se_k_hold_period"
+        android:textColor="@color/gray_500"
+        app:layout_constraintTop_toBottomOf="@id/tvDesc" />
+
+    <TextView
+        android:id="@+id/tvHoldPeriod1"
+        style="@style/Caption21116Regular"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:text="@string/se_b_notice_pending_period_1"
+        android:textColor="@color/gray_500"
+        app:layout_constraintTop_toBottomOf="@id/tvHoldPeriod" />
+
+    <TextView
+        android:id="@+id/tvHoldPeriod2"
+        style="@style/Caption21116Regular"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:text="@string/se_b_notice_pending_period_2"
+        android:textColor="@color/gray_500"
+        app:layout_constraintTop_toBottomOf="@id/tvHoldPeriod1" />
+
+    <TextView
+        android:id="@+id/tvHoldPeriod3"
+        style="@style/Caption21116Regular"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:text="@string/se_p_delete_all_club_info"
+        android:textColor="@color/gray_500"
+        app:layout_constraintTop_toBottomOf="@id/tvHoldPeriod2" />
+
+    <Button
+        android:id="@+id/btnClubClosingCancel"
+        style="@style/button_blue"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
+        android:text="@string/k_cancel_close_club"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

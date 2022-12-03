@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="20dp"
+    >
+    <com.rndeep.fns_fantoo.utils.NestedScrollableHost
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcBanner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+    </com.rndeep.fns_fantoo.utils.NestedScrollableHost>
+    <TextView
+        android:id="@+id/tvBannerCounting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        style="@style/Caption21116Regular"
+        android:layout_marginLeft="30dp"
+        android:layout_marginBottom="10dp"
+
+        android:textColor="@color/gray_25"
+        android:paddingHorizontal="5.6dp"
+        android:background="@drawable/counting_bg"
+        android:text="1/6"
+        />
+</androidx.constraintlayout.widget.ConstraintLayout>

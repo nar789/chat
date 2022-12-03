@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:background="@color/gray_25"
+android:fitsSystemWindows="true"
+tools:context=".ui.menu.fantooclub.FantooClubFragment">
+
+<androidx.viewpager2.widget.ViewPager2
+    android:id="@+id/view_pager"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+<com.google.android.material.appbar.AppBarLayout
+    android:id="@+id/appbar"
+    android:layout_width="match_parent"
+    android:layout_height="220dp"
+    android:animateLayoutChanges="true"
+    android:background="@drawable/bg_hanryu_times"
+    android:fitsSystemWindows="true"
+    android:stateListAnimator="@animator/show_toolbar">
+
+    <com.google.android.material.appbar.CollapsingToolbarLayout
+        android:id="@+id/toolbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
+        app:contentScrim="@android:color/transparent"
+        app:layout_scrollFlags="scroll|exitUntilCollapsed"
+        app:statusBarScrim="@android:color/transparent"
+        app:collapsedTitleGravity="center"
+        app:collapsedTitleTextAppearance="@style/Title51622Medium"
+        app:collapsedTitleTextColor="@color/gray_25"
+        app:expandedTitleMarginStart="0dp"
+        app:expandedTitleMarginBottom="0dp"
+        app:toolbarId="@id/toolbar">
+
+        <ImageView
+            android:id="@+id/club_bg"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/club_app_bar_height"
+            android:background="@android:color/transparent"
+            android:fitsSystemWindows="true"
+            android:scaleType="centerCrop"
+            app:layout_collapseMode="parallax" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/fantoo_tv_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:animateLayoutChanges="true"
+            android:paddingHorizontal="20dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="14dp">
+
+            <ImageView
+                android:id="@+id/logo"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:layout_marginTop="31dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_fantoo_tv"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/title"
+                style="@style/Title51622Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:textColor="?attr/colorSurface"
+                app:layout_constraintStart_toEndOf="@id/logo"
+                app:layout_constraintTop_toTopOf="@id/logo"
+                tools:text="팬투 TV"/>
+
+            <TextView
+                android:id="@+id/follower_count"
+                style="@style/Caption11218Regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/gray_25"
+                app:layout_constraintStart_toStartOf="@id/title"
+                app:layout_constraintTop_toBottomOf="@id/title"
+                tools:text="팔로원 4.6만" />
+
+            <TextView
+                android:id="@+id/desc"
+                style="@style/Caption11218Regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:textColor="@color/gray_25"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/logo"
+                tools:text="클럽 많은 관심과 사랑 부탁드립니다! 클럽 많은 관심과 사랑 부탁드립니다! 클럽 많은 관심과 사랑 부탁드립니다!" />
+
+            <ImageView
+                android:id="@+id/info"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginStart="2dp"
+                android:src="@drawable/icon_fill_information"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                app:layout_constraintBottom_toBottomOf="@id/follower_count"
+                app:layout_constraintStart_toEndOf="@id/follower_count"
+                app:tint="@color/gray_25" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/follow_btn"
+                style="@style/Caption11218Regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="4dp"
+                android:text="@string/p_follow"
+                android:textColor="@color/gray_25"
+                app:backgroundTint="@color/primary_500"
+                app:cornerRadius="6dp"
+                app:layout_constraintBottom_toBottomOf="@id/logo"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/logo"
+                app:rippleColor="@color/primary_300"
+                app:strokeColor="@color/gray_25"
+                app:strokeWidth="1dp" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/actionBarSize"
+            android:background="@android:color/transparent"
+            app:contentInsetStartWithNavigation="0dp"
+            app:layout_collapseMode="pin"
+            app:menu="@menu/search_menu"
+            app:navigationIcon="@drawable/icon_outline_back"
+            app:navigationIconTint="@color/gray_25"
+            app:titleTextColor="?attr/colorSurface" />
+    </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabs"
+        style="@style/Widget.App.Club.TabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:background="@drawable/bg_club_tab"/>
+</com.google.android.material.appbar.AppBarLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

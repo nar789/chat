@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/ilTopbar"
+        layout="@layout/topbar_layout" />
+
+    <!-- profile info start 닉네임,사진, 작성글, 댓글-->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_Main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        app:layout_constraintTop_toBottomOf="@id/ilTopbar">
+
+        <ImageView
+            android:id="@+id/ivProfile"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginLeft="20dp"
+            android:scaleType="center"
+            android:background="@drawable/bg_border_radius_16_c_grey100"
+            />
+
+        <ImageView
+            android:id="@+id/ivDefault"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            app:layout_constraintTop_toTopOf="@id/ivProfile"
+            app:layout_constraintBottom_toBottomOf="@id/ivProfile"
+            app:layout_constraintLeft_toLeftOf="@id/ivProfile"
+            app:layout_constraintRight_toRightOf="@id/ivProfile"
+            android:src="@drawable/icon_fill_my_t"
+            app:tint="@color/white"
+            />
+        
+        <TextView
+            android:id="@+id/tvProfileName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/ivProfile"
+            android:gravity="center"
+            android:layout_marginTop="2dp"
+            android:layout_marginLeft="12dp"
+            style="@style/Title51622RobotoMedium"
+            android:textColor="@color/gray_900"
+            android:maxLines="1"
+            />
+        
+        <TextView
+            android:id="@+id/tvProfileGrade"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tvProfileName"
+            app:layout_constraintLeft_toRightOf="@id/ivProfile"
+            android:gravity="center"
+            android:layout_marginLeft="12dp"
+            style="@style/Body21420Regular"
+            android:textColor="@color/gray_400"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            app:layout_constraintTop_toBottomOf="@id/ivProfile"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginTop="34dp"
+            android:orientation="horizontal"
+            >
+            <!-- 작성글 -->
+            <LinearLayout
+                android:id="@+id/llPost"
+                android:layout_width="118dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:gravity="center"
+                    style="@style/Body21420Regular"
+                    android:textColor="@color/gray_600"
+                    android:text="@string/j_wrote_post"
+                    />
+                <TextView
+                    android:id="@+id/tvPostCount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:gravity="center"
+                    android:fontFamily="@font/noto_sans_kr"
+                    android:textSize="14sp"
+                    android:includeFontPadding="false"
+                    android:textColor="@color/gray_900"
+                    />
+            </LinearLayout>
+            <View
+                android:layout_width="1dp"
+                android:layout_height="42dp"
+                android:layout_marginTop="2dp"
+                android:background="#29A1A3B3"
+                />
+            <!-- 작성댓글 -->
+            <LinearLayout
+                android:id="@+id/llComment"
+                android:layout_width="122dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:gravity="center"
+                    style="@style/Body21420Regular"
+                    android:textColor="@color/gray_600"
+                    android:text="@string/j_wrote_rely"
+                    />
+                <TextView
+                    android:id="@+id/tvCommentCount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:gravity="center"
+                    android:fontFamily="@font/noto_sans_kr"
+                    android:textSize="14sp"
+                    android:textColor="@color/gray_900"
+                    android:includeFontPadding="false"
+                    />
+            </LinearLayout>
+            <View
+                android:layout_width="1dp"
+                android:layout_height="42dp"
+                android:layout_marginTop="2dp"
+                android:background="#29A1A3B3"
+                />
+            <LinearLayout
+                android:id="@+id/llSave"
+                android:layout_width="122dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:gravity="center"
+                    style="@style/Body21420Regular"
+                    android:textColor="@color/gray_600"
+                    android:text="@string/j_save"
+                    />
+                <TextView
+                    android:id="@+id/tvSaveCount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:gravity="center"
+                    android:fontFamily="@font/noto_sans_kr"
+                    android:textSize="14sp"
+                    android:textColor="@color/gray_900"
+                    android:includeFontPadding="false"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <!-- profile info end -->
+
+    <View
+        android:id="@+id/v_Divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        app:layout_constraintTop_toBottomOf="@id/cl_Main"
+        android:layout_marginTop="24dp"
+        android:background="#295049CE"
+        />
+
+    <View
+        android:id="@+id/v_Divider2"
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        app:layout_constraintTop_toBottomOf="@id/v_Divider"
+        android:background="@color/bg_bg_light_gray_50"
+        />
+
+    <!-- 리스트 하위 항목 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/v_Divider2">
+
+        <!-- 프로필 설정 -->
+        <RelativeLayout
+            android:id="@+id/rlProfileSet"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/p_setting_profile"
+                android:gravity="center"
+                />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:src="@drawable/icon_arrow_head_right" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="2dp"
+            android:background="#29A1A3B3"
+            />
+
+        <!-- 멤버보기 -->
+        <RelativeLayout
+            android:id="@+id/rlMembersShow"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/m_show_member"
+                />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:src="@drawable/icon_arrow_head_right" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="2dp"
+            android:background="#29A1A3B3"
+            />
+
+        <!-- 클럽 정보 설정 -->
+        <RelativeLayout
+            android:id="@+id/rlClubSetting"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:visibility="gone"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/k_club_info_setting"
+                />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:src="@drawable/icon_arrow_head_right" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="2dp"
+            android:background="#29A1A3B3"
+            />
+
+        <!-- 클럽 관리 -->
+        <RelativeLayout
+            android:id="@+id/rlClubManagement"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:visibility="gone"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/k_club_management"
+                />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:src="@drawable/icon_arrow_head_right" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="2dp"
+            android:background="#29A1A3B3"
+            />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

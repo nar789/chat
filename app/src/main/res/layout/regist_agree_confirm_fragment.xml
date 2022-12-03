@@ -1,0 +1,434 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/sv"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include
+            android:id="@+id/ilTopbar"
+            layout="@layout/topbar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="80dp" />
+
+        <TextView
+            android:id="@+id/tvTitle"
+            style="@style/Title41824Medium"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:layout_marginStart="20dp"
+            android:gravity="center_vertical"
+            android:text="@string/se_a_agree_term"
+            android:textColor="@color/gray_870"
+            app:layout_constraintTop_toBottomOf="@id/ilTopbar" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_agree"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:layout_constraintTop_toBottomOf="@id/tvTitle">
+
+            <LinearLayout
+                android:id="@+id/ll_top_agree"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginStart="20dp"
+                android:background="@color/gray_50"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <CheckBox
+                    android:id="@+id/cbAgreeAll"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="12dp"
+                    android:background="@drawable/regist_agree_round_checkbox_selector"
+                    android:button="@null"
+                    android:clickable="false" />
+
+                <TextView
+                    style="@style/Title51622Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="@string/se_a_agree_all_term"
+                    android:textColor="@color/primary_500" />
+            </LinearLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:orientation="vertical"
+                app:layout_constraintTop_toBottomOf="@id/ll_top_agree">
+                <!-- 14세이상 -->
+                <RelativeLayout
+                    android:id="@+id/rlAge"
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <CheckBox
+                        android:id="@+id/cbAge"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="12dp"
+                        android:background="@drawable/round_checkbox_selector"
+                        android:button="@null"
+                        android:clickable="false" />
+
+                    <TextView
+                        style="@style/Body21420Regular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="8dp"
+                        android:layout_toEndOf="@id/cbAge"
+                        android:text="@string/m_more_than_14_required"
+                        android:textColor="@color/gray_870" />
+                </RelativeLayout>
+
+                <!-- 서비스이용약관-->
+                <RelativeLayout
+                    android:id="@+id/rl_UseService"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/rlAge">
+
+                    <CheckBox
+                        android:id="@+id/cbUseService"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="12dp"
+                        android:background="@drawable/round_checkbox_selector"
+                        android:button="@null"
+                        android:clickable="false" />
+
+                    <TextView
+                        style="@style/Body21420Regular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="8dp"
+                        android:layout_toEndOf="@id/cbUseService"
+                        android:text="@string/s_agree_sevice_term_required"
+                        android:textColor="@color/gray_870" />
+
+
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/tvUseServiceMore"
+                    style="@style/Body21420Regular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="12dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/b_view"
+                    android:textColor="@color/gray_400"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/rlAge" />
+
+                <!-- 개인정보취급-->
+                <RelativeLayout
+                    android:id="@+id/rlPrivate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/rl_UseService">
+
+                    <CheckBox
+                        android:id="@+id/cbPrivate"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="12dp"
+                        android:background="@drawable/round_checkbox_selector"
+                        android:button="@null"
+                        android:clickable="false" />
+
+                    <TextView
+                        android:id="@+id/tvPrivate"
+                        style="@style/Body21420Regular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="8dp"
+                        android:layout_toEndOf="@id/cbPrivate"
+                        android:text="@string/g_agree_privacy_term_required"
+                        android:textColor="@color/gray_870" />
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/tvPrivateMore"
+                    style="@style/Body21420Regular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="12dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/b_view"
+                    android:textColor="@color/gray_400"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/rl_UseService" />
+
+                <!-- 청소년보호정책-->
+                <RelativeLayout
+                    android:id="@+id/rlYouth"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/rlPrivate">
+
+                    <CheckBox
+                        android:id="@+id/cbYouth"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="12dp"
+                        android:background="@drawable/round_checkbox_selector"
+                        android:button="@null"
+                        android:clickable="false" />
+
+                    <TextView
+                        style="@style/Body21420Regular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="8dp"
+                        android:layout_toEndOf="@id/cbYouth"
+                        android:text="@string/c_agree_youth_term_required"
+                        android:textColor="@color/gray_870" />
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/tvYouthMore"
+                    style="@style/Body21420Regular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="12dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/b_view"
+                    android:textColor="@color/gray_400"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/rlPrivate" />
+
+
+                <!-- 이벤트 정보 수신-->
+                <RelativeLayout
+                    android:id="@+id/rlEvent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/rlYouth">
+
+                    <CheckBox
+                        android:id="@+id/cbEvent"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="12dp"
+                        android:background="@drawable/round_checkbox_selector"
+                        android:button="@null"
+                        android:clickable="false" />
+
+                    <TextView
+                        android:id="@+id/tvEventTitle"
+                        style="@style/Body21420Regular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="8dp"
+                        android:layout_toEndOf="@id/cbEvent"
+                        android:text="@string/a_agree_recieve_event_optional"
+                        android:textColor="@color/gray_870" />
+                </RelativeLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:id="@+id/middle_divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="27dp"
+            android:layout_marginRight="20dp"
+            android:background="#1f5049ce"
+            app:layout_constraintTop_toBottomOf="@id/cl_agree" />
+
+        <LinearLayout
+            android:id="@+id/ll_SetNick"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginRight="20dp"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@id/middle_divider">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tvNickNameSettingTitle"
+                    style="@style/Buttons1420Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/n_setting_nickname"
+                    android:textColor="@color/gray_870" />
+
+                <TextView
+                    android:id="@+id/tvNickLimit"
+                    style="@style/Caption11218Regular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:textColor="@color/gray_300" />
+            </RelativeLayout>
+
+            <com.rndeep.fns_fantoo.ui.common.viewgroup.CommonEditTextLayout
+                android:id="@+id/cEtLayout"
+                android:layout_width="match_parent"
+                android:layout_height="42dp"
+                android:layout_marginTop="8dp"
+                app:buttonText="@string/j_check_duplicate"
+                app:hintText="@string/se_n_write_nickname" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvWarning"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="32dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginRight="20dp"
+            android:fontFamily="@font/noto_sans_kr"
+            android:includeFontPadding="false"
+            android:maxLines="1"
+            android:text="@string/se_s_including_cannot_use_char"
+            android:textColor="@color/text_color_selector_primary500_state_danger"
+            android:textSize="12sp"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ll_SetNick" />
+
+        <LinearLayout
+            android:id="@+id/ll_country"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="20dp"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@id/tvWarning"
+            app:layout_goneMarginTop="20dp">
+
+            <TextView
+                android:id="@+id/tvSelectCountry"
+                style="@style/Buttons1420Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/g_select_country"
+                android:textColor="@color/gray_870" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="42dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/box_line_round">
+
+                <TextView
+                    android:id="@+id/tvSelectedCountry"
+                    style="@style/Body21420Regular"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="12dp"
+                    android:paddingRight="12dp"
+                    android:text="@string/g_select_country"
+                    android:textColor="@color/gray_870" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end|center_vertical"
+                    android:layout_marginEnd="12dp"
+                    android:src="@drawable/dropdown" />
+            </FrameLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_Refferal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="20dp"
+            android:orientation="vertical"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/ll_country">
+
+            <TextView
+                android:id="@+id/tvRefferal"
+                style="@style/Buttons1420Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/c_referral_code"
+                android:textColor="@color/gray_870" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etRefferal"
+                style="@style/input_field"
+                android:layout_width="match_parent"
+                android:layout_height="42dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/input_field_selector"
+                android:hint="@string/c_write_referral_code"
+                android:inputType="textCapCharacters"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:textColor="@color/gray_400" />
+        </LinearLayout>
+
+
+        <Button
+            android:id="@+id/btnComplete"
+            style="@style/button_blue"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="94dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="20dp"
+            android:text="@string/d_next"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ll_country" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

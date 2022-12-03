@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/communitypost"
+    app:startDestination="@id/detailPost">
+    <fragment
+        android:id="@+id/detailPost"
+        android:name="com.rndeep.fns_fantoo.ui.community.postdetail.CommunityDetailPostFragment"
+        tools:layout="@layout/fragment_detail_post"
+        android:label="fragment_detail_post"
+        >
+        <argument
+            android:name="postType"
+            app:argType="string"
+            />
+        <argument
+            android:name="boardCode"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="null"
+            />
+        <argument
+            android:name="categoryCode"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="null"
+            />
+        <argument
+            android:name="clubId"
+            app:argType="string"
+            android:defaultValue="-1"
+            />
+        <argument
+            android:name="postId"
+            app:argType="integer" />
+        <argument
+            android:name="replyId"
+            app:argType="integer"
+            android:defaultValue="-1"
+            />
+        <action
+            android:id="@+id/action_detailPost_to_profile"
+            app:destination="@id/profile" >
+            <argument android:name="nickname"
+                app:argType="string" />
+            <argument android:name="isBlock"
+                app:argType="boolean"
+                />
+            <argument
+                android:name="targetUid"
+                app:argType="string" />
+            <argument
+                android:name="userPhoto"
+                app:argType="string" />
+        </action>
+        <action
+            android:id="@+id/action_detailPost_to_comment"
+            app:destination="@id/comment" >
+            <argument
+                android:name="postId"
+                app:argType="integer" />
+            <argument
+                android:name="replyId"
+                app:argType="integer" />
+        </action>
+        <action
+            android:id="@+id/action_detailPost_to_profileImageViewerFragment6"
+            app:destination="@id/profileImageViewerFragment6" >
+            <argument
+                android:name="imageUrl"
+                app:argType="string" />
+        </action>
+    </fragment>
+    <include app:graph="@navigation/profiledetail" />
+    <include app:graph="@navigation/community_comment" />
+    <fragment
+        android:id="@+id/profileImageViewerFragment6"
+        android:name="com.rndeep.fns_fantoo.ui.common.ProfileImageViewerFragment"
+        android:label="fragment_profile_image_viewer"
+        tools:layout="@layout/fragment_profile_image_viewer" />
+</navigation>

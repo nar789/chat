@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/communityboard"
+    app:startDestination="@id/communityBoardFragment3">
+
+    <fragment
+        android:id="@+id/communityBoardFragment3"
+        android:name="com.rndeep.fns_fantoo.ui.community.board.CommunityBoardFragment"
+        android:label="fragment_community_board"
+        tools:layout="@layout/fragment_community_board" >
+        <argument
+            android:name="boardInfo"
+            app:argType="com.rndeep.fns_fantoo.ui.community.BoardInfo" />
+        <action
+            android:id="@+id/action_communityBoardFragment3_to_communitypost"
+            app:destination="@id/communitypost" >
+            <argument
+                android:name="postType"
+                app:argType="string"
+                />
+            <argument
+                android:name="boardCode"
+                app:argType="string"
+                app:nullable="true"
+                />
+            <argument
+                android:name="postId"
+                app:argType="integer" />
+        </action>
+        <action
+            android:id="@+id/action_communityBoardFragment3_to_notice"
+            app:destination="@id/community_notice" >
+            <argument
+                android:name="noticeInfo"
+                app:argType="com.rndeep.fns_fantoo.ui.community.BoardInfo" />
+        </action>
+        <action
+            android:id="@+id/action_communityBoardFragment3_to_postsearch"
+            app:destination="@id/postsearch" />
+        <action
+            android:id="@+id/action_communityBoardFragment3_to_editorFragment3"
+            app:destination="@id/editorFragment3" />
+    </fragment>
+    <include app:graph="@navigation/community_post" />
+    <include app:graph="@navigation/community_notice" />
+    <include app:graph="@navigation/postsearch" />
+    <fragment
+        android:id="@+id/editorFragment3"
+        android:name="com.rndeep.fns_fantoo.ui.editor.EditorFragment"
+        android:label="fragment_editor"
+        tools:layout="@layout/fragment_editor" >
+        <argument
+            android:name="editorInfo"
+            app:argType="com.rndeep.fns_fantoo.ui.editor.EditorInfo" />
+    </fragment>
+</navigation>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/profile"
+    app:startDestination="@id/profileDetailFragment">
+
+    <fragment
+        android:id="@+id/profileDetailFragment"
+        android:name="com.rndeep.fns_fantoo.ui.common.profile.ProfileDetailFragment"
+        android:label="fragment_profile_detail"
+        tools:layout="@layout/fragment_profile_detail" >
+        <argument
+            android:name="nickname"
+            app:argType="string" />
+        <argument
+            android:name="clubId"
+            android:defaultValue="null"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="memberId"
+            android:defaultValue="null"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="isBlock"
+            app:argType="boolean" />
+        <argument
+            android:name="targetUid"
+            android:defaultValue="null"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="userPhoto"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_profileDetailFragment_to_profileImageViewerFragment2"
+            app:destination="@id/profileImageViewerFragment2" >
+            <argument
+                android:name="imageUrl"
+                app:argType="string" />
+        </action>
+    </fragment>
+    <fragment
+        android:id="@+id/profileImageViewerFragment2"
+        android:name="com.rndeep.fns_fantoo.ui.common.ProfileImageViewerFragment"
+        android:label="fragment_profile_image_viewer"
+        tools:layout="@layout/fragment_profile_image_viewer" >
+
+    </fragment>
+</navigation>

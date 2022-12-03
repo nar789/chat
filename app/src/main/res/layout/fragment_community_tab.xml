@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/bg_bg_light_gray_50"
+    android:clipChildren="false"
+    tools:context=".ui.community.CommunityTabFragment">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/communityAppbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/state_enable_gray_25"
+            >
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/communityToolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:title="@string/k_community"
+                app:titleTextAppearance="@style/Title32028Bold"
+                app:titleMarginStart="20dp"
+                app:menu="@menu/community_top_menu"
+                >
+            </com.google.android.material.appbar.MaterialToolbar>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefresh"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/communityAppbar">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcCommunity"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/bg_bg_light_gray_50" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    </RelativeLayout>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabEditButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:maxImageSize="96dp"
+        android:src="@drawable/btn_post_t"
+        app:tint="@null"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="20dp"
+        app:elevation="0dp"
+        android:layout_marginBottom="40dp"
+        tools:ignore="ContentDescription" />
+    <com.rndeep.fns_fantoo.ui.common.viewgroup.FantooLoadingView
+        android:id="@+id/fantooLoadingView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+</FrameLayout>

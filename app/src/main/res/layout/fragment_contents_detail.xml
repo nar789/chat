@@ -1,0 +1,481 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_25"
+    tools:context=".ui.menu.fantooclub.detail.HanryuNewsDetailFragment">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/gray_25"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            app:contentInsetStartWithNavigation="0dp"
+            app:navigationIcon="@drawable/back"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:title="@string/p_fantoo_tv" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/logo"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_marginStart="@dimen/layout_margin"
+                android:layout_marginTop="@dimen/layout_margin_top"
+                android:src="@drawable/ic_fantoo_tv"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/nickname"
+                style="@style/Caption11218Regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:textColor="@color/gray_400"
+                app:layout_constraintStart_toEndOf="@id/logo"
+                app:layout_constraintTop_toTopOf="@id/logo"
+                tools:text="Nickname" />
+
+            <TextView
+                android:id="@+id/category"
+                style="@style/Caption11218Regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/gray_900"
+                app:layout_constraintStart_toStartOf="@id/nickname"
+                app:layout_constraintTop_toBottomOf="@id/nickname"
+                tools:text="커뮤니티 카테고리명" />
+
+            <ImageView
+                android:id="@+id/dot"
+                android:layout_width="4dp"
+                android:layout_height="4dp"
+                android:layout_marginStart="8dp"
+                android:src="@drawable/dot_grey"
+                app:layout_constraintBottom_toBottomOf="@id/category"
+                app:layout_constraintStart_toEndOf="@id/category"
+                app:layout_constraintTop_toTopOf="@id/category"
+                app:tint="@color/gray_200" />
+
+            <TextView
+                android:id="@+id/created_at"
+                style="@style/Caption11218Regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:textColor="@color/gray_400"
+                app:layout_constraintBottom_toBottomOf="@id/dot"
+                app:layout_constraintStart_toEndOf="@id/dot"
+                app:layout_constraintTop_toTopOf="@id/dot"
+                tools:text="2일 전" />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/translate"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:layout_marginEnd="@dimen/layout_margin"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:scaleType="fitCenter"
+                android:src="@drawable/icon_outline_translate1"
+                app:layout_constraintBottom_toBottomOf="@id/logo"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/logo"
+                app:tint="@color/state_active_gray_700" />
+
+            <com.google.android.exoplayer2.ui.StyledPlayerView
+                android:id="@+id/player_view"
+                android:layout_width="match_parent"
+                android:layout_height="268dp"
+                android:layout_marginTop="18dp"
+                android:background="@color/black"
+                app:resize_mode="fit"
+                app:layout_constraintTop_toBottomOf="@id/logo"
+                app:controller_layout_id="@layout/custom_player_control_view"/>
+
+            <TextView
+                android:id="@+id/title"
+                style="@style/Title51622Medium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/layout_margin"
+                android:layout_marginTop="18dp"
+                android:textColor="@color/gray_870"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/player_view"
+                tools:text="제목입니다. 글자수 제한 여부는 추후 결정 예정입니다." />
+
+            <TextView
+                android:id="@+id/body"
+                style="@style/Body21420Regular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/layout_margin"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/gray_600"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/title"
+                tools:text="여기는 본문 영역입니다." />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/hashtag_list"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginStart="@dimen/layout_margin"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/body"
+                tools:listitem="@layout/list_item_hashtag" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/like_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="@dimen/layout_margin"
+                app:layout_constraintTop_toBottomOf="@id/hashtag_list">
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/like"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/icon_fill_like"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@color/state_disabled_gray_200" />
+
+                <TextView
+                    android:id="@+id/like_count"
+                    style="@style/Caption11218Regular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:textColor="@color/gray_800"
+                    app:layout_constraintBottom_toBottomOf="@id/like"
+                    app:layout_constraintStart_toEndOf="@id/like"
+                    app:layout_constraintTop_toTopOf="@id/like"
+                    tools:text="1,3k" />
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/dislike"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="4dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/icon_fill_dislike"
+                    app:layout_constraintBottom_toBottomOf="@id/like_count"
+                    app:layout_constraintStart_toEndOf="@id/like_count"
+                    app:layout_constraintTop_toTopOf="@id/like_count"
+                    app:tint="@color/state_disabled_gray_200" />
+
+                <ImageView
+                    android:id="@+id/honor"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_marginStart="20dp"
+                    android:src="@drawable/icon_fill_honor"
+                    app:layout_constraintBottom_toBottomOf="@id/dislike"
+                    app:layout_constraintStart_toEndOf="@id/dislike"
+                    app:layout_constraintTop_toTopOf="@id/dislike"
+                    app:tint="@color/primary_500" />
+
+                <TextView
+                    android:id="@+id/honor_count"
+                    style="@style/Caption11218Regular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:textColor="@color/primary_500"
+                    app:layout_constraintBottom_toBottomOf="@id/honor"
+                    app:layout_constraintStart_toEndOf="@id/honor"
+                    app:layout_constraintTop_toTopOf="@id/honor"
+                    tools:text="234" />
+
+                <ImageView
+                    android:id="@+id/comment"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="20dp"
+                    android:src="@drawable/icon_fill_comment"
+                    android:visibility="visible"
+                    app:layout_constraintBottom_toBottomOf="@id/honor_count"
+                    app:layout_constraintStart_toEndOf="@id/honor_count"
+                    app:layout_constraintTop_toTopOf="@id/honor_count"
+                    app:tint="@color/gray_200" />
+
+                <TextView
+                    android:id="@+id/comment_count"
+                    style="@style/Caption11218Regular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:textColor="@color/gray_800"
+                    app:layout_constraintBottom_toBottomOf="@id/comment"
+                    app:layout_constraintStart_toEndOf="@id/comment"
+                    app:layout_constraintTop_toTopOf="@id/comment"
+                    tools:text="234" />
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/share"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/icon_outline_share"
+                    app:layout_constraintBottom_toBottomOf="@id/like"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/like"
+                    app:tint="@color/share_color" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.google.android.material.divider.MaterialDivider
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="20dp"
+                android:visibility="gone"
+                app:dividerColor="@color/gray_400_opacity25"
+                app:layout_constraintTop_toBottomOf="@id/like_container" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/comments_list"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="1dp"
+                android:visibility="gone"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintTop_toBottomOf="@id/divider"
+                tools:listitem="@layout/list_item_comments" />
+
+            <View
+                android:id="@+id/empty_view"
+                android:layout_width="match_parent"
+                android:layout_height="124dp"
+                android:background="@color/gray_25"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/comments_list" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        style="@style/Widget.App.FloatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|top"
+        android:backgroundTint="@color/gray_25"
+        android:src="@drawable/icon_outline_top"
+        android:visibility="gone"
+        app:backgroundTint="@color/gray_500"
+        app:borderWidth="0.5dp"
+        app:fabSize="mini"
+        app:layout_anchor="@id/write_container"
+        app:layout_anchorGravity="center_horizontal"
+        app:tint="@color/state_enable_gray_900" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/write_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:visibility="visible"
+        app:layout_anchor="@id/scroll"
+        app:layout_anchorGravity="bottom"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <FrameLayout
+            android:id="@+id/attach_bg"
+            android:layout_width="match_parent"
+            android:layout_height="104dp"
+            android:translationY="11dp"
+            android:background="@color/dim_gray_900_40"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/write_comment_container">
+
+            <ImageView
+                android:id="@+id/attach_img"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center"
+                android:layout_marginVertical="12dp"
+                android:src="@drawable/profile_character1"
+                app:layout_constraintBottom_toBottomOf="@id/attach_bg"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/attach_bg"
+                tools:src="@drawable/profile_character1" />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/cancel"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="top|end"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="13dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:scaleType="fitCenter"
+                android:src="@drawable/icon_outline_cancel"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/state_enable_gray_25" />
+        </FrameLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/write_comment_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="16dp"
+            android:paddingBottom="12dp"
+            android:background="@drawable/bg_detail_comment"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/input"
+                style="@style/Body21420Regular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="8dp"
+                android:background="@null"
+                android:hint="@string/se_d_write_comment"
+                android:maxLines="4"
+                android:minHeight="36dp"
+                android:paddingVertical="8dp"
+                android:textColorHint="@color/state_enable_gray_400"
+                android:visibility="gone"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/picture"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="14dp"
+                android:layout_marginTop="8dp"
+                android:padding="4dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:backgroundTint="@color/white"
+                android:scaleType="fitCenter"
+                android:src="@drawable/icon_outline_picture"
+                app:layout_constraintTop_toBottomOf="@id/input"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:tint="@color/state_enable_gray_400" />
+
+            <TextView
+                android:id="@+id/input_hint"
+                style="@style/Body21420Regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:textColor="@color/state_enable_gray_400"
+                android:text="@string/se_d_write_comment"
+                app:layout_constraintTop_toTopOf="@id/picture"
+                app:layout_constraintBottom_toBottomOf="@id/picture"
+                app:layout_constraintStart_toEndOf="@id/picture" />
+
+<!--            <com.google.android.material.button.MaterialButton-->
+<!--                android:id="@+id/modify_cancel"-->
+<!--                style="@style/Widget.MaterialComponents.Button.TextButton"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginEnd="8dp"-->
+<!--                android:contentDescription="@string/c_cancel"-->
+<!--                android:fontFamily="@font/noto_sans_kr_medium"-->
+<!--                android:includeFontPadding="false"-->
+<!--                android:minWidth="0dp"-->
+<!--                android:minHeight="0dp"-->
+<!--                android:paddingHorizontal="12dp"-->
+<!--                android:paddingVertical="6dp"-->
+<!--                android:text="@string/c_cancel"-->
+<!--                android:textColor="@color/gray_25"-->
+<!--                android:textSize="14sp"-->
+<!--                android:textStyle="normal"-->
+<!--                android:visibility="gone"-->
+<!--                app:backgroundTint="@color/state_disabled_gray_200"-->
+<!--                app:cornerRadius="20dp"-->
+<!--                app:layout_constraintBottom_toBottomOf="@id/save"-->
+<!--                app:layout_constraintEnd_toStartOf="@id/save"-->
+<!--                app:layout_constraintTop_toTopOf="@id/save" />-->
+
+<!--            <com.google.android.material.button.MaterialButton-->
+<!--                android:id="@+id/save"-->
+<!--                style="@style/Widget.App.Button.OutlinedButton.IconOnly"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="4dp"-->
+<!--                android:layout_marginEnd="20dp"-->
+<!--                android:contentDescription="@string/d_registration"-->
+<!--                android:enabled="false"-->
+<!--                app:icon="@drawable/icon_outline_send"-->
+<!--                app:backgroundTint="@color/state_disabled_gray_200"-->
+<!--                app:iconTint="@color/state_enable_gray_25"-->
+<!--                app:rippleColor="@color/primary_300"-->
+<!--                app:shapeAppearance="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"-->
+<!--                app:layout_constraintBottom_toBottomOf="@id/picture"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="@id/picture" />-->
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/modify_cancel"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginEnd="8dp"
+                android:background="@color/state_disabled_gray_200"
+                android:visibility="gone"
+                app:contentPadding="8dp"
+                app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
+                app:srcCompat="@drawable/icon_outline_cancel"
+                app:tint="@color/state_enable_gray_25"
+                app:layout_constraintBottom_toBottomOf="@id/save"
+                app:layout_constraintEnd_toStartOf="@id/save"
+                app:layout_constraintTop_toTopOf="@id/save" />
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/save"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="20dp"
+                android:background="@color/state_disabled_gray_200"
+                android:visibility="gone"
+                app:contentPadding="8dp"
+                app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
+                app:srcCompat="@drawable/icon_outline_send"
+                app:tint="@color/state_enable_gray_25"
+                app:layout_constraintBottom_toBottomOf="@id/picture"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/picture" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

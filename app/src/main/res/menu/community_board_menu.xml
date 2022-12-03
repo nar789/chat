@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <group android:id="@+id/community_board_menu">
+        <item android:id="@+id/menu_board_bookmark"
+            android:title=""
+            android:icon="@drawable/menu_community_bookmark_icon"
+            app:showAsAction="ifRoom"
+            />
+        <item android:id="@+id/menu_board_search"
+            android:title=""
+            android:icon="@drawable/menu_community_search_icon"
+            app:showAsAction="ifRoom"
+            />
+    </group>
+</menu>

@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:padding="32dp"
+    android:background="@color/gray_25">
+
+    <TextView
+        android:id="@+id/msg_title"
+        style="@style/Title51622Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textColor="@color/primary_500"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="닉네임 설정" />
+
+    <TextView
+        android:id="@+id/msg_sub_title"
+        style="@style/Buttons1420Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:textAlignment="center"
+        android:textColor="@color/gray_870"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/msg_title"
+        tools:text="이미 사용중인 닉네임입니다." />
+
+    <TextView
+        android:id="@+id/msg_extra_title"
+        style="@style/Body21420Regular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:textAlignment="center"
+        android:textColor="@color/gray_500"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/msg_sub_title"
+        tools:text="500 팬잇이 지급되었습니다.\n보유한 팬잇 수량은 ‘메뉴 > 내 지갑'\n에서 확인하실 수 있습니다." />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/fanit_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:visibility="gone"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/msg_extra_title" >
+        <ImageView
+            android:id="@+id/fanit_img"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/badge_fanit_default" />
+
+        <TextView
+            android:id="@+id/fanit_text"
+            style="@style/Buttons1420Medium"
+            android:layout_width="68dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/five_hundred_fanit"
+            android:textColor="@color/black" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/ok_btn"
+        style="@style/Buttons1420Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:contentDescription="@string/h_confirm"
+        android:minWidth="212dp"
+        android:minHeight="36dp"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="8dp"
+        android:text="@string/h_confirm"
+        android:textColor="@color/white"
+        android:visibility="gone"
+        app:backgroundTint="@color/primary_default"
+        app:cornerRadius="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/fanit_container"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:rippleColor="@color/primary_300" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/cancel_two_btn"
+        style="@style/Buttons1420Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:contentDescription="@string/g_denial"
+        android:minWidth="100dp"
+        android:minHeight="36dp"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="8dp"
+        android:text="@string/g_denial"
+        android:textColor="@color/white"
+        app:backgroundTint="@color/gray_200"
+        app:cornerRadius="20dp"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/ok_two_btn"
+        app:layout_constraintTop_toBottomOf="@id/fanit_container"
+        app:rippleColor="@color/gray_100" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/ok_two_btn"
+        style="@style/Buttons1420Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginStart="12dp"
+        android:contentDescription="@string/h_confirm"
+        android:minWidth="100dp"
+        android:minHeight="36dp"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="8dp"
+        android:text="@string/h_confirm"
+        android:textColor="@color/white"
+        app:backgroundTint="@color/primary_default"
+        app:cornerRadius="20dp"
+        app:layout_constraintStart_toEndOf="@id/cancel_two_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/fanit_container"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:rippleColor="@color/primary_300" />
+</androidx.constraintlayout.widget.ConstraintLayout>

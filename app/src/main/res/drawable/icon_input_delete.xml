@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:width="16dp" android:height="16dp"
+        android:drawable="@drawable/bg_round_20_gray200"
+        >
+    </item>
+    <item android:width="10dp" android:height="10dp"
+        android:left="3dp" android:top="3dp"
+        >
+        <bitmap android:src="@drawable/icon_input_cancel"
+            />
+    </item>
+</layer-list>

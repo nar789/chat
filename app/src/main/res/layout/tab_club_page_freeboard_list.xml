@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.club.detail.freeboard.ClubPageFreeBoardFragment">
+
+    <com.rndeep.fns_fantoo.utils.NestedScrollableHost
+        android:id="@+id/nestWrap"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:background="@color/gray_25"
+        android:paddingVertical="10dp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcFilterCategory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:orientation="horizontal"
+            />
+    </com.rndeep.fns_fantoo.utils.NestedScrollableHost>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcClubPagePostList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/nestWrap"
+        android:layout_marginTop="1dp" />
+
+    <LinearLayout
+        android:id="@+id/llNotLoginView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="118dp"
+            android:layout_height="153dp"
+            android:src="@drawable/character_club1" />
+
+        <TextView
+            style="@style/Body21420Regular"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="@string/se_b_secret_club_try_to_join"
+            android:textColor="@color/state_active_gray_900" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/llNotPostData"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_below="@id/rcClubPagePostList"
+        android:layout_marginTop="100dp"
+        android:gravity="center_horizontal"
+        android:visibility="gone"
+        >
+        <ImageView
+            android:layout_width="118dp"
+            android:layout_height="153dp"
+            android:src="@drawable/character_club2"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Body21420Regular"
+            android:textColor="@color/state_active_gray_900"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:text="@string/se_d_not_exist_post_do_regist_post"
+            />
+    </LinearLayout>
+</RelativeLayout>

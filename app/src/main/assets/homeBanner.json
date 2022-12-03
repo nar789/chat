@@ -1,0 +1,36 @@
+{
+  "code": "200",
+  "msg" : "성공",
+  "dataOjb" : [
+    {
+      "banner_id" : "26",
+      "banner_image_url": "http://kdg.fantoo.co.kr:5000/uploads_img/1645581814932.jpg",
+      "banner_move_link": "http://webview.fantoo.co.kr/fanit"
+    },
+    {
+      "banner_id" : "21",
+      "banner_image_url": "http://kdg.fantoo.co.kr:5000/uploads_img/1646023370193.jpg",
+      "banner_move_link": "http://webview.fantoo.co.kr/event/blankreplyevent"
+    },
+    {
+      "banner_id" : "3",
+      "banner_image_url": "http://kdg.fantoo.co.kr:5000/uploads_img/1642749179530.jpg",
+      "banner_move_link": "http://m.fantoo.co.kr/event/reviewevent_v3/"
+    },
+    {
+      "banner_id" : "6",
+      "banner_image_url": "http://kdg.fantoo.co.kr:5000/uploads_img/1644908182392.jpg",
+      "banner_move_link": "http://webview.fantoo.co.kr/contest/2021"
+    },
+    {
+      "banner_id" : "19",
+      "banner_image_url": "http://kdg.fantoo.co.kr:5000/uploads_img/1642145886339.jpg",
+      "banner_move_link": "http://m.fantoo.co.kr/event/singerevent1month/"
+    },
+    {
+      "banner_id" : "99",
+      "banner_image_url": "http://img.fantoo.co.kr/uploads/honor_1026.png",
+      "banner_move_link": "http://webview.fantoo.co.kr/event/honorevent"
+    }
+  ]
+}

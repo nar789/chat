@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_span="3"
+    android:background="@color/gray_25">
+
+    <ImageView
+        android:id="@+id/ivBackList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/tvBoardName"
+        android:layout_marginStart="18dp"
+        android:src="@drawable/icon_outline_move_list"
+        app:tint="@color/state_enable_gray_900"
+        />
+    <TextView
+        android:id="@+id/tvBoardName"
+        style="@style/Caption11218Regular"
+        android:layout_width="wrap_content"
+        android:layout_height="26dp"
+        android:layout_marginStart="10dp"
+        android:background="@drawable/bg_club_archive_title"
+        android:gravity="center"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="4dp"
+        android:layout_marginVertical="10dp"
+        android:text="게시판 이름 "
+        android:textColor="@color/primary_600"
+        app:layout_constraintStart_toEndOf="@id/ivBackList"
+        app:layout_constraintBottom_toTopOf="@id/archiveDivider"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/archiveDivider"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@color/gray_400_opacity12"
+        />
+</androidx.constraintlayout.widget.ConstraintLayout>

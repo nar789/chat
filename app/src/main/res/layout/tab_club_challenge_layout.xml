@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingVertical="8dp"
+    >
+    <ImageView
+        android:id="@+id/ivChallengeIcon"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="1dp"
+        android:src="@drawable/icon_clubmain_challenge"
+        />
+    <TextView
+        android:id="@+id/tvChallengeTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxWidth="270dp"
+        android:lines="1"
+        android:ellipsize="end"
+        style="@style/Body21420Regular"
+        android:textColor="@color/gray_900"
+        android:layout_marginStart="4dp"
+        android:layout_toEndOf="@+id/ivChallengeIcon"
+        android:layout_centerVertical="true"
+        android:text="챌린지 타이틀"
+        />
+</RelativeLayout>

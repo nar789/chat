@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/community"
+    app:startDestination="@id/communityTabFragment">
+
+    <fragment
+        android:id="@+id/communityTabFragment"
+        android:name="com.rndeep.fns_fantoo.ui.community.CommunityTabFragment"
+        android:label="fragment_community_tab"
+        tools:layout="@layout/fragment_community_tab">
+        <action
+            android:id="@+id/action_communityTabFragment_to_communityMyPageFragment"
+            app:destination="@id/communityMyPageFragment" />
+        <action
+            android:id="@+id/action_communityTabFragment_to_communityBoardShowAllFragment"
+            app:destination="@id/communityBoardShowAllFragment" />
+        <action
+            android:id="@+id/action_communityTabFragment_to_communityboard"
+            app:destination="@id/communityboard" >
+            <argument
+                android:name="boardInfo"
+                app:argType="com.rndeep.fns_fantoo.ui.community.BoardInfo" />
+        </action>
+        <action
+            android:id="@+id/action_communityTabFragment_to_notice"
+            app:destination="@id/community_notice" >
+            <argument
+                android:name="noticeInfo"
+                app:argType="com.rndeep.fns_fantoo.ui.community.BoardInfo" />
+        </action>
+        <action
+            android:id="@+id/action_communityTabFragment_to_postsearch"
+            app:destination="@id/postsearch" />
+        <action
+            android:id="@+id/action_communityTabFragment_to_editorFragment"
+            app:destination="@id/editorFragment" />
+        <action
+            android:id="@+id/action_communityTabFragment_to_communitypost"
+            app:destination="@id/communitypost" >
+            <argument
+                android:name="postType"
+                app:argType="string"
+                />
+            <argument
+                android:name="boardCode"
+                app:argType="string"
+                app:nullable="true"
+                />
+            <argument
+                android:name="postId"
+                app:argType="integer" />
+        </action>
+    </fragment>
+    <fragment
+        android:id="@+id/communityMyPageFragment"
+        android:name="com.rndeep.fns_fantoo.ui.community.mypage.CommunityMyPageFragment"
+        android:label="fragment_community_my_page"
+        tools:layout="@layout/fragment_community_my_page">
+        <action
+            android:id="@+id/action_communityMyPageFragment_to_communitypost"
+            app:destination="@id/communitypost" >
+            <argument
+                android:name="postType"
+                app:argType="string"
+                />
+            <argument
+                android:name="boardCode"
+                app:argType="string"
+                app:nullable="true"
+                />
+            <argument
+                android:name="postId"
+                app:argType="integer" />
+            <argument
+                android:name="replyId"
+                app:argType="integer" />
+        </action>
+        <action
+            android:id="@+id/action_communityMyPageFragment_to_communityboard"
+            app:destination="@id/communityboard" >
+            <argument
+                android:name="boardInfo"
+                app:argType="com.rndeep.fns_fantoo.ui.community.BoardInfo" />
+        </action>
+    </fragment>
+    <fragment
+        android:id="@+id/communityBoardShowAllFragment"
+        android:name="com.rndeep.fns_fantoo.ui.community.boardlist.CommunityBoardShowAllFragment"
+        android:label="fragment_community_board_show_all"
+        tools:layout="@layout/fragment_community_board_show_all">
+        <action
+            android:id="@+id/action_communityBoardShowAllFragment_to_communityboard"
+            app:destination="@id/communityboard" >
+            <argument
+                android:name="boardInfo"
+                app:argType="com.rndeep.fns_fantoo.ui.community.BoardInfo" />
+        </action>
+    </fragment>
+    <include app:graph="@navigation/communityboard" />
+    <include app:graph="@navigation/community_notice" />
+    <include app:graph="@navigation/postsearch" />
+    <fragment
+        android:id="@+id/editorFragment"
+        android:name="com.rndeep.fns_fantoo.ui.editor.EditorFragment"
+        android:label="fragment_editor"
+        tools:layout="@layout/fragment_editor">
+        <argument
+            android:name="editorInfo"
+            app:argType="com.rndeep.fns_fantoo.ui.editor.EditorInfo" />
+    </fragment>
+    <include app:graph="@navigation/community_post" />
+</navigation>

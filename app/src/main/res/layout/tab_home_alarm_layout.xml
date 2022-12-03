@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/alarmContainer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingVertical="16dp"
+    >
+
+    <ImageView
+        android:id="@+id/ivAlarmThumbnail"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="2dp"
+        android:src="@drawable/profile_club_character"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="end"
+        app:barrierMargin="12dp"
+        app:constraint_referenced_ids="ivAlarmThumbnail" />
+
+    <TextView
+        android:id="@+id/tvAlarmTitle"
+        style="@style/Buttons1420Medium"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:text="알림 타이틀 입력하는곳입력하는곳입력하는곳 "
+        android:textColor="@color/gray_870"
+        app:layout_constraintEnd_toStartOf="@id/textLineBarrier"
+        app:layout_constraintStart_toEndOf="@id/barrier1"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvAlarmSubTitle"
+        style="@style/Caption11218Regular"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="16dp"
+        android:ellipsize="end"
+        android:lines="1"
+        android:text="서브 타이틀 "
+        android:textColor="@color/gray_800"
+        app:layout_constraintEnd_toStartOf="@id/textLineBarrier"
+        app:layout_constraintStart_toEndOf="@id/barrier1"
+        app:layout_constraintTop_toBottomOf="@id/tvAlarmTitle" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/bottomBarrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="tvAlarmTitle,tvAlarmSubTitle" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="@id/barrier1"
+        app:layout_constraintTop_toBottomOf="@id/bottomBarrier">
+
+        <TextView
+            android:id="@+id/tvSender"
+            style="@style/Caption11218Regular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="발송자 입력 "
+            android:textColor="@color/gray_400" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="5.7dp"
+            android:src="@drawable/dot_grey"
+            app:tint="@color/gray_200" />
+
+        <TextView
+            android:id="@+id/tvSendTime"
+            style="@style/Caption11218Regular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="시간 입력"
+            android:textColor="@color/gray_400" />
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/textLineBarrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="start" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

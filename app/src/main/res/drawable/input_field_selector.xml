@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <!-- 포커스가 변경될때 커스텀state가 유지되지 않음... view도 커스텀해야하는듯..-->
+    <item app:state_success="false">
+        <shape
+            android:shape="rectangle"
+            >
+            <solid android:color="@color/gray_50" />
+            <corners android:radius="8dp" />
+            <stroke
+                android:width="0.3dp"
+                android:color="@color/gray_100" />
+        </shape>
+    </item>
+    <item app:state_warning="true">
+        <shape
+            android:shape="rectangle"
+            >
+            <solid android:color="@color/gray_50" />
+            <corners android:radius="8dp" />
+            <stroke
+                android:width="0.3dp"
+                android:color="@color/state_danger" />
+        </shape>
+    </item>
+
+    <!--<item android:state_focused="true">
+        <shape
+            android:shape="rectangle"
+            >
+            <solid android:color="@color/gray_50" />
+            <corners android:radius="8dp" />
+            <stroke
+                android:width="1dp"
+                android:color="@color/gray_100" />
+        </shape>
+    </item>
+    <item android:state_focused="false">
+        <shape
+        android:shape="rectangle"
+        >
+            <solid android:color="@color/gray_50" />
+            <corners android:radius="8dp" />
+            <stroke
+                android:width="0.3dp"
+                android:color="@color/gray_100" />
+        </shape>
+    </item>-->
+
+    <item android:state_enabled="true">
+        <shape
+            android:shape="rectangle"
+            >
+            <solid android:color="@color/gray_50" />
+            <corners android:radius="8dp" />
+            <stroke
+                android:width="0.3dp"
+                android:color="@color/gray_100" />
+        </shape>
+    </item>
+
+</selector>

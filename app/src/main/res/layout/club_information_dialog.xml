@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginHorizontal="20dp"
+    android:layout_gravity="center">
+
+    <RelativeLayout
+        android:id="@+id/rlInformationContainer"
+        android:layout_width="match_parent"
+        android:layout_height="368dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@drawable/bg_border_radius_30_c_gray25_s_gray200"
+        >
+        <TextView
+            android:id="@+id/tvFanClubName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="45dp"
+            style="@style/Title51622Medium"
+            android:textColor="@color/gray_870"
+            android:gravity="center"
+            android:text="팬클럽 이름"
+            />
+        <TextView
+            android:id="@+id/tvFanClubNickName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Caption21116Regular"
+            android:layout_below="@+id/tvFanClubName"
+            android:textColor="@color/gray_400"
+            android:gravity="center"
+            android:text="닉네임?"
+            />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/tvFanClubNickName"
+            android:background="@drawable/bg_border_radius_8_bglight"
+            android:paddingVertical="10dp"
+            android:gravity="center_horizontal"
+            >
+            <TextView
+                android:id="@+id/tvOpenDateDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Caption11218Regular"
+                android:layout_marginRight="9dp"
+                android:textColor="@color/gray_400"
+                android:text="개설일"
+                />
+            <TextView
+                android:id="@+id/tvClubOpenDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/tvOpenDateDescription"
+                style="@style/Caption11218Regular"
+                android:textColor="@color/gray_700"
+                android:text="2002.01.12"
+                />
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/ivClubThumbnail"
+        android:layout_width="54dp"
+        android:layout_height="54dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/rlInformationContainer"
+        android:layout_marginBottom="-27dp"
+        android:src="@drawable/baby_icon"
+        />
+</androidx.constraintlayout.widget.ConstraintLayout>

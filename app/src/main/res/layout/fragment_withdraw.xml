@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".ui.menu.mywallet.WithdrawFragment">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/white"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            app:contentInsetStartWithNavigation="0dp"
+            app:navigationIcon="@drawable/cancel" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/withdraw_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/padding_margin"
+            app:layout_constraintTop_toBottomOf="@id/appbar">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/coin_img"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                app:layout_constraintEnd_toStartOf="@id/kindom_coin_gold_title"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/withdraw_container"
+                app:srcCompat="@drawable/kingdom_coin_gold" />
+
+            <TextView
+                android:id="@+id/kindom_coin_gold_title"
+                style="@style/Title51622Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:textColor="@color/gray_800"
+                android:text="@string/en_kcg_fullname"
+                app:layout_constraintBottom_toBottomOf="@id/coin_img"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toEndOf="@id/coin_img"
+                app:layout_constraintTop_toTopOf="@id/coin_img" />
+
+            <TextView
+                android:id="@+id/balance_title"
+                style="@style/Body21420Regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/gray_700"
+                android:text="@string/j_balance"
+                app:layout_constraintEnd_toStartOf="@id/coin_balance"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/coin_img" />
+
+            <TextView
+                android:id="@+id/coin_balance"
+                style="@style/Body21420Regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                app:layout_constraintBottom_toBottomOf="@id/balance_title"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toEndOf="@id/balance_title"
+                app:layout_constraintTop_toTopOf="@id/balance_title"
+                tools:text="323,268,065" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/coin_address_field"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/coin_balance"
+                app:cardCornerRadius="8dp"
+                app:cardBackgroundColor="@color/gray_50"
+                app:strokeColor="@color/gray_50"
+                app:rippleColor="@color/gray_100">
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="62dp"
+                    android:padding="12dp">
+                    <TextView
+                        android:id="@+id/coin_address"
+                        style="@style/Body21420Regular"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="4dp"
+                        android:textColor="@color/gray_870"
+                        android:hint="@string/n_click_to_paste_address"
+                        android:textColorHint="@color/state_enable_gray_400"
+                        app:layout_constraintHorizontal_chainStyle="packed"
+                        app:layout_constraintEnd_toStartOf="@id/eye_img"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/eye_img"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:srcCompat="@drawable/icon_outline_qr"
+                        app:tint="@color/gray_400" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/withdraw_coin_field"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/coin_address_field"
+                app:cardCornerRadius="8dp"
+                app:cardBackgroundColor="@color/gray_50"
+                app:strokeColor="@color/gray_50">
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="12dp">
+                    <TextView
+                        android:id="@+id/withdraw_coin"
+                        style="@style/Body21420Regular"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="4dp"
+                        android:textColor="@color/state_enable_gray_900"
+                        android:hint="@string/c_minimum_10_kdg"
+                        android:textColorHint="@color/state_enable_gray_400"
+                        app:layout_constraintHorizontal_chainStyle="packed"
+                        app:layout_constraintEnd_toStartOf="@id/withdraw_coin_kdg"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
+
+                    <TextView
+                        android:id="@+id/withdraw_coin_kdg"
+                        style="@style/Body21420Regular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/gray_400"
+                        android:text="@string/en_kdg"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.divider.MaterialDivider
+                android:id="@+id/divider_1"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="24dp"
+                android:visibility="gone"
+                app:dividerColor="@color/gray_400_opacity12"
+                app:layout_constraintTop_toBottomOf="@id/withdraw_coin_field" />
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/confirm_img"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginTop="26dp"
+                android:background="@color/primary_default"
+                android:visibility="gone"
+                app:contentPadding="4dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/divider_1"
+                app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
+                app:srcCompat="@drawable/icon_fill_check"
+                app:tint="@color/white" />
+
+            <TextView
+                android:id="@+id/confirm_title"
+                style="@style/Buttons1420Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:visibility="gone"
+                android:text="@string/se_m_i_understood"
+                app:layout_constraintBottom_toBottomOf="@id/confirm_img"
+                app:layout_constraintStart_toEndOf="@id/confirm_img"
+                app:layout_constraintTop_toTopOf="@id/confirm_img" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/confirm_desc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/confirm_img"
+                app:cardCornerRadius="8dp"
+                app:cardBackgroundColor="@color/gray_50"
+                app:strokeColor="@color/gray_50">
+
+                <TextView
+                    style="@style/Caption11218Regular"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="12dp"
+                    android:text="@string/se_c_check_withdraw_address" />
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.divider.MaterialDivider
+                android:id="@+id/divider_2"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="150dp"
+                app:dividerColor="@color/gray_400_opacity12"
+                app:layout_constraintTop_toBottomOf="@id/withdraw_coin_field" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/number_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="150dp"
+                android:clipToPadding="false"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/withdraw_coin_field"
+                app:spanCount="3"
+                tools:listitem="@layout/list_item_number_key" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/withdraw_btn"
+                style="@style/Buttons1420Medium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/c_widthdraw"
+                android:minHeight="0dp"
+                android:paddingVertical="11dp"
+                android:text="@string/c_widthdraw"
+                android:textColor="@color/white"
+                app:backgroundTint="@color/primary_default"
+                app:cornerRadius="20dp"
+                app:layout_constraintTop_toBottomOf="@id/number_list"
+                app:rippleColor="@color/primary_300" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

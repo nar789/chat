@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/comment"
+    app:startDestination="@id/commentFragment">
+
+    <fragment
+        android:id="@+id/commentFragment"
+        android:name="com.rndeep.fns_fantoo.ui.community.comment.CommunityCommentFragment"
+        android:label="CommentFragment" >
+        <argument
+            android:name="postId"
+            app:argType="integer" />
+        <argument
+            android:name="replyId"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_commentFragment_to_profile"
+            app:destination="@id/profile" />
+        <action
+            android:id="@+id/action_commentFragment_to_profileImageViewerFragment3"
+            app:destination="@id/profileImageViewerFragment3" >
+            <argument
+                android:name="imageUrl"
+                app:argType="string" />
+        </action>
+    </fragment>
+    <include app:graph="@navigation/profiledetail" />
+    <fragment
+        android:id="@+id/profileImageViewerFragment3"
+        android:name="com.rndeep.fns_fantoo.ui.common.ProfileImageViewerFragment"
+        android:label="fragment_profile_image_viewer"
+        tools:layout="@layout/fragment_profile_image_viewer" />
+</navigation>

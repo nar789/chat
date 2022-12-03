@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/communitySearchFragment"
+    android:id="@+id/postsearch">
+
+    <include app:graph="@navigation/community_post" />
+    <fragment
+        android:id="@+id/communitySearchFragment"
+        android:name="com.rndeep.fns_fantoo.ui.community.search.CommunitySearchFragment"
+        tools:layout="@layout/fragment_community_search"
+        android:label="fragment_community_search">
+        <action
+            android:id="@+id/action_communitySearchFragment_to_communitypost2"
+            app:destination="@id/communitypost">
+            <argument
+                android:name="postType"
+                app:argType="string"
+                />
+            <argument
+                android:name="boardCode"
+                app:argType="string"
+                app:nullable="true"
+                />
+            <argument
+                android:name="postId"
+                app:argType="integer" />
+        </action>
+        <action
+            android:id="@+id/action_communitySearchFragment_to_club_post"
+            app:destination="@id/club_post" >
+            <argument
+                android:name="previewType"
+                app:argType="string"
+                />
+            <argument
+                android:name="categoryCode"
+                app:argType="string"
+                />
+            <argument
+                android:name="clubId"
+                app:argType="string"
+                />
+            <argument
+                android:name="postId"
+                app:argType="integer" />
+        </action>
+    </fragment>
+    <include app:graph="@navigation/club_post" />
+</navigation>

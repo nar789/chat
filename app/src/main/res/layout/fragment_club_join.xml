@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_25"
+    tools:context=".ui.club.join.ClubJoinFragment">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/clubJoinToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:contentInsetStart="0dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/ivBack"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="12dp"
+                android:padding="5dp"
+                android:src="@drawable/icon_outline_cancel" />
+
+            <TextView
+                android:id="@+id/tvClubJoinTitle"
+                style="@style/Title51622Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="12dp"
+                android:layout_toEndOf="@+id/ivBack"
+                android:text="@string/k_join_to_club"
+                android:textColor="@color/gray_900" />
+
+        </RelativeLayout>
+    </androidx.appcompat.widget.Toolbar>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/clubJoinToolbar">
+
+        <FrameLayout
+            android:id="@+id/flClubThumbnailContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp">
+
+            <ImageView
+                android:id="@+id/ivClubThumbnail"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/profile_character_xl" />
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="bottom|end"
+                android:background="@drawable/icon_camera_badge"
+                android:padding="5dp"
+                android:src="@drawable/icon_fill_camera" />
+        </FrameLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/rlNickNameInputContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/flClubThumbnailContainer"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="20dp">
+
+            <TextView
+                style="@style/Caption11218Regular"
+                android:layout_width="wrap_content"
+                android:layout_height="28dp"
+                android:gravity="center_vertical"
+                android:text="@string/n_nickname"
+                android:textColor="@color/gray_800"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvLengthCount"
+                style="@style/Caption11218Regular"
+                android:layout_width="wrap_content"
+                android:layout_height="28dp"
+                android:gravity="center_vertical"
+                android:text="0/20"
+                android:textColor="@color/gray_300"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <EditText
+                android:id="@+id/edtNickName"
+                style="@style/singleLine_editText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvLengthCount"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/bg_border_radius_8_c_gray50_s_gray100"
+                android:hint="@string/se_n_write_nickname"
+                android:maxLength="20"
+                android:paddingVertical="11dp"
+                android:paddingStart="12dp"
+                app:layout_constraintEnd_toStartOf="@id/tvCheckDuplicate"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvLengthCount" />
+
+            <ImageView
+                android:id="@+id/ivDuplicateCheckIcon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignTop="@+id/tvCheckDuplicate"
+                android:layout_alignBottom="@+id/tvCheckDuplicate"
+                android:layout_marginEnd="12dp"
+                android:layout_toStartOf="@+id/tvCheckDuplicate"
+                android:src="@drawable/icon_check_login"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@id/edtNickName"
+                app:layout_constraintEnd_toEndOf="@id/edtNickName"
+                app:layout_constraintTop_toTopOf="@id/edtNickName" />
+
+            <ImageView
+                android:id="@+id/ivEdtCleanBtn"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_alignTop="@+id/tvCheckDuplicate"
+                android:layout_alignBottom="@+id/tvCheckDuplicate"
+                android:layout_marginEnd="3dp"
+                android:layout_toStartOf="@+id/tvCheckDuplicate"
+                android:background="@drawable/bg_border_radius_12_c_no"
+                android:backgroundTint="@color/gray_200"
+                android:padding="4dp"
+                android:src="@drawable/icon_outline_cancel"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@id/edtNickName"
+                app:layout_constraintEnd_toStartOf="@id/ivDuplicateCheckIcon"
+                app:layout_constraintTop_toTopOf="@id/edtNickName"
+                app:layout_goneMarginEnd="12dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/tvCheckDuplicate"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/input_button_r8"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="17dp"
+                android:text="@string/j_check_duplicate"
+                android:textColor="@color/gray_25"
+                app:layout_constraintBottom_toBottomOf="@id/edtNickName"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/edtNickName"
+                app:layout_constraintTop_toTopOf="@id/edtNickName" />
+
+            <TextView
+                android:id="@+id/tvNickNameCheckResult"
+                style="@style/Caption21116Regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text=""
+                android:textColor="@color/gray_600"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/edtNickName" />
+
+            <TextView
+                android:id="@+id/tvNickNameExplain1"
+                style="@style/Caption21116Regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="@string/se_a_need_set_profile_for_club"
+                android:textColor="@color/gray_600"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvNickNameCheckResult"
+                app:layout_goneMarginTop="4dp" />
+
+            <TextView
+                android:id="@+id/tvNickNameExplain2"
+                style="@style/Caption21116Regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/se_n_change_nickname_notice_2"
+                android:textColor="@color/gray_600"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvNickNameExplain1" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/tvJoinClubBtn"
+            style="@style/Buttons1420Medium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/bg_border_radius_100_darkblue25"
+            android:backgroundTint="@color/state_disabled_gray_200"
+            android:foregroundGravity="bottom"
+            android:gravity="center"
+            android:paddingVertical="11dp"
+            android:text="@string/g_to_join"
+            android:textColor="@color/gray_25" />
+    </RelativeLayout>
+</RelativeLayout>
