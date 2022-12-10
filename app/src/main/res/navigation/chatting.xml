@@ -15,7 +15,7 @@
 
     <fragment
         android:id="@+id/chattingFragment"
-        android:name="com.rndeep.fns_fantoo.ui.chatting.ChattingFragment"
+        android:name="com.rndeep.fns_fantoo.ui.chatting.chat.ChattingFragment"
         android:label="fragment_chatting">
         <argument
             android:name="chatId"
