@@ -19,7 +19,7 @@
         android:label="fragment_chatting">
         <argument
             android:name="chatId"
-            app:argType="Long"
+            app:argType="long"
             app:nullable="false" />
     </fragment>
 </navigation>
