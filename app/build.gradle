@@ -207,4 +207,12 @@ dependencies {
     //tus upload
     implementation "io.tus.android.client:tus-android-client:$rootProject.tus_android"
     implementation "io.tus.java.client:tus-java-client:$rootProject.tus_java"
+
+    //jetpack compose
+    implementation "androidx.compose.runtime:runtime:$rootProject.compose_version"
+    implementation "androidx.compose.material:material:$rootProject.compose_version"
+    implementation "androidx.compose.foundation:foundation:$rootProject.compose_version"
+    implementation "androidx.compose.foundation:foundation-layout:$rootProject.compose_version"
+    implementation "androidx.compose.ui:ui-tooling:$rootProject.compose_version"
+    implementation "androidx.compose.ui:ui-tooling-preview:$rootProject.compose_version"
 }
