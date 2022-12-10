@@ -69,7 +69,7 @@ class MainActivity : AppCompatActivity() {
             val visibility = if (destination.id == R.id.menuFragment ||
                 destination.id == R.id.homeTabFragment ||
                 destination.id == R.id.communityTabFragment ||
-                destination.id == R.id.chattingFragment ||
+                destination.id == R.id.chatListFragment ||
                 destination.id == R.id.clubTabFragment) {
                 View.VISIBLE
             } else {

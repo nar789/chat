@@ -43,6 +43,8 @@ object TimeUtils {
         return timeString
     }
 
+    fun Long.convertDiffTime(): String = diffTimeWithCurrentTime(this)
+
     //특정 포맷
     @SuppressLint("SimpleDateFormat")
     fun diffTimeWithCurrentTime(time: String?,

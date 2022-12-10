@@ -6,8 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ChatListFragment : Fragment() {
+
+    private val viewModel by viewModels<ChatListViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -16,12 +22,14 @@ class ChatListFragment : Fragment() {
     ): View {
         return ComposeView(requireContext()).apply {
             setContent {
-
+                ChatListScreen(viewModel) {
+                    findNavController().navigate(
+                        ChatListFragmentDirections.actionChatListFragmentToChattingFragment(
+                            it
+                        )
+                    )
+                }
             }
         }
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
     }
 }
