@@ -1,5 +1,21 @@
 package com.rndeep.fns_fantoo.ui.chatting.compose
 
 import androidx.compose.material.Typography
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
 
-val FantooChatTypography = Typography()
+val FantooChatTypography = Typography(
+    subtitle1 = TextStyle(
+        fontWeight = FontWeight.Bold,
+        fontSize = 20.sp
+    ),
+    h3 = TextStyle(
+        fontWeight = FontWeight.Normal,
+        fontSize = 14.sp
+    ),
+    h4 = TextStyle(
+        fontWeight = FontWeight.Normal,
+        fontSize = 12.sp
+    )
+)

@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/chatting"
-    app:startDestination="@id/chattingFragment">
+    app:startDestination="@id/chatListFragment">
 
     <fragment
-        android:id="@+id/chattingFragment"
-        android:name="com.rndeep.fns_fantoo.ui.chatting.ChattingFragment"
-        android:label="fragment_chatting"
-        tools:layout="@layout/fragment_chatting" />
+        android:id="@+id/chatListFragment"
+        android:name="com.rndeep.fns_fantoo.ui.chatting.chatlist.ChatListFragment"
+        android:label="fragment_chat_list" />
 </navigation>
