@@ -213,6 +213,7 @@ dependencies {
     implementation "androidx.compose.material:material:$rootProject.compose_version"
     implementation "androidx.compose.foundation:foundation:$rootProject.compose_version"
     implementation "androidx.compose.foundation:foundation-layout:$rootProject.compose_version"
+    implementation "androidx.compose.ui:ui:$rootProject.compose_version"
     implementation "androidx.compose.ui:ui-tooling:$rootProject.compose_version"
     implementation "androidx.compose.ui:ui-tooling-preview:$rootProject.compose_version"
 }

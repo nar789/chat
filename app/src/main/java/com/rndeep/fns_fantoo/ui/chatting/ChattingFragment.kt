@@ -10,8 +10,8 @@ import com.rndeep.fns_fantoo.databinding.FragmentChattingBinding
 
 class ChattingFragment : Fragment() {
 
-    private var _binding : FragmentChattingBinding? =null
-    val binding : FragmentChattingBinding get() = _binding!!
+    private var _binding: FragmentChattingBinding? = null
+    val binding: FragmentChattingBinding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,10 +20,14 @@ class ChattingFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentChattingBinding.inflate(inflater,container,false)
+    ): View {
+        _binding = FragmentChattingBinding.inflate(inflater, container, false)
 
         return binding.root
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
 }
