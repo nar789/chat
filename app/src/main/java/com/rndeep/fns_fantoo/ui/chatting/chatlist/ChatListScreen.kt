@@ -36,11 +36,14 @@ import com.rndeep.fns_fantoo.utils.TimeUtils.convertDiffTime
 import com.skydoves.landscapist.glide.GlideImage
 
 @Composable
-fun ChatListScreen(viewModel: ChatListViewModel) {
+fun ChatListScreen(
+    viewModel: ChatListViewModel,
+    onClickChat: (chatId: Long) -> Unit
+) {
     Surface(modifier = Modifier) {
         Column {
             ChatListHeader()
-            ChatList(viewModel.chatList)
+            ChatList(viewModel.chatList, onClickChat)
         }
     }
 }
@@ -86,7 +89,10 @@ fun ChatListHeader() {
 }
 
 @Composable
-fun ChatList(chatList: List<ChatListResult>) {
+fun ChatList(
+    chatList: List<ChatListResult>,
+    onClickChat: (chatId: Long) -> Unit
+) {
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = colorResource(id = R.color.bg_bg_light_gray_50)
@@ -99,7 +105,7 @@ fun ChatList(chatList: List<ChatListResult>) {
                         bottom = if (index == chatList.lastIndex) 18.dp else 0.dp
                     )
                 ) {
-                    ChatListItem(chat = item)
+                    ChatListItem(chat = item, onClickChat)
                 }
             }
         }
@@ -107,12 +113,19 @@ fun ChatList(chatList: List<ChatListResult>) {
 }
 
 @Composable
-fun ChatListItem(chat: ChatListResult) {
+fun ChatListItem(
+    chat: ChatListResult,
+    onClickChat: (chatId: Long) -> Unit
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
-            .padding(start = 20.dp, end = 20.dp),
+            .padding(start = 20.dp, end = 20.dp)
+            .clickable {
+                chat.count = 0
+                onClickChat(chat.chatId)
+            },
         elevation = 1.dp,
         shape = RoundedCornerShape(12.dp),
         backgroundColor = colorResource(id = R.color.gray_25),
@@ -148,7 +161,9 @@ fun ChatListItem(chat: ChatListResult) {
                 )
 
                 Text(
-                    modifier = Modifier.fillMaxWidth().padding(top = 2.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 2.dp),
                     text = chat.chat,
                     style = FantooChatTypography.h4.copy(color = colorResource(id = R.color.gray_400)),
                     maxLines = 1,
@@ -204,7 +219,7 @@ fun ChatListItem(chat: ChatListResult) {
 fun ChatListItemPreview() {
     MaterialTheme {
         Surface {
-            ChatListItem(chat = ChatListResult())
+            ChatListItem(chat = ChatListResult()) {}
         }
     }
 }

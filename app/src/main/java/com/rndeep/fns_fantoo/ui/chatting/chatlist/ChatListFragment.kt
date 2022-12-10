@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -21,7 +22,13 @@ class ChatListFragment : Fragment() {
     ): View {
         return ComposeView(requireContext()).apply {
             setContent {
-                ChatListScreen(viewModel)
+                ChatListScreen(viewModel) {
+                    findNavController().navigate(
+                        ChatListFragmentDirections.actionChatListFragmentToChattingFragment(
+                            it
+                        )
+                    )
+                }
             }
         }
     }

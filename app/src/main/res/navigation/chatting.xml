@@ -7,5 +7,19 @@
     <fragment
         android:id="@+id/chatListFragment"
         android:name="com.rndeep.fns_fantoo.ui.chatting.chatlist.ChatListFragment"
-        android:label="fragment_chat_list" />
+        android:label="fragment_chat_list">
+        <action
+            android:id="@+id/action_chatListFragment_to_chattingFragment"
+            app:destination="@id/chattingFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/chattingFragment"
+        android:name="com.rndeep.fns_fantoo.ui.chatting.ChattingFragment"
+        android:label="fragment_chatting">
+        <argument
+            android:name="chatId"
+            app:argType="Long"
+            app:nullable="false" />
+    </fragment>
 </navigation>
