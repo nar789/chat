@@ -8,20 +8,12 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.rndeep.fns_fantoo.databinding.FragmentChattingBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class ChattingFragment : Fragment() {
 
-    private var _binding: FragmentChattingBinding? = null
-    val binding: FragmentChattingBinding get() = _binding!!
-
     val viewModel: ChattingViewModel by viewModels()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,15 +22,11 @@ class ChattingFragment : Fragment() {
 
         return ComposeView(requireContext()).apply {
             setContent {
+                val uiState = viewModel.chatUiState.value
                 MaterialTheme {
-                    ChatScreen()
+                    ChattingScreen(uiState)
                 }
             }
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
     }
 }

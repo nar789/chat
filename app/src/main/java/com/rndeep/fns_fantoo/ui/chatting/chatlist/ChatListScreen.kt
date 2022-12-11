@@ -16,10 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -142,8 +139,9 @@ fun ChatListItem(
                     .align(Alignment.CenterVertically)
                     .clip(RoundedCornerShape(16.dp)),
                 imageModel = chat.profileImg,
-                contentScale = ContentScale.Crop,
-                error = ImageBitmap.imageResource(id = R.drawable.character_main2)
+                failure = {
+                    Image(painterResource(R.drawable.character_main2), contentDescription = null)
+                }
             )
 
             Column(
