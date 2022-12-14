@@ -17,9 +17,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -32,7 +30,6 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.navigation.NavController
 import com.rndeep.fns_fantoo.R
 import com.rndeep.fns_fantoo.data.remote.model.chat.ChatListResult
 import com.rndeep.fns_fantoo.ui.chatting.compose.FantooChatTypography
@@ -51,10 +48,15 @@ fun ChatListScreen(
     viewModel: ChatListViewModel,
     navigateToChat: (chatId: Long) -> Unit
 ) {
+    val isUser by viewModel.isUser
     Surface(modifier = Modifier) {
         Column {
             ChatListHeader()
-            ChatList(viewModel, navigateToChat)
+            if (isUser) {
+                ChatList(viewModel, navigateToChat)
+            } else {
+                ChatListLoginError(viewModel::navigateToLogin)
+            }
         }
     }
 }
@@ -104,7 +106,6 @@ fun ChatList(
     viewModel: ChatListViewModel,
     onClickChat: (chatId: Long) -> Unit
 ) {
-
     val optionOpenedChatId by viewModel.optionOpenedChatId.collectAsState()
     val chatList = viewModel.chatList
 
