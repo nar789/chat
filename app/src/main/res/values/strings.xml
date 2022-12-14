@@ -787,6 +787,9 @@
 <!--   채팅 string 값 구역-->
     <string name="ch_chatting">채팅</string>
     <string name="chattingFragment">chatting String.</string>
+    <string name="chat_list_alarm_on">알림\nON</string>
+    <string name="chat_list_block">차단</string>
+    <string name="chat_list_exit">채팅방\n나가기</string>
 <!--    -->
 
 </resources>

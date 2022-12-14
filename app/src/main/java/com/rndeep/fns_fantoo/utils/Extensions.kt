@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ContentResolver
 import android.content.Context
+import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
@@ -748,3 +749,5 @@ fun TextView.setLeftMarinSpan(leftStandardText:String, fullText:String){
         Timber.e("${e.printStackTrace()}")
     }
 }
+
+fun Float.toDp(): Float = this * Resources.getSystem().displayMetrics.density + 0.5f
