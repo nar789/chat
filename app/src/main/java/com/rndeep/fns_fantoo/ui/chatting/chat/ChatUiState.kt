@@ -2,8 +2,9 @@ package com.rndeep.fns_fantoo.ui.chatting.chat
 
 import androidx.compose.runtime.Immutable
 
-class ChatUiState(
-    val messages: List<Message>
+data class ChatUiState(
+    val messages: List<Message>,
+    val translateMode: Boolean = false
 )
 
 @Immutable

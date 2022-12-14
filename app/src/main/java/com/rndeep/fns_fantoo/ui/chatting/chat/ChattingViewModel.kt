@@ -1,5 +1,6 @@
 package com.rndeep.fns_fantoo.ui.chatting.chat
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -10,6 +11,15 @@ import javax.inject.Inject
 class ChattingViewModel @Inject constructor() : ViewModel() {
     private val _chatUiState = mutableStateOf(testUiState)
     val chatUiState: State<ChatUiState> get() = _chatUiState
+
+    fun sendMessage(message: String) {
+        Log.d("sujini", "sendMesage: $message")
+    }
+
+    fun setTranslateMode(onOff: Boolean) {
+        Log.d("sujini", "setTranslateMode: $onOff")
+        _chatUiState.value = _chatUiState.value.copy(translateMode = onOff)
+    }
 }
 
 val testUiState = ChatUiState(

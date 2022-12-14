@@ -798,6 +798,8 @@
     <string name="add_chat_no_follow">아직 아무도 팔로우하지 않으셨네요.\n프로필에서 팔로우를 눌러 채팅해보세요.</string>
     <string name="add_chat_follow_list">팔로우 목록</string>
     <string name="add_chat_fantoo_list">팬투 검색</string>
+
+    <string name="chatting_edit_text_hint">댓글을 입력해 주세요.</string>
 <!--    -->
 
 </resources>
