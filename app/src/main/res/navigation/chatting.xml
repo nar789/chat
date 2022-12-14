@@ -11,6 +11,9 @@
         <action
             android:id="@+id/action_chatListFragment_to_chattingFragment"
             app:destination="@id/chattingFragment" />
+        <action
+            android:id="@+id/action_chatListFragment_to_addChatFragment"
+            app:destination="@id/addChatFragment" />
     </fragment>
 
     <fragment
@@ -22,4 +25,9 @@
             app:argType="long"
             app:nullable="false" />
     </fragment>
+
+    <fragment
+        android:id="@+id/addChatFragment"
+        android:name="com.rndeep.fns_fantoo.ui.chatting.addchat.AddChatFragment"
+        android:label="framgnet_add_chat"/>
 </navigation>

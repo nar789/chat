@@ -46,12 +46,13 @@ private const val CARD_DRAG_AMOUNT = -162f
 @Composable
 fun ChatListScreen(
     viewModel: ChatListViewModel,
-    navigateToChat: (chatId: Long) -> Unit
+    navigateToChat: (chatId: Long) -> Unit,
+    navigateToAddChat: () -> Unit
 ) {
     val isUser by viewModel.isUser
     Surface(modifier = Modifier) {
         Column {
-            ChatListHeader()
+            ChatListHeader(navigateToAddChat)
             if (isUser) {
                 ChatList(viewModel, navigateToChat)
             } else {
@@ -62,7 +63,7 @@ fun ChatListScreen(
 }
 
 @Composable
-fun ChatListHeader() {
+fun ChatListHeader(navigateToAddChat: () -> Unit) {
     Surface(
         Modifier
             .fillMaxWidth()
@@ -93,7 +94,7 @@ fun ChatListHeader() {
                         bottom.linkTo(parent.bottom)
                     }
                     .padding(end = 12.dp)
-                    .clickable { Log.d("inhwa", "채팅방 생성으로 이동해야 함") },
+                    .clickable { navigateToAddChat() },
                 painter = painterResource(R.drawable.outline_icon_outline_plus),
                 contentDescription = null
             )
