@@ -2,14 +2,18 @@ package com.rndeep.fns_fantoo.ui.chatting.addchat
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.material.Card
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterVertically
@@ -158,14 +162,15 @@ fun AddChatSearchItem() {
                             .padding(8.dp)
                             .align(CenterVertically)
                     )
-                    if (text.isEmpty()) {
-                        Text(
-                            text = stringResource(id = R.string.add_chat_search_hint),
-                            fontSize = 14.sp,
-                            lineHeight = 20.sp,
-                            color = colorResource(id = R.color.gray_500)
-                        )
-                    } else {
+                    Box {
+                        if (text.isEmpty()) {
+                            Text(
+                                text = stringResource(id = R.string.add_chat_search_hint),
+                                fontSize = 14.sp,
+                                lineHeight = 20.sp,
+                                color = colorResource(id = R.color.gray_500)
+                            )
+                        }
                         it()
                     }
                 }
