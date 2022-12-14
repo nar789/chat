@@ -80,7 +80,8 @@ fun ChattingScreen(
                     modifier = Modifier
                         .align(Alignment.TopCenter)
                         .offset(0.dp, 14.dp),
-                    enabled = true
+                    enabled = true,
+                    date = "2011.11.11"
                 )
             }
 
@@ -113,7 +114,7 @@ fun Messages(
                 val isMe = item.authorName == "Me"
                 val prevAuthor = messages.getOrNull(index - 1)?.authorName
                 val nextAuthor = messages.getOrNull(index + 1)?.authorName
-                val nextDate = messages.getOrNull(index + 1)?.dateText
+                val nextHour = messages.getOrNull(index + 1)?.hourText
                 val isFirstMessageByAuthor = prevAuthor != item.authorName
                 val isLastMessageByAuthor = nextAuthor != item.authorName
 
@@ -128,7 +129,7 @@ fun Messages(
                         isMe = isMe,
                         isFirstMessageByAuthor = isFirstMessageByAuthor,
                         isLastMessageByAuthor = isLastMessageByAuthor,
-                        timestampVisible = nextDate != item.dateText || isLastMessageByAuthor,
+                        timestampVisible = nextHour != item.hourText || isLastMessageByAuthor,
                         onImageClicked = onImageClicked
                     )
                 }
@@ -281,7 +282,7 @@ fun TimestampAndUnreadCount(
         }
         if (timestampVisible) {
             Text(
-                text = message.dateText,
+                text = message.hourText,
                 color = colorResource(R.color.gray_400),
                 fontSize = 12.sp,
                 lineHeight = 18.sp,
@@ -527,7 +528,7 @@ fun ChatHeader(
 fun DateFloatingText(
     modifier: Modifier = Modifier,
     enabled: Boolean,
-    date: String = "2011.11.11",
+    date: String,
 ) {
     Surface(
         modifier = modifier
