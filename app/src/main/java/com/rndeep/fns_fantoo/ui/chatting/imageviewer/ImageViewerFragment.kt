@@ -1,4 +1,4 @@
-package com.rndeep.fns_fantoo.ui.chatting.chat
+package com.rndeep.fns_fantoo.ui.chatting.imageviewer
 
 import android.os.Bundle
 import android.view.LayoutInflater

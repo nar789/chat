@@ -39,7 +39,7 @@
 
     <fragment
         android:id="@+id/imageViewerFragment"
-        android:name="com.rndeep.fns_fantoo.ui.chatting.chat.ImageViewerFragment"
+        android:name="com.rndeep.fns_fantoo.ui.chatting.imageviewer.ImageViewerFragment"
         android:label="fragment_image_viewer">
         <argument
             android:name="imageUrl"
