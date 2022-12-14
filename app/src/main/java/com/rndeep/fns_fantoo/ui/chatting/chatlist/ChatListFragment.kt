@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.rndeep.fns_fantoo.R
 import com.rndeep.fns_fantoo.ui.login.LoginMainActivity
 import com.rndeep.fns_fantoo.utils.ConstVariable
@@ -32,15 +32,21 @@ class ChatListFragment : Fragment() {
         initObserver()
         return ComposeView(requireContext()).apply {
             setContent {
-                ChatListScreen(viewModel) {
-                    findNavController().navigate(
-                        ChatListFragmentDirections.actionChatListFragmentToChattingFragment(
-                            it
-                        )
-                    )
-                }
+                ChatListScreen(viewModel, ::navigateToChat, ::navigateToAddChat)
             }
         }
+    }
+
+    private fun navigateToChat(chatId: Long) {
+        findNavController().navigate(
+            ChatListFragmentDirections.actionChatListFragmentToChattingFragment(chatId)
+        )
+    }
+
+    private fun navigateToAddChat() {
+        findNavController().navigate(
+            ChatListFragmentDirections.actionChatListFragmentToAddChatFragment()
+        )
     }
 
     private fun initObserver() {
