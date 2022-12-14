@@ -794,6 +794,7 @@
 
     <string name="add_chat_title">새 채팅 추가</string>
     <string name="add_chat_start">채팅 시작하기</string>
+    <string name="add_chat_search_hint">친구를 검색해주세요.</string>
 <!--    -->
 
 </resources>

@@ -10,6 +10,11 @@ val FantooChatTypography = Typography(
         fontWeight = FontWeight.Bold,
         fontSize = 20.sp
     ),
+    subtitle2 = TextStyle(
+        fontWeight = FontWeight.Normal,
+        fontSize = 18.sp,
+        lineHeight = 24.sp
+    ),
     h3 = TextStyle(
         fontWeight = FontWeight.Normal,
         fontSize = 14.sp

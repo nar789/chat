@@ -1,13 +1,15 @@
 package com.rndeep.fns_fantoo.ui.chatting.addchat
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.material.*
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterVertically
@@ -15,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -97,7 +100,7 @@ fun AddChatHeader(onBack: () -> Unit) {
                     .padding(start = 15.dp)
                     .align(CenterVertically),
                 text = stringResource(id = R.string.add_chat_title),
-                style = FantooChatTypography.subtitle1.copy(color = colorResource(id = R.color.gray_900))
+                style = FantooChatTypography.subtitle2.copy(color = colorResource(id = R.color.gray_900))
             )
         }
     }
@@ -109,13 +112,64 @@ fun AddChat() {
         modifier = Modifier.fillMaxSize(),
         color = colorResource(id = R.color.bg_bg_light_gray_50)
     ) {
-
+        Column(modifier = Modifier.fillMaxHeight()) {
+            AddChatSearchItem()
+        }
     }
 }
 
 @Composable
 fun AddChatSearchItem() {
-
+    var text by rememberSaveable { mutableStateOf("") }
+    Surface(
+        modifier = Modifier
+            .wrapContentHeight()
+            .fillMaxWidth()
+            .padding(start = 20.dp, end = 20.dp, top = 20.dp, bottom = 14.dp)
+    ) {
+        BasicTextField(
+            value = text, onValueChange = { text = it },
+            singleLine = true,
+            textStyle = TextStyle(
+                fontSize = 14.sp,
+                lineHeight = 20.sp,
+                color = colorResource(id = R.color.gray_500)
+            ),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(end = 12.dp)
+        ) {
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(36.dp),
+                shape = RoundedCornerShape(6.dp),
+                elevation = 0.dp,
+                border = BorderStroke(0.5.dp, colorResource(id = R.color.gray_200)),
+                backgroundColor = colorResource(id = R.color.gray_25)
+            ) {
+                Row(verticalAlignment = CenterVertically) {
+                    Image(
+                        painter = painterResource(id = R.drawable.icon_search_gray),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .padding(8.dp)
+                            .align(CenterVertically)
+                    )
+                    if (text.isEmpty()) {
+                        Text(
+                            text = stringResource(id = R.string.add_chat_search_hint),
+                            fontSize = 14.sp,
+                            lineHeight = 20.sp,
+                            color = colorResource(id = R.color.gray_500)
+                        )
+                    } else {
+                        it()
+                    }
+                }
+            }
+        }
+    }
 }
 
 @Composable
