@@ -137,7 +137,6 @@ fun AddChatSearchItem() {
             ),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(end = 12.dp)
         ) {
             Card(
                 modifier = Modifier
@@ -148,7 +147,10 @@ fun AddChatSearchItem() {
                 border = BorderStroke(0.5.dp, colorResource(id = R.color.gray_200)),
                 backgroundColor = colorResource(id = R.color.gray_25)
             ) {
-                Row(verticalAlignment = CenterVertically) {
+                Row(
+                    modifier = Modifier.padding(end = 12.dp),
+                    verticalAlignment = CenterVertically
+                ) {
                     Image(
                         painter = painterResource(id = R.drawable.icon_search_gray),
                         contentDescription = null,
