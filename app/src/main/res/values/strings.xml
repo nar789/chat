@@ -800,6 +800,8 @@
     <string name="add_chat_fantoo_list">팬투 검색</string>
 
     <string name="chatting_edit_text_hint">댓글을 입력해 주세요.</string>
+    <string name="chatting_block_description">%s님을 차단하였습니다. 차단 해제 후 메시지를 보낼 수 있습니다.</string>
+    <string name="chatting_unblock_btn">차단 해제</string>
     <string name="image_picker_cancel_btn">취소</string>
     <string name="image_picker_done_btn">완료</string>
     <string name="image_picker_title">모든 사진</string>

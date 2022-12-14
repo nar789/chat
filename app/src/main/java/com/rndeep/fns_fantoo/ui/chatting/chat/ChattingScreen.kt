@@ -51,10 +51,12 @@ fun ChattingScreen(
     uiState: ChatUiState,
     modifier: Modifier = Modifier,
     titleText: String,
+    userBlocked: Boolean = false,
     onMessageSent: (String) -> Unit,
     onTranslateClicked: () -> Unit,
     onImageClicked: (String) -> Unit,
-    onImageSelectorClicked: () -> Unit
+    onImageSelectorClicked: () -> Unit,
+    onClickUnBlock: () -> Unit = {}
 ) {
     val messageList = uiState.messages
 
@@ -81,10 +83,15 @@ fun ChattingScreen(
                     enabled = true
                 )
             }
-            BottomEditText(
-                onMessageSent,
-                onImageSelectorClicked
-            )
+
+            if (userBlocked) {
+                UserBlockView(onClickUnBlock = onClickUnBlock)
+            } else {
+                BottomEditText(
+                    onMessageSent,
+                    onImageSelectorClicked
+                )
+            }
         }
     }
 }
@@ -549,6 +556,51 @@ fun DateFloatingText(
     }
 }
 
+@Composable
+fun UserBlockView(
+    modifier: Modifier = Modifier,
+    onClickUnBlock: () -> Unit
+) {
+    Surface(
+        modifier = modifier.size(360.dp, height = 120.dp),
+        color = colorResource(R.color.state_enable_gray_25),
+        border = BorderStroke((0.5).dp, Color(0x1e000000))
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize(),
+            verticalArrangement = Arrangement.Bottom
+        ) {
+            Text(
+                modifier = Modifier.padding(horizontal = 49.dp),
+                text = String.format(stringResource(R.string.chatting_block_description), "Dasol"),
+                fontSize = 12.sp,
+                lineHeight = 18.sp,
+                color = colorResource(R.color.gray_400),
+                textAlign = TextAlign.Center
+            )
+            Spacer(Modifier.size(14.dp))
+            Button(
+                modifier = Modifier
+                    .padding(start = 20.dp, end = 20.dp, bottom = 20.dp)
+                    .fillMaxWidth()
+                    .height(36.dp),
+                onClick = onClickUnBlock,
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = colorResource(R.color.state_enable_gray_400)
+                )
+            ) {
+                Text(
+                    text = stringResource(R.string.chatting_unblock_btn),
+                    fontSize = 14.sp,
+                    lineHeight = 20.sp,
+                    color = colorResource(R.color.gray_25)
+                )
+            }
+        }
+    }
+}
+
 @Preview
 @Composable
 fun ChatScreenPreview() {
@@ -586,4 +638,10 @@ fun UserInputSelector() {
             }
         }
     }
+}
+
+@Preview
+@Composable
+fun UserBlockViewPreview() {
+    UserBlockView(Modifier, {})
 }
