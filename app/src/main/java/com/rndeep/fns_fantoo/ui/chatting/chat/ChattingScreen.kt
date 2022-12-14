@@ -53,7 +53,8 @@ fun ChattingScreen(
     titleText: String,
     onMessageSent: (String) -> Unit,
     onTranslateClicked: () -> Unit,
-    onImageClicked: (String) -> Unit
+    onImageClicked: (String) -> Unit,
+    onImageSelectorClicked: () -> Unit
 ) {
     val messageList = uiState.messages
 
@@ -80,7 +81,10 @@ fun ChattingScreen(
                     enabled = true
                 )
             }
-            BottomEditText(onMessageSent)
+            BottomEditText(
+                onMessageSent,
+                onImageSelectorClicked
+            )
         }
     }
 }
@@ -285,7 +289,8 @@ var SemanticsPropertyReceiver.keyboardShownProperty by KeyboardShownKey
 
 @Composable
 fun BottomEditText(
-    onMessageSent: (String) -> Unit
+    onMessageSent: (String) -> Unit,
+    onImageSelectorClicked: () -> Unit
 ) {
     var textState by rememberSaveable(stateSaver = TextFieldValue.Saver) {
         mutableStateOf(TextFieldValue())
@@ -325,7 +330,8 @@ fun BottomEditText(
                     onMessageSent(textState.text)
                     textState = TextFieldValue()
                 },
-                onUserInputActivate = { inputActivateMode = true }
+                onUserInputActivate = { inputActivateMode = true },
+                onImageSelectorClicked = onImageSelectorClicked
             )
         }
     }
@@ -373,7 +379,8 @@ fun UserInputText(
 fun UserInputSelector(
     userInputActivated: Boolean,
     onMessageSent: () -> Unit,
-    onUserInputActivate: () -> Unit
+    onUserInputActivate: () -> Unit,
+    onImageSelectorClicked: () -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -384,6 +391,7 @@ fun UserInputSelector(
     ) {
         Image(
             modifier = Modifier
+                .clickable { onImageSelectorClicked() }
                 .size(32.dp)
                 .padding(4.dp),
             painter = painterResource(R.drawable.icon_outline_picture),
@@ -550,7 +558,8 @@ fun ChatScreenPreview() {
             "Dasol",
             onMessageSent = {},
             onTranslateClicked = {},
-            onImageClicked = {}
+            onImageClicked = {},
+            onImageSelectorClicked = {}
         )
     }
 }
@@ -559,7 +568,7 @@ fun ChatScreenPreview() {
 @Composable
 fun BottomEditTextPreview() {
     MaterialTheme {
-        BottomEditText {}
+        BottomEditText({}, {})
     }
 }
 
@@ -569,11 +578,11 @@ fun UserInputSelector() {
     MaterialTheme {
         Column {
             Surface {
-                UserInputSelector(userInputActivated = true, {}, {})
+                UserInputSelector(userInputActivated = true, {}, {}, {})
             }
             Spacer(Modifier.size(15.dp))
             Surface {
-                UserInputSelector(userInputActivated = false, {}, {})
+                UserInputSelector(userInputActivated = false, {}, {}, {})
             }
         }
     }

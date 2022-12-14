@@ -247,6 +247,14 @@
         <item name="android:contentDescription">@string/exo_controls_fullscreen_enter_description</item>
     </style>
 
+    <style name="TransparentDialog" parent="Theme.AppCompat.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
     <drawable name="exo_styled_controls_pause">@drawable/icon_fill_stop</drawable>
     <drawable name="exo_styled_controls_play">@drawable/icon_outline_play</drawable>
     <drawable name="exo_styled_controls_fullscreen_enter">@drawable/icon_outline_full</drawable>

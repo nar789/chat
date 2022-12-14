@@ -32,6 +32,9 @@
         <action
             android:id="@+id/action_chattingFragment_to_imageViewerFragment"
             app:destination="@id/imageViewerFragment" />
+        <action
+            android:id="@+id/action_chattingFragment_to_imagePickerFragment"
+            app:destination="@id/imagePickerFragment" />
     </fragment>
 
     <fragment
@@ -54,4 +57,9 @@
             app:popUpTo="@id/addChatFragment"
             app:popUpToInclusive="true" />
     </fragment>
+
+    <dialog
+        android:id="@+id/imagePickerFragment"
+        android:name="com.rndeep.fns_fantoo.ui.chatting.imagepicker.ImagePickerFragment"
+        android:label="ImagePickerFragment" />
 </navigation>
