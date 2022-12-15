@@ -28,7 +28,8 @@ import com.skydoves.landscapist.glide.GlideImage
 
 @Composable
 fun ProfileDetailScreen(
-    profileImage: String
+    profileImage: String,
+    onClickCancel: () -> Unit
 ) {
     Box(
         modifier = Modifier,
@@ -37,7 +38,7 @@ fun ProfileDetailScreen(
         ProfileDetailContent(
             modifier = Modifier.padding(top = 27.dp),
             userName = "Dasol",
-            onClickCancel = {}
+            onClickCancel = onClickCancel,
         )
 
         ProfileImage(
@@ -188,6 +189,7 @@ fun ProfileImage(
 @Composable
 fun ProfileDetailScreenPreview() {
     ProfileDetailScreen(
-        profileImage = "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMjA2MjFfMjYz%2FMDAxNjU1NzgxMTkyMTU5.YO7UnyTXMzeXg02Jz1tPCDba5Nsr7m-vuOMGwT1WXfEg.GfjVMhmbCK2UuWqIcvtpCPfvhX39IvwQ7smctj0-3I8g.JPEG.gydls004%2FInternet%25A3%25DF20220621%25A3%25DF121040%25A3%25DF8.jpeg&type=sc960_832"
+        profileImage = "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMjA2MjFfMjYz%2FMDAxNjU1NzgxMTkyMTU5.YO7UnyTXMzeXg02Jz1tPCDba5Nsr7m-vuOMGwT1WXfEg.GfjVMhmbCK2UuWqIcvtpCPfvhX39IvwQ7smctj0-3I8g.JPEG.gydls004%2FInternet%25A3%25DF20220621%25A3%25DF121040%25A3%25DF8.jpeg&type=sc960_832",
+        onClickCancel = {}
     )
 }
