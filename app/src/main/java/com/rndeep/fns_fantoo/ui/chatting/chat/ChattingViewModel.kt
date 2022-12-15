@@ -20,6 +20,11 @@ class ChattingViewModel @Inject constructor() : ViewModel() {
         Log.d("sujini", "setTranslateMode: $onOff")
         _chatUiState.value = _chatUiState.value.copy(translateMode = onOff)
     }
+
+    // temp code
+    fun setUserBlock(blocked: Boolean) {
+        _chatUiState.value = _chatUiState.value.copy(userBlocked = blocked)
+    }
 }
 
 val testUiState = ChatUiState(

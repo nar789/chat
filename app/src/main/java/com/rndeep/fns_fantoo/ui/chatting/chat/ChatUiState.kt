@@ -6,7 +6,8 @@ import java.util.*
 
 data class ChatUiState(
     val messages: List<Message>,
-    val translateMode: Boolean = false
+    val translateMode: Boolean = false,
+    val userBlocked: Boolean = false
 )
 
 val dateFormat = SimpleDateFormat("yyyy.MM.dd", Locale.ROOT)

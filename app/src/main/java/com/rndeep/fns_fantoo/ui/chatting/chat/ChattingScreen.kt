@@ -51,7 +51,6 @@ fun ChattingScreen(
     uiState: ChatUiState,
     modifier: Modifier = Modifier,
     titleText: String,
-    userBlocked: Boolean = false,
     onMessageSent: (String) -> Unit,
     onTranslateClicked: () -> Unit,
     onImageClicked: (String) -> Unit,
@@ -89,7 +88,7 @@ fun ChattingScreen(
                 )
             }
 
-            if (userBlocked) {
+            if (uiState.userBlocked) {
                 UserBlockView(onClickUnBlock = onClickUnBlock)
             } else {
                 BottomEditText(
@@ -575,13 +574,15 @@ fun UserBlockView(
     onClickUnBlock: () -> Unit
 ) {
     Surface(
-        modifier = modifier.size(360.dp, height = 120.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .heightIn(120.dp),
         color = colorResource(R.color.state_enable_gray_25),
         border = BorderStroke((0.5).dp, Color(0x1e000000))
     ) {
         Column(
             modifier = Modifier
-                .fillMaxSize(),
+                .fillMaxWidth(),
             verticalArrangement = Arrangement.Bottom
         ) {
             Text(
@@ -601,7 +602,9 @@ fun UserBlockView(
                 onClick = onClickUnBlock,
                 colors = ButtonDefaults.buttonColors(
                     backgroundColor = colorResource(R.color.state_enable_gray_400)
-                )
+                ),
+                shape = RoundedCornerShape(100.dp),
+                elevation = null
             ) {
                 Text(
                     text = stringResource(R.string.chatting_unblock_btn),
@@ -619,7 +622,8 @@ fun UserBlockView(
 fun ChatScreenPreview() {
     MaterialTheme {
         ChattingScreen(
-            testUiState, Modifier,
+            testUiState.copy(userBlocked = true),
+            Modifier,
             "Dasol",
             onMessageSent = {},
             onTranslateClicked = {},

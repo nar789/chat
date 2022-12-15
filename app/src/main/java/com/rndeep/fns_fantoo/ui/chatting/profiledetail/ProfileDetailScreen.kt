@@ -29,7 +29,9 @@ import com.skydoves.landscapist.glide.GlideImage
 @Composable
 fun ProfileDetailScreen(
     profileImage: String,
-    onClickCancel: () -> Unit
+    userBlocked: Boolean = false,
+    onClickCancel: () -> Unit,
+    onClickBlock: (Boolean) -> Unit
 ) {
     Box(
         modifier = Modifier,
@@ -38,7 +40,9 @@ fun ProfileDetailScreen(
         ProfileDetailContent(
             modifier = Modifier.padding(top = 27.dp),
             userName = "Dasol",
+            userBlocked = userBlocked,
             onClickCancel = onClickCancel,
+            onClickBlock = onClickBlock
         )
 
         ProfileImage(
@@ -52,7 +56,9 @@ fun ProfileDetailScreen(
 fun ProfileDetailContent(
     modifier: Modifier = Modifier,
     userName: String,
-    onClickCancel: () -> Unit
+    userBlocked: Boolean,
+    onClickCancel: () -> Unit,
+    onClickBlock: (Boolean) -> Unit
 ) {
     Surface(
         modifier = modifier
@@ -92,17 +98,22 @@ fun ProfileDetailContent(
                     .padding(top = 14.dp, bottom = 29.dp),
                 horizontalArrangement = Arrangement.Center
             ) {
+                var followState by remember { mutableStateOf(false) }
+
                 IconSelector(
                     modifier = Modifier,
                     imageSource = painterResource(R.drawable.icon_outline_addfriend),
                     buttonName = stringResource(R.string.profile_detail_follow_btn),
-                    onClick = {}
+                    checked = followState,
+                    onClick = { followState = it }
                 )
+
                 IconSelector(
                     modifier = Modifier,
                     imageSource = painterResource(R.drawable.icon_outline_blockaccount),
                     buttonName = stringResource(R.string.profile_detail_block_btn),
-                    onClick = {}
+                    checked = userBlocked,
+                    onClick = onClickBlock
                 )
             }
         }
@@ -114,13 +125,13 @@ fun IconSelector(
     modifier: Modifier,
     imageSource: Painter,
     buttonName: String,
-    onClick: () -> Unit
+    checked: Boolean,
+    onClick: (Boolean) -> Unit
 ) {
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        var checked by remember { mutableStateOf(false) }
         val (buttonColor, textColor) = if (checked) {
             colorResource(R.color.bg_light_gray_50) to colorResource(R.color.primary_500)
         } else {
@@ -140,7 +151,7 @@ fun IconSelector(
             modifier = Modifier
                 .height(26.dp)
                 .widthIn(50.dp)
-                .clickable { onClick(); checked = !checked },
+                .clickable { onClick(!checked) },
             shape = RoundedCornerShape(6.dp),
             color = buttonColor,
             border = BorderStroke(1.dp, colorResource(R.color.primary_500)),
@@ -190,6 +201,7 @@ fun ProfileImage(
 fun ProfileDetailScreenPreview() {
     ProfileDetailScreen(
         profileImage = "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMjA2MjFfMjYz%2FMDAxNjU1NzgxMTkyMTU5.YO7UnyTXMzeXg02Jz1tPCDba5Nsr7m-vuOMGwT1WXfEg.GfjVMhmbCK2UuWqIcvtpCPfvhX39IvwQ7smctj0-3I8g.JPEG.gydls004%2FInternet%25A3%25DF20220621%25A3%25DF121040%25A3%25DF8.jpeg&type=sc960_832",
-        onClickCancel = {}
+        onClickCancel = {},
+        onClickBlock = {}
     )
 }
