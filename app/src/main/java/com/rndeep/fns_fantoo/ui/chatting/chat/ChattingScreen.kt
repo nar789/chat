@@ -51,12 +51,13 @@ fun ChattingScreen(
     uiState: ChatUiState,
     modifier: Modifier = Modifier,
     titleText: String,
-    userBlocked: Boolean = false,
     onMessageSent: (String) -> Unit,
     onTranslateClicked: () -> Unit,
     onImageClicked: (String) -> Unit,
     onImageSelectorClicked: () -> Unit,
-    onClickUnBlock: () -> Unit = {}
+    onClickUnBlock: () -> Unit = {},
+    onClickAuthor: (Long) -> Unit = {},
+    onClickMore: () -> Unit = {}
 ) {
     val messageList = uiState.messages
 
@@ -68,13 +69,15 @@ fun ChattingScreen(
             ChatHeader(
                 titleText,
                 isTranslateModeOn = uiState.translateMode,
-                onTranslateClicked = onTranslateClicked
+                onTranslateClicked = onTranslateClicked,
+                onClickMore = onClickMore
             )
             Box(modifier = Modifier.weight(1f)) {
                 Messages(
                     messages = messageList,
                     modifier = Modifier.fillMaxSize(),
-                    onImageClicked = onImageClicked
+                    onImageClicked = onImageClicked,
+                    onClickAuthor = onClickAuthor
                 )
                 DateFloatingText(
                     modifier = Modifier
@@ -85,7 +88,7 @@ fun ChattingScreen(
                 )
             }
 
-            if (userBlocked) {
+            if (uiState.userBlocked) {
                 UserBlockView(onClickUnBlock = onClickUnBlock)
             } else {
                 BottomEditText(
@@ -101,7 +104,8 @@ fun ChattingScreen(
 fun Messages(
     messages: List<Message>,
     modifier: Modifier,
-    onImageClicked: (String) -> Unit
+    onImageClicked: (String) -> Unit,
+    onClickAuthor: (Long) -> Unit
 ) {
     Surface(
         modifier = modifier,
@@ -130,7 +134,8 @@ fun Messages(
                         isFirstMessageByAuthor = isFirstMessageByAuthor,
                         isLastMessageByAuthor = isLastMessageByAuthor,
                         timestampVisible = nextHour != item.hourText || isLastMessageByAuthor,
-                        onImageClicked = onImageClicked
+                        onImageClicked = onImageClicked,
+                        onClickAuthor = onClickAuthor
                     )
                 }
             }
@@ -145,11 +150,12 @@ fun MessageItem(
     isFirstMessageByAuthor: Boolean,
     isLastMessageByAuthor: Boolean,
     timestampVisible: Boolean,
-    onImageClicked: (String) -> Unit
+    onImageClicked: (String) -> Unit,
+    onClickAuthor: (Long) -> Unit
 ) {
     Column {
         if (isFirstMessageByAuthor && !isMe) {
-            AuthorAndName(message = message)
+            AuthorAndName(message = message, onClickAuthor = onClickAuthor)
             Spacer(modifier = Modifier.height(1.dp))
         }
 
@@ -187,9 +193,13 @@ fun MessageItem(
 
 @Composable
 fun AuthorAndName(
-    message: Message
+    message: Message,
+    onClickAuthor: (Long) -> Unit
 ) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
+    Row(
+        modifier = Modifier.clickable { onClickAuthor(message.authorId) },
+        verticalAlignment = Alignment.CenterVertically
+    ) {
         GlideImage(
             modifier = Modifier
                 .size(22.dp)
@@ -450,6 +460,7 @@ fun ChatHeader(
     titleText: String,
     isTranslateModeOn: Boolean,
     onTranslateClicked: () -> Unit,
+    onClickMore: () -> Unit
 ) {
     Surface(
         Modifier
@@ -509,7 +520,7 @@ fun ChatHeader(
             Image(
                 modifier = Modifier
                     .size(36.dp)
-                    .clickable { }
+                    .clickable { onClickMore() }
                     .padding(5.dp)
                     .constrainAs(moreBtn) {
                         start.linkTo(translateBtn.end)
@@ -563,13 +574,15 @@ fun UserBlockView(
     onClickUnBlock: () -> Unit
 ) {
     Surface(
-        modifier = modifier.size(360.dp, height = 120.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .heightIn(120.dp),
         color = colorResource(R.color.state_enable_gray_25),
         border = BorderStroke((0.5).dp, Color(0x1e000000))
     ) {
         Column(
             modifier = Modifier
-                .fillMaxSize(),
+                .fillMaxWidth(),
             verticalArrangement = Arrangement.Bottom
         ) {
             Text(
@@ -589,7 +602,9 @@ fun UserBlockView(
                 onClick = onClickUnBlock,
                 colors = ButtonDefaults.buttonColors(
                     backgroundColor = colorResource(R.color.state_enable_gray_400)
-                )
+                ),
+                shape = RoundedCornerShape(100.dp),
+                elevation = null
             ) {
                 Text(
                     text = stringResource(R.string.chatting_unblock_btn),
@@ -607,7 +622,8 @@ fun UserBlockView(
 fun ChatScreenPreview() {
     MaterialTheme {
         ChattingScreen(
-            testUiState, Modifier,
+            testUiState.copy(userBlocked = true),
+            Modifier,
             "Dasol",
             onMessageSent = {},
             onTranslateClicked = {},

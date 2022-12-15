@@ -14,10 +14,11 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.rndeep.fns_fantoo.R
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class ImagePickerFragment : BottomSheetDialogFragment() {
+class ImagePickerDialog @Inject constructor() : BottomSheetDialogFragment() {
 
     val viewModel: ImagePickerViewModel by viewModels()
 

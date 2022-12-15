@@ -6,7 +6,8 @@ import java.util.*
 
 data class ChatUiState(
     val messages: List<Message>,
-    val translateMode: Boolean = false
+    val translateMode: Boolean = false,
+    val userBlocked: Boolean = false
 )
 
 val dateFormat = SimpleDateFormat("yyyy.MM.dd", Locale.ROOT)
@@ -14,7 +15,9 @@ val hourFormat = SimpleDateFormat("a hh:mm", Locale.ROOT)
 
 @Immutable
 data class Message(
+    val id: Long = 0,
     val content: String = "",
+    val authorId: Long = 0,
     val authorName: String = "",
     val authorImage: String? = null,
     private val timestamp: Long = System.currentTimeMillis(),

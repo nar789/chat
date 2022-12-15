@@ -16,7 +16,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class ChattingFragment : Fragment() {
 
-    val viewModel: ChattingViewModel by viewModels()
+    val viewModel: ChattingViewModel by viewModels({ findNavController().getBackStackEntry(R.id.chattingFragment) })
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,10 +35,14 @@ class ChattingFragment : Fragment() {
                         onTranslateClicked = { viewModel.setTranslateMode(!uiState.translateMode) },
                         onImageClicked = { imageUrl ->
                             findNavController().navigate(
-                                ChattingFragmentDirections.actionChattingFragmentToImageViewerFragment(imageUrl)
+                                ChattingFragmentDirections.actionChattingFragmentToImageViewerFragment(
+                                    imageUrl
+                                )
                             )
                         },
-                        onImageSelectorClicked = { navigateToImagePicker() }
+                        onImageSelectorClicked = { navigateToImagePicker() },
+                        onClickAuthor = { navigateToProfileDetail(it) },
+                        onClickMore = { navigateToProfileSetting() }
                     )
                 }
             }
@@ -47,5 +51,15 @@ class ChattingFragment : Fragment() {
 
     private fun navigateToImagePicker() {
         findNavController().navigate(R.id.action_chattingFragment_to_imagePickerFragment)
+    }
+
+    private fun navigateToProfileDetail(userId: Long) {
+        val direction =
+            ChattingFragmentDirections.actionChattingFragmentToProfileDetailDialog(userId)
+        findNavController().navigate(direction)
+    }
+
+    private fun navigateToProfileSetting() {
+        findNavController().navigate(R.id.action_chattingFragment_to_chattingSettingDialog)
     }
 }
