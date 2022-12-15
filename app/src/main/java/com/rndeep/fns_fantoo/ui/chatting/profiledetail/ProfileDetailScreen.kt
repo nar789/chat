@@ -2,10 +2,14 @@ package com.rndeep.fns_fantoo.ui.chatting.profiledetail
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
-import androidx.compose.runtime.Composable
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
@@ -52,7 +56,7 @@ fun ProfileDetailContent(
     Surface(
         modifier = modifier
             .width(276.dp)
-            .height(192.dp),
+            .heightIn(192.dp),
         shape = RoundedCornerShape(32.dp),
         color = colorResource(R.color.gray_25)
     ) {
@@ -84,7 +88,7 @@ fun ProfileDetailContent(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 14.dp),
+                    .padding(top = 14.dp, bottom = 29.dp),
                 horizontalArrangement = Arrangement.Center
             ) {
                 IconSelector(
@@ -115,28 +119,38 @@ fun IconSelector(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        var checked by remember { mutableStateOf(false) }
+        val (buttonColor, textColor) = if (checked) {
+            colorResource(R.color.bg_light_gray_50) to colorResource(R.color.primary_500)
+        } else {
+            colorResource(R.color.primary_500) to colorResource(R.color.gray_25)
+        }
+
         Image(
             modifier = Modifier
                 .padding(start = 34.dp, end = 34.dp, top = 14.dp)
                 .size(32.dp),
             painter = imageSource,
-            contentDescription = null
+            contentDescription = null,
+            contentScale = ContentScale.Fit
         )
-        Button(
-            modifier = Modifier.padding(top = 8.dp),
-            onClick = onClick,
-            colors = ButtonDefaults.buttonColors(
-                backgroundColor = colorResource(R.color.primary_500)
-            ),
+        Spacer(Modifier.size(8.dp))
+        Surface(
+            modifier = Modifier
+                .height(26.dp)
+                .widthIn(50.dp)
+                .clickable { onClick(); checked = !checked },
+            shape = RoundedCornerShape(6.dp),
+            color = buttonColor,
             border = BorderStroke(1.dp, colorResource(R.color.primary_500)),
-            contentPadding = PaddingValues(3.dp, 5.dp)
         ) {
             Text(
+                modifier = Modifier.padding(3.dp, 5.dp),
                 text = buttonName,
                 fontSize = 12.sp,
                 lineHeight = 18.sp,
                 textAlign = TextAlign.Center,
-                color = colorResource(id = R.color.state_enable_gray_25)
+                color = textColor
             )
         }
     }
@@ -162,7 +176,8 @@ fun ProfileImage(
                 Image(
                     modifier = Modifier.size(54.dp),
                     painter = painterResource(R.drawable.profile_character1),
-                    contentDescription = null)
+                    contentDescription = null
+                )
             },
             contentScale = ContentScale.Fit
         )
