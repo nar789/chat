@@ -34,7 +34,10 @@
             app:destination="@id/imageViewerFragment" />
         <action
             android:id="@+id/action_chattingFragment_to_imagePickerFragment"
-            app:destination="@id/imagePickerFragment" />
+            app:destination="@id/imagePickerDialog" />
+        <action
+            android:id="@+id/action_chattingFragment_to_profileDetailDialog"
+            app:destination="@id/profileDetailDialog" />
     </fragment>
 
     <fragment

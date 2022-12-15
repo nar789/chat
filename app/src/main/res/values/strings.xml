@@ -806,6 +806,8 @@
     <string name="image_picker_done_btn">완료</string>
     <string name="image_picker_title">모든 사진</string>
     <string name="image_picker_sub_title">%d장 선택</string>
+    <string name="profile_detail_follow_btn">팔로우</string>
+    <string name="profile_detail_block_btn">차단하기</string>
 <!--    -->
 
 </resources>
