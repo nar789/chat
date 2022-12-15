@@ -24,6 +24,27 @@
             android:name="chatId"
             app:argType="long"
             app:nullable="false" />
+        <argument
+            android:name="chatTitle"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_chattingFragment_to_imageViewerFragment"
+            app:destination="@id/imageViewerFragment" />
+        <action
+            android:id="@+id/action_chattingFragment_to_imagePickerFragment"
+            app:destination="@id/imagePickerFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/imageViewerFragment"
+        android:name="com.rndeep.fns_fantoo.ui.chatting.imageviewer.ImageViewerFragment"
+        android:label="fragment_image_viewer">
+        <argument
+            android:name="imageUrl"
+            app:argType="string"
+            app:nullable="false" />
     </fragment>
 
     <fragment
@@ -36,4 +57,9 @@
             app:popUpTo="@id/addChatFragment"
             app:popUpToInclusive="true" />
     </fragment>
+
+    <dialog
+        android:id="@+id/imagePickerFragment"
+        android:name="com.rndeep.fns_fantoo.ui.chatting.imagepicker.ImagePickerFragment"
+        android:label="ImagePickerFragment" />
 </navigation>
