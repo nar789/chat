@@ -17,7 +17,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
-class ImagePickerFragment : BottomSheetDialogFragment() {
+class ImagePickerDialog : BottomSheetDialogFragment() {
 
     val viewModel: ImagePickerViewModel by viewModels()
 
