@@ -29,5 +29,11 @@
     <fragment
         android:id="@+id/addChatFragment"
         android:name="com.rndeep.fns_fantoo.ui.chatting.addchat.AddChatFragment"
-        android:label="framgnet_add_chat"/>
+        android:label="framgnet_add_chat">
+        <action
+            android:id="@+id/action_addChatFragment_to_chattingFragment"
+            app:destination="@id/chattingFragment"
+            app:popUpTo="@id/addChatFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
 </navigation>

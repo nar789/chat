@@ -1,7 +1,6 @@
 package com.rndeep.fns_fantoo.ui.chatting.chatlist
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -18,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -215,8 +215,12 @@ fun ChatListContent(
                     .clip(RoundedCornerShape(16.dp)),
                 imageModel = chat.profileImg,
                 failure = {
-                    Image(painterResource(R.drawable.character_main2), contentDescription = null)
-                }
+                    Image(
+                        painterResource(R.drawable.profile_character11),
+                        contentDescription = null
+                    )
+                },
+                contentScale = ContentScale.Crop
             )
 
             Column(
