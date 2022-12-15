@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Surface
 import androidx.compose.material.Switch
+import androidx.compose.material.SwitchDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -81,7 +82,11 @@ fun ChattingSettingContent(
             Switch(
                 modifier = Modifier.size(48.dp, 24.dp),
                 checked = onOff,
-                onCheckedChange = { onOff = it })
+                onCheckedChange = { onOff = it },
+                colors = SwitchDefaults.colors(
+                    checkedThumbColor = colorResource(R.color.primary_300)
+                )
+            )
         }
         Spacer(modifier = Modifier.size(10.dp))
         Row(
