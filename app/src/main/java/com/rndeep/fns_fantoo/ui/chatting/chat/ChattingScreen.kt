@@ -57,7 +57,8 @@ fun ChattingScreen(
     onImageSelectorClicked: () -> Unit,
     onClickUnBlock: () -> Unit = {},
     onClickAuthor: (Long) -> Unit = {},
-    onClickMore: () -> Unit = {}
+    onClickMore: () -> Unit = {},
+    onBack: () -> Unit = {}
 ) {
     val messageList = uiState.messages
 
@@ -70,7 +71,8 @@ fun ChattingScreen(
                 titleText,
                 isTranslateModeOn = uiState.translateMode,
                 onTranslateClicked = onTranslateClicked,
-                onClickMore = onClickMore
+                onClickMore = onClickMore,
+                onBack = onBack
             )
             Box(modifier = Modifier.weight(1f)) {
                 Messages(
@@ -460,7 +462,8 @@ fun ChatHeader(
     titleText: String,
     isTranslateModeOn: Boolean,
     onTranslateClicked: () -> Unit,
-    onClickMore: () -> Unit
+    onClickMore: () -> Unit,
+    onBack: () -> Unit
 ) {
     Surface(
         Modifier
@@ -473,7 +476,7 @@ fun ChatHeader(
             Image(
                 modifier = Modifier
                     .size(36.dp)
-                    .clickable { }
+                    .clickable { onBack() }
                     .padding(4.dp)
                     .constrainAs(backBtn) {
                         start.linkTo(parent.start, margin = 10.dp)
