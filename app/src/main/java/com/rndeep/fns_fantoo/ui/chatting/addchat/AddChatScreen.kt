@@ -328,11 +328,6 @@ fun AddChatSearchItem(query: State<String>, updateQuery: (query: String) -> Unit
 }
 
 @Composable
-fun AddChatFollowList() {
-
-}
-
-@Composable
 fun AddChatTitleItem(@StringRes titleResId: Int, count: Int? = null) {
     Surface(
         Modifier
@@ -348,11 +343,6 @@ fun AddChatTitleItem(@StringRes titleResId: Int, count: Int? = null) {
             color = colorResource(id = R.color.gray_600)
         )
     }
-}
-
-@Composable()
-fun AddChatFanTooList() {
-
 }
 
 @Composable
