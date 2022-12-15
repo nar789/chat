@@ -24,14 +24,25 @@ class AddChatFragment : Fragment() {
             activity?.window?.statusBarColor = it.getColor(R.color.gray_25)
             it.setDarkStatusBarIcon()
         }
+        initObservers()
         return ComposeView(requireContext()).apply {
             setContent {
-                AddChatScreen(::onBack)
+                AddChatScreen(viewModel, ::onBack)
             }
         }
     }
 
     private fun onBack() {
         findNavController().popBackStack()
+    }
+
+    private fun initObservers() {
+        viewModel.navigateToChat.observe(viewLifecycleOwner) { chatId ->
+            findNavController().navigate(
+                AddChatFragmentDirections.actionAddChatFragmentToChattingFragment(
+                    chatId
+                )
+            )
+        }
     }
 }
