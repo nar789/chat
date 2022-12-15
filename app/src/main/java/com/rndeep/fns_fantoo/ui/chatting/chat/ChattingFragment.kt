@@ -41,7 +41,8 @@ class ChattingFragment : Fragment() {
                             )
                         },
                         onImageSelectorClicked = { navigateToImagePicker() },
-                        onClickAuthor = { navigateToProfileDetail(it) }
+                        onClickAuthor = { navigateToProfileDetail(it) },
+                        onClickMore = { navigateToProfileSetting() }
                     )
                 }
             }
@@ -56,5 +57,9 @@ class ChattingFragment : Fragment() {
         val direction =
             ChattingFragmentDirections.actionChattingFragmentToProfileDetailDialog(userId)
         findNavController().navigate(direction)
+    }
+
+    private fun navigateToProfileSetting() {
+        findNavController().navigate(R.id.action_chattingFragment_to_chattingSettingDialog)
     }
 }
