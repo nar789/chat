@@ -69,5 +69,9 @@
     <dialog
         android:id="@+id/profileDetailDialog"
         android:name="com.rndeep.fns_fantoo.ui.chatting.profiledetail.ProfileDetailDialog"
-        android:label="ProfileDetailDialog" />
+        android:label="ProfileDetailDialog" >
+        <argument
+            android:name="userId"
+            app:argType="long" />
+    </dialog>
 </navigation>

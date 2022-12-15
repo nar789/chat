@@ -14,7 +14,9 @@ val hourFormat = SimpleDateFormat("a hh:mm", Locale.ROOT)
 
 @Immutable
 data class Message(
+    val id: Long = 0,
     val content: String = "",
+    val authorId: Long = 0,
     val authorName: String = "",
     val authorImage: String? = null,
     private val timestamp: Long = System.currentTimeMillis(),

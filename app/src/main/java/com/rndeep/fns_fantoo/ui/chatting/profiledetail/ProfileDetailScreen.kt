@@ -159,7 +159,10 @@ fun ProfileImage(
             imageModel = imageUrl,
             previewPlaceholder = R.drawable.profile_character1,
             failure = {
-                Image(painterResource(R.drawable.profile_character1), contentDescription = null)
+                Image(
+                    modifier = Modifier.size(54.dp),
+                    painter = painterResource(R.drawable.profile_character1),
+                    contentDescription = null)
             },
             contentScale = ContentScale.Fit
         )

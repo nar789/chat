@@ -35,10 +35,13 @@ class ChattingFragment : Fragment() {
                         onTranslateClicked = { viewModel.setTranslateMode(!uiState.translateMode) },
                         onImageClicked = { imageUrl ->
                             findNavController().navigate(
-                                ChattingFragmentDirections.actionChattingFragmentToImageViewerFragment(imageUrl)
+                                ChattingFragmentDirections.actionChattingFragmentToImageViewerFragment(
+                                    imageUrl
+                                )
                             )
                         },
-                        onImageSelectorClicked = { navigateToImagePicker() }
+                        onImageSelectorClicked = { navigateToImagePicker() },
+                        onClickAuthor = { navigateToProfileDetail(it) }
                     )
                 }
             }
@@ -47,5 +50,11 @@ class ChattingFragment : Fragment() {
 
     private fun navigateToImagePicker() {
         findNavController().navigate(R.id.action_chattingFragment_to_imagePickerFragment)
+    }
+
+    private fun navigateToProfileDetail(userId: Long) {
+        val direction =
+            ChattingFragmentDirections.actionChattingFragmentToProfileDetailDialog(userId)
+        findNavController().navigate(direction)
     }
 }

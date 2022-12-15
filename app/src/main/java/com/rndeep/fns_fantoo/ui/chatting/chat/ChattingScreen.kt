@@ -56,7 +56,8 @@ fun ChattingScreen(
     onTranslateClicked: () -> Unit,
     onImageClicked: (String) -> Unit,
     onImageSelectorClicked: () -> Unit,
-    onClickUnBlock: () -> Unit = {}
+    onClickUnBlock: () -> Unit = {},
+    onClickAuthor: (Long) -> Unit = {}
 ) {
     val messageList = uiState.messages
 
@@ -74,7 +75,8 @@ fun ChattingScreen(
                 Messages(
                     messages = messageList,
                     modifier = Modifier.fillMaxSize(),
-                    onImageClicked = onImageClicked
+                    onImageClicked = onImageClicked,
+                    onClickAuthor = onClickAuthor
                 )
                 DateFloatingText(
                     modifier = Modifier
@@ -101,7 +103,8 @@ fun ChattingScreen(
 fun Messages(
     messages: List<Message>,
     modifier: Modifier,
-    onImageClicked: (String) -> Unit
+    onImageClicked: (String) -> Unit,
+    onClickAuthor: (Long) -> Unit
 ) {
     Surface(
         modifier = modifier,
@@ -130,7 +133,8 @@ fun Messages(
                         isFirstMessageByAuthor = isFirstMessageByAuthor,
                         isLastMessageByAuthor = isLastMessageByAuthor,
                         timestampVisible = nextHour != item.hourText || isLastMessageByAuthor,
-                        onImageClicked = onImageClicked
+                        onImageClicked = onImageClicked,
+                        onClickAuthor = onClickAuthor
                     )
                 }
             }
@@ -145,11 +149,12 @@ fun MessageItem(
     isFirstMessageByAuthor: Boolean,
     isLastMessageByAuthor: Boolean,
     timestampVisible: Boolean,
-    onImageClicked: (String) -> Unit
+    onImageClicked: (String) -> Unit,
+    onClickAuthor: (Long) -> Unit
 ) {
     Column {
         if (isFirstMessageByAuthor && !isMe) {
-            AuthorAndName(message = message)
+            AuthorAndName(message = message, onClickAuthor = onClickAuthor)
             Spacer(modifier = Modifier.height(1.dp))
         }
 
@@ -187,9 +192,13 @@ fun MessageItem(
 
 @Composable
 fun AuthorAndName(
-    message: Message
+    message: Message,
+    onClickAuthor: (Long) -> Unit
 ) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
+    Row(
+        modifier = Modifier.clickable { onClickAuthor(message.authorId) },
+        verticalAlignment = Alignment.CenterVertically
+    ) {
         GlideImage(
             modifier = Modifier
                 .size(22.dp)
