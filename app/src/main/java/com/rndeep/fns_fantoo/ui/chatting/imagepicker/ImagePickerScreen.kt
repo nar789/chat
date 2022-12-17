@@ -1,14 +1,14 @@
 package com.rndeep.fns_fantoo.ui.chatting.imagepicker
 
+import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
@@ -25,21 +25,23 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
+import androidx.paging.compose.LazyPagingItems
+import coil.compose.rememberAsyncImagePainter
 import com.rndeep.fns_fantoo.R
-import com.skydoves.landscapist.glide.GlideImage
-import com.skydoves.landscapist.rememberDrawablePainter
 
 @Composable
 fun ImagePickerScreen(
+    images: LazyPagingItems<Uri>,
+    checkedImages: List<Uri>,
     onClickCancel: () -> Unit,
     onClickDone: () -> Unit,
-    onClickImage: (String) -> Unit
+    onClickImage: (image: Uri) -> Unit
 ) {
     Surface(
         modifier = Modifier
             .fillMaxSize()
             .paint(
-                painter = rememberDrawablePainter(
+                painter = rememberAsyncImagePainter(
                     ContextCompat.getDrawable(LocalContext.current, R.drawable.bg_popup_2),
                 ),
                 contentScale = ContentScale.FillBounds
@@ -50,11 +52,14 @@ fun ImagePickerScreen(
             PickerSelector(
                 modifier = Modifier.fillMaxWidth(),
                 onClickCancel = onClickCancel,
-                onClickDone = onClickDone
+                onClickDone = onClickDone,
+                imageCount = checkedImages.size
             )
             ImageGridContents(
                 modifier = Modifier.fillMaxSize(),
-                onClickImage = onClickImage
+                onClickImage = onClickImage,
+                images = images,
+                checkedImages = checkedImages
             )
         }
     }
@@ -65,6 +70,7 @@ fun PickerSelector(
     modifier: Modifier = Modifier,
     onClickCancel: () -> Unit,
     onClickDone: () -> Unit,
+    imageCount: Int,
     doneBtnEnable: Boolean = true
 ) {
     Row(
@@ -94,7 +100,7 @@ fun PickerSelector(
                 textAlign = TextAlign.Center
             )
             Text(
-                text = String.format(stringResource(R.string.image_picker_sub_title), 0),
+                text = String.format(stringResource(R.string.image_picker_sub_title), imageCount),
                 fontSize = 12.sp,
                 lineHeight = 18.sp,
                 color = colorResource(R.color.gray_900),
@@ -117,23 +123,22 @@ fun PickerSelector(
 @Composable
 fun ImageGridContents(
     modifier: Modifier = Modifier,
-    onClickImage: (String) -> Unit
+    images: LazyPagingItems<Uri>,
+    checkedImages: List<Uri>,
+    onClickImage: (Uri) -> Unit
 ) {
-    val images by remember { mutableStateOf(testImages) }
-
     LazyVerticalGrid(
         modifier = modifier,
         columns = GridCells.Fixed(3),
         verticalArrangement = Arrangement.spacedBy(3.dp),
         horizontalArrangement = Arrangement.spacedBy(3.dp)
     ) {
-        itemsIndexed(images) { index, item ->
-            var selected by remember { mutableStateOf(false) }
-
+        items(images.itemCount) { index ->
+            val item = images[index]
             ImagePickerItem(
-                image = item,
-                selected = selected,
-                onClickImage = { selected = !selected }
+                image = item ?: return@items,
+                selected = checkedImages.contains(item),
+                onClickImage = onClickImage
             )
         }
     }
@@ -141,12 +146,12 @@ fun ImageGridContents(
 
 @Composable
 fun ImagePickerItem(
-    image: String,
+    image: Uri,
     selected: Boolean,
-    onClickImage: (String) -> Unit
+    onClickImage: (Uri) -> Unit
 ) {
     Box(
-        modifier = Modifier.clickable { onClickImage("") },
+        modifier = Modifier.clickable { onClickImage(image) },
         contentAlignment = Alignment.Center
     ) {
         val colorFilter = if (selected) {
@@ -155,15 +160,18 @@ fun ImagePickerItem(
             null
         }
 
-        GlideImage(
-            modifier = Modifier.aspectRatio(1f),
-            imageModel = image,
-            previewPlaceholder = R.drawable.profile_character1,
-            failure = {
-                Image(painterResource(R.drawable.profile_character1), contentDescription = null)
-            },
-            contentScale = ContentScale.Fit,
-            colorFilter = colorFilter
+        val defaultImage = painterResource(R.drawable.profile_character1)
+        Image(
+            modifier = Modifier
+                .aspectRatio(1f)
+                .size(118.dp),
+            contentScale = ContentScale.Crop,
+            colorFilter = colorFilter,
+            painter = rememberAsyncImagePainter(
+                model = image,
+                fallback = defaultImage,
+                error = defaultImage
+            ), contentDescription = null
         )
 
         if (selected) {
@@ -179,7 +187,7 @@ fun ImagePickerItem(
 @Preview
 @Composable
 fun ImagePickerScreenPreview() {
-    ImagePickerScreen({}, {}, {})
+//    ImagePickerScreen(, emptyList(), {}, {}, {})
 }
 
 val testImages =

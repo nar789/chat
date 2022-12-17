@@ -30,12 +30,12 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import coil.compose.rememberAsyncImagePainter
 import com.rndeep.fns_fantoo.R
 import com.rndeep.fns_fantoo.data.remote.model.chat.ChatListResult
 import com.rndeep.fns_fantoo.ui.chatting.compose.FantooChatTypography
 import com.rndeep.fns_fantoo.utils.TimeUtils.convertDiffTime
 import com.rndeep.fns_fantoo.utils.toDp
-import com.skydoves.landscapist.glide.GlideImage
 import kotlin.math.roundToInt
 
 
@@ -208,19 +208,20 @@ fun ChatListContent(
                     onClickChat(chat.chatId)
                 }
         ) {
-            GlideImage(
+            val defaultImage = painterResource(R.drawable.profile_character11)
+            Image(
                 modifier = Modifier
                     .size(46.dp, 46.dp)
                     .align(Alignment.CenterVertically)
                     .clip(RoundedCornerShape(16.dp)),
-                imageModel = chat.profileImg,
-                failure = {
-                    Image(
-                        painterResource(R.drawable.profile_character11),
-                        contentDescription = null
-                    )
-                },
-                contentScale = ContentScale.Crop
+                painter = rememberAsyncImagePainter(
+                    model = chat.profileImg,
+                    fallback = defaultImage,
+                    error = defaultImage,
+                    placeholder = defaultImage
+                ),
+                contentScale = ContentScale.Crop,
+                contentDescription = null
             )
 
             Column(

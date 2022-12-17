@@ -41,10 +41,9 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.core.content.ContextCompat
+import coil.compose.rememberAsyncImagePainter
 import com.rndeep.fns_fantoo.R
 import com.rndeep.fns_fantoo.ui.chatting.compose.FantooChatTypography
-import com.skydoves.landscapist.glide.GlideImage
-import com.skydoves.landscapist.rememberDrawablePainter
 
 @Composable
 fun ChattingScreen(
@@ -200,15 +199,18 @@ fun AuthorAndName(
         modifier = Modifier.clickable { onClickAuthor(message.authorId) },
         verticalAlignment = Alignment.CenterVertically
     ) {
-        GlideImage(
+        val defaultImage = painterResource(R.drawable.profile_character1)
+        Image(
             modifier = Modifier
                 .size(22.dp)
                 .clip(RoundedCornerShape(6.dp)),
-            imageModel = message.authorImage ?: R.drawable.profile_character1,
-            previewPlaceholder = R.drawable.profile_character1,
-            failure = {
-                Image(painterResource(R.drawable.profile_character1), contentDescription = null)
-            }
+            painter = rememberAsyncImagePainter(
+                model = message.authorImage,
+                fallback = defaultImage,
+                error = defaultImage,
+                placeholder = defaultImage
+            ),
+            contentDescription = null
         )
         Spacer(modifier = Modifier.size(6.dp))
         Text(
@@ -259,15 +261,18 @@ fun ImageMessageItem(
     message: Message,
     onImageClicked: (String) -> Unit
 ) {
-    GlideImage(
+    val defaultImage = painterResource(id = R.drawable.character_main2)
+    Image(
         modifier = Modifier
             .clickable { onImageClicked(message.image.orEmpty()) }
             .padding(4.dp)
             .widthIn(max = 149.dp)
             .clip(RoundedCornerShape(12.dp)),
-        imageModel = message.image,
-        previewPlaceholder = R.drawable.character_main2,
-        failure = { Text("image load failed") }
+        painter = rememberAsyncImagePainter(
+            model = message.image,
+            fallback = defaultImage, error = defaultImage, placeholder = defaultImage
+        ),
+        contentDescription = null
     )
 }
 
@@ -545,7 +550,7 @@ fun DateFloatingText(
         modifier = modifier
             .sizeIn(minWidth = 86.dp, minHeight = 24.dp)
             .paint(
-                painter = rememberDrawablePainter(
+                painter = rememberAsyncImagePainter(
                     ContextCompat.getDrawable(LocalContext.current, R.drawable.bg_chatting_date)
                 )
             )
