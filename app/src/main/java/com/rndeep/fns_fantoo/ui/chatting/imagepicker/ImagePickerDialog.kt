@@ -42,8 +42,10 @@ class ImagePickerDialog @Inject constructor() : BottomSheetDialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = BottomSheetDialog(requireContext(), R.style.TransparentDialog)
-        dialog.setOnShowListener {
 
+        dialog.setCancelable(false)
+        dialog.setCanceledOnTouchOutside(false)
+        dialog.setOnShowListener {
             val bottomSheetDialog = it as BottomSheetDialog
             val parentLayout =
                 bottomSheetDialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
@@ -51,6 +53,7 @@ class ImagePickerDialog @Inject constructor() : BottomSheetDialogFragment() {
                 val behaviour = BottomSheetBehavior.from(parent)
                 setupFullHeight(parent)
                 behaviour.state = BottomSheetBehavior.STATE_EXPANDED
+                behaviour.isDraggable = false
             }
         }
         return dialog
