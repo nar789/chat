@@ -4,6 +4,7 @@ import android.content.Context
 import com.rndeep.fns_fantoo.data.local.dao.*
 import com.rndeep.fns_fantoo.data.remote.api.*
 import com.rndeep.fns_fantoo.repositories.*
+import com.rndeep.fns_fantoo.ui.chatting.imagepicker.ImagePickerRepository
 import com.rndeep.fns_fantoo.ui.club.challenge.ClubChallengeRepository
 import com.rndeep.fns_fantoo.ui.club.create.ClubCreateRepository
 import com.rndeep.fns_fantoo.ui.club.join.ClubJoinRepository
@@ -255,5 +256,10 @@ class RepositoryModule {
         @NetworkModule.ApiServer clubService: ClubService
     ) : ClubNoticeRepository =
         ClubNoticeRepository(clubService)
+
+    @Singleton
+    @Provides
+    fun provideImagePickerRepository() : ImagePickerRepository =
+        ImagePickerRepository()
 
 }

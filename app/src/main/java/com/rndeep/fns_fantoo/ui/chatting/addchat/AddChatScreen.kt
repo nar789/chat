@@ -32,10 +32,10 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import coil.compose.rememberAsyncImagePainter
 import com.rndeep.fns_fantoo.R
 import com.rndeep.fns_fantoo.data.remote.model.chat.TmpUserInfo
 import com.rndeep.fns_fantoo.ui.chatting.compose.FantooChatTypography
-import com.skydoves.landscapist.glide.GlideImage
 
 @Composable
 fun AddChatScreen(viewModel: AddChatViewModel, onBack: () -> Unit) {
@@ -225,16 +225,20 @@ fun FollowerItem(userInfo: TmpUserInfo, isChecked: Boolean, onClick: (id: String
                 onClick(userInfo.loginId)
             }
     ) {
-        GlideImage(
-            imageModel = userInfo.userPhoto,
+        val defaultImage = painterResource(R.drawable.profile_character11)
+        Image(
+            painter = rememberAsyncImagePainter(
+                model = userInfo.userPhoto,
+                error = defaultImage,
+                fallback = defaultImage,
+                placeholder = defaultImage
+            ),
             modifier = Modifier
                 .size(38.dp)
                 .align(CenterVertically)
                 .clip(RoundedCornerShape(12.dp)),
-            failure = {
-                Image(painterResource(R.drawable.profile_character11), contentDescription = null)
-            },
-            contentScale = ContentScale.Crop
+            contentScale = ContentScale.Crop,
+            contentDescription = null
         )
 
         Text(
