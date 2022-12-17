@@ -22,9 +22,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.rememberAsyncImagePainter
 import com.rndeep.fns_fantoo.R
 import com.rndeep.fns_fantoo.ui.chatting.compose.FantooChatTypography
-import com.skydoves.landscapist.glide.GlideImage
 
 @Composable
 fun ProfileDetailScreen(
@@ -178,20 +178,19 @@ fun ProfileImage(
         border = BorderStroke(2.dp, colorResource(R.color.gray_25)),
         shape = RoundedCornerShape(16.dp)
     ) {
-        GlideImage(
+        val defaultImage = painterResource(R.drawable.profile_character1)
+        Image(
             modifier = Modifier
                 .size(54.dp)
                 .aspectRatio(1f),
-            imageModel = imageUrl,
-            previewPlaceholder = R.drawable.profile_character1,
-            failure = {
-                Image(
-                    modifier = Modifier.size(54.dp),
-                    painter = painterResource(R.drawable.profile_character1),
-                    contentDescription = null
-                )
-            },
-            contentScale = ContentScale.Fit
+            painter = rememberAsyncImagePainter(
+                model = imageUrl,
+                fallback = defaultImage,
+                error = defaultImage,
+                placeholder = defaultImage
+            ),
+            contentScale = ContentScale.Fit,
+            contentDescription = null
         )
     }
 }

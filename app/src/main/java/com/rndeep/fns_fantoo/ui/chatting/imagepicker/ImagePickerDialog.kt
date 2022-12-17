@@ -9,6 +9,7 @@ import android.view.WindowManager
 import androidx.compose.material.MaterialTheme
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.viewModels
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -33,11 +34,18 @@ class ImagePickerDialog @Inject constructor() : BottomSheetDialogFragment() {
                     ImagePickerScreen(
                         onClickCancel = { dismissAllowingStateLoss() },
                         onClickDone = { viewModel.sendImages(); dismissAllowingStateLoss() },
-                        onClickImage = { viewModel.selectImage(it) }
+                        onClickImage = { viewModel.selectImage(it) },
+                        images = viewModel.imageList.collectAsLazyPagingItems(),
+                        checkedImages = viewModel.checkedImages
                     )
                 }
             }
         }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel.loadImageList(requireActivity().contentResolver)
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
