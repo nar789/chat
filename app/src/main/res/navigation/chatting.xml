@@ -22,8 +22,7 @@
         android:label="fragment_chatting">
         <argument
             android:name="chatId"
-            app:argType="long"
-            app:nullable="false" />
+            app:argType="long" />
         <argument
             android:name="chatTitle"
             android:defaultValue="@null"
@@ -81,5 +80,9 @@
     <dialog
         android:id="@+id/chattingSettingDialog"
         android:name="com.rndeep.fns_fantoo.ui.chatting.chat.ChattingSettingDialog"
-        android:label="ChattingSettingDialog" />
+        android:label="ChattingSettingDialog" >
+        <argument
+            android:name="chatId"
+            app:argType="long" />
+    </dialog>
 </navigation>

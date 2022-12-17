@@ -3,13 +3,15 @@ package com.rndeep.fns_fantoo.ui.chatting.chat
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.CornerRadius
@@ -29,7 +31,11 @@ import androidx.compose.ui.unit.sp
 import com.rndeep.fns_fantoo.R
 
 @Composable
-fun ChattingSettingScreen() {
+fun ChattingSettingScreen(
+    isAlarmOn: Boolean,
+    onClickAlarm: (Boolean) -> Unit,
+    onClickLeave: () -> Unit
+) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
         color = colorResource(R.color.gray_25),
@@ -42,7 +48,12 @@ fun ChattingSettingScreen() {
         ) {
             IconMove(modifier = Modifier.align(Alignment.CenterHorizontally))
             Spacer(Modifier.size(10.dp))
-            ChattingSettingContent(modifier = Modifier.padding(top = 10.dp))
+            ChattingSettingContent(
+                modifier = Modifier.padding(top = 10.dp),
+                isAlarmOn = isAlarmOn,
+                onClickAlarm = onClickAlarm,
+                onClickLeave = onClickLeave
+            )
         }
     }
 }
@@ -62,19 +73,18 @@ fun IconMove(
 
 @Composable
 fun ChattingSettingContent(
-    modifier: Modifier
+    modifier: Modifier,
+    isAlarmOn: Boolean,
+    onClickAlarm: (Boolean) -> Unit,
+    onClickLeave: () -> Unit
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
         val settingItemModifier = Modifier
             .fillMaxWidth()
             .heightIn(34.dp)
 
-        var onOff by remember { mutableStateOf(true) }
-        val notiText = if (onOff) {
-            stringResource(R.string.chatting_setting_noti_on)
-        } else {
-            stringResource(R.string.chatting_setting_noti_off)
-        }
+        val notiText =
+            stringResource(if (isAlarmOn) R.string.chatting_setting_noti_on else R.string.chatting_setting_noti_off)
 
         Row(
             modifier = settingItemModifier,
@@ -88,13 +98,13 @@ fun ChattingSettingContent(
                 lineHeight = 22.sp
             )
             SettingSwitch(
-                checked = onOff,
-                onCheckedChange = { onOff = it }
+                checked = isAlarmOn,
+                onCheckedChange = { onClickAlarm(it) }
             )
         }
         Spacer(modifier = Modifier.size(10.dp))
         Row(
-            modifier = settingItemModifier,
+            modifier = settingItemModifier.clickable { onClickLeave() },
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
@@ -163,5 +173,5 @@ fun SettingSwitch(
 @Preview
 @Composable
 fun ChattingSettingScreenPreview() {
-    ChattingSettingScreen()
+    ChattingSettingScreen(true, {}, {})
 }
