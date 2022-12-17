@@ -1,5 +1,6 @@
 package com.rndeep.fns_fantoo.ui.chatting.addchat
 
+import android.util.Log
 import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -155,7 +156,7 @@ fun AddChatList(viewModel: AddChatViewModel) {
             .background(color = colorResource(id = R.color.gray_25))
     ) {
         if (followList.isNotEmpty()) {
-            itemsIndexed(followList) { index, user ->
+            itemsIndexed(items = followList, key = {_, user -> user.loginId}) { index, user ->
                 if (index == 0) {
                     AddChatTitleItem(
                         titleResId = R.string.add_chat_follow_list,
@@ -166,9 +167,7 @@ fun AddChatList(viewModel: AddChatViewModel) {
                     modifier = Modifier.padding(
                         top = if (index == 0) 8.dp else 6.dp,
                         bottom = when (index) {
-                            followList.lastIndex -> {
-                                if (fantooList.isEmpty()) 92.dp else 22.dp
-                            }
+                            followList.lastIndex -> if (fantooList.isEmpty()) 140.dp else 22.dp
                             else -> 6.dp
                         }
                     )
@@ -183,7 +182,7 @@ fun AddChatList(viewModel: AddChatViewModel) {
         }
 
         if (fantooList.isNotEmpty()) {
-            itemsIndexed(fantooList) { index, user ->
+            itemsIndexed(items = fantooList, key = {_, user -> user.loginId}) { index, user ->
                 if (index == 0) {
                     if (followList.isNotEmpty()) {
                         Spacer(
@@ -201,7 +200,7 @@ fun AddChatList(viewModel: AddChatViewModel) {
                 Box(
                     modifier = Modifier.padding(
                         top = if (index == 0) 8.dp else 6.dp,
-                        bottom = if (index == fantooList.lastIndex) 92.dp else 6.dp
+                        bottom = if (index == fantooList.lastIndex) 140.dp else 6.dp
                     )
                 ) {
                     FollowerItem(
