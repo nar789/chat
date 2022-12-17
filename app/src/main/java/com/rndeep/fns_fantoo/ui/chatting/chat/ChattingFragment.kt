@@ -42,7 +42,8 @@ class ChattingFragment : Fragment() {
                         },
                         onImageSelectorClicked = { navigateToImagePicker() },
                         onClickAuthor = { navigateToProfileDetail(it) },
-                        onClickMore = { navigateToProfileSetting() }
+                        onClickMore = { navigateToProfileSetting() },
+                        onBack = { onBack() }
                     )
                 }
             }
@@ -61,5 +62,9 @@ class ChattingFragment : Fragment() {
 
     private fun navigateToProfileSetting() {
         findNavController().navigate(R.id.action_chattingFragment_to_chattingSettingDialog)
+    }
+
+    private fun onBack() {
+        findNavController().popBackStack()
     }
 }

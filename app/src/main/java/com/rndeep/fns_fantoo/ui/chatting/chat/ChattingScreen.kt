@@ -1,12 +1,19 @@
 package com.rndeep.fns_fantoo.ui.chatting.chat
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.FastOutLinearInEasing
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
@@ -44,6 +51,9 @@ import androidx.core.content.ContextCompat
 import coil.compose.rememberAsyncImagePainter
 import com.rndeep.fns_fantoo.R
 import com.rndeep.fns_fantoo.ui.chatting.compose.FantooChatTypography
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 fun ChattingScreen(
@@ -56,9 +66,27 @@ fun ChattingScreen(
     onImageSelectorClicked: () -> Unit,
     onClickUnBlock: () -> Unit = {},
     onClickAuthor: (Long) -> Unit = {},
-    onClickMore: () -> Unit = {}
+    onClickMore: () -> Unit = {},
+    onBack: () -> Unit = {}
 ) {
     val messageList = uiState.messages
+
+    // LazyColumn scroll state
+    val scrollState = rememberLazyListState()
+
+    // The coroutine scope for event handlers calling suspend functions.
+    val coroutineScope = rememberCoroutineScope()
+    var jobState: Job? by remember { mutableStateOf(null) }
+
+    // True if floating date text is shown.
+    var floatingDateShown by remember { mutableStateOf(false) }
+
+    suspend fun hideFloatingDate() {
+        if (floatingDateShown) {
+            delay(500L)
+            floatingDateShown = false
+        }
+    }
 
     Surface(
         modifier = modifier,
@@ -69,22 +97,34 @@ fun ChattingScreen(
                 titleText,
                 isTranslateModeOn = uiState.translateMode,
                 onTranslateClicked = onTranslateClicked,
-                onClickMore = onClickMore
+                onClickMore = onClickMore,
+                onBack = onBack
             )
             Box(modifier = Modifier.weight(1f)) {
                 Messages(
                     messages = messageList,
                     modifier = Modifier.fillMaxSize(),
                     onImageClicked = onImageClicked,
-                    onClickAuthor = onClickAuthor
+                    onClickAuthor = onClickAuthor,
+                    scrollState = scrollState
                 )
-                DateFloatingText(
+                FloatingDateText(
                     modifier = Modifier
                         .align(Alignment.TopCenter)
                         .offset(0.dp, 14.dp),
-                    enabled = true,
-                    date = "2011.11.11"
+                    shown = floatingDateShown,
+                    date = messageList.getOrNull(scrollState.firstVisibleItemIndex)?.dateText.orEmpty()
                 )
+
+                if (scrollState.isScrollInProgress) {
+                    DisposableEffect(Unit) {
+                        jobState?.cancel()
+                        floatingDateShown = true
+                        onDispose {
+                            jobState = coroutineScope.launch { hideFloatingDate() }
+                        }
+                    }
+                }
             }
 
             if (uiState.userBlocked) {
@@ -103,6 +143,7 @@ fun ChattingScreen(
 fun Messages(
     messages: List<Message>,
     modifier: Modifier,
+    scrollState: LazyListState,
     onImageClicked: (String) -> Unit,
     onClickAuthor: (Long) -> Unit
 ) {
@@ -111,7 +152,8 @@ fun Messages(
         color = colorResource(R.color.gray_50)
     ) {
         LazyColumn(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
+            state = scrollState
         ) {
             itemsIndexed(messages) { index, item ->
                 val isMe = item.authorName == "Me"
@@ -465,7 +507,8 @@ fun ChatHeader(
     titleText: String,
     isTranslateModeOn: Boolean,
     onTranslateClicked: () -> Unit,
-    onClickMore: () -> Unit
+    onClickMore: () -> Unit,
+    onBack: () -> Unit
 ) {
     Surface(
         Modifier
@@ -478,7 +521,7 @@ fun ChatHeader(
             Image(
                 modifier = Modifier
                     .size(36.dp)
-                    .clickable { }
+                    .clickable { onBack() }
                     .padding(4.dp)
                     .constrainAs(backBtn) {
                         start.linkTo(parent.start, margin = 10.dp)
@@ -541,34 +584,45 @@ fun ChatHeader(
 }
 
 @Composable
-fun DateFloatingText(
+fun FloatingDateText(
     modifier: Modifier = Modifier,
-    enabled: Boolean,
+    shown: Boolean,
     date: String,
 ) {
-    Surface(
-        modifier = modifier
-            .sizeIn(minWidth = 86.dp, minHeight = 24.dp)
-            .paint(
-                painter = rememberAsyncImagePainter(
-                    ContextCompat.getDrawable(LocalContext.current, R.drawable.bg_chatting_date)
-                )
-            )
-            .padding(top = 1.dp, bottom = 3.dp, start = 7.dp, end = 7.dp),
-        color = Color.Transparent
+    AnimatedVisibility(
+        modifier = modifier,
+        visible = shown,
+        enter = fadeIn(
+            animationSpec = tween(durationMillis = 150)
+        ),
+        exit = fadeOut(
+            animationSpec = tween(durationMillis = 300, easing = FastOutLinearInEasing)
+        )
     ) {
-        Box(
-            modifier = Modifier.wrapContentSize(),
-            contentAlignment = Alignment.Center
+        Surface(
+            modifier = Modifier
+                .sizeIn(minWidth = 86.dp, minHeight = 24.dp)
+                .paint(
+                    painter = rememberAsyncImagePainter(
+                        ContextCompat.getDrawable(LocalContext.current, R.drawable.bg_chatting_date)
+                    )
+                )
+                .padding(top = 1.dp, bottom = 3.dp, start = 7.dp, end = 7.dp),
+            color = Color.Transparent
         ) {
-            Text(
-                modifier = Modifier,
-                text = date,
-                fontSize = 12.sp,
-                lineHeight = 18.sp,
-                textAlign = TextAlign.Center,
-                color = colorResource(R.color.gray_25)
-            )
+            Box(
+                modifier = Modifier.wrapContentSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    modifier = Modifier,
+                    text = date,
+                    fontSize = 12.sp,
+                    lineHeight = 18.sp,
+                    textAlign = TextAlign.Center,
+                    color = colorResource(R.color.gray_25)
+                )
+            }
         }
     }
 }
