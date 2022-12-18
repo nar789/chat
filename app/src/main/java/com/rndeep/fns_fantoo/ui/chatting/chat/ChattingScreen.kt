@@ -112,7 +112,8 @@ fun ChattingScreen(
                     myId = uiState.myId,
                     onImageClicked = onImageClicked,
                     onClickAuthor = onClickAuthor,
-                    scrollState = scrollState
+                    scrollState = scrollState,
+                    readInfos = uiState.readInfos
                 )
                 FloatingDateText(
                     modifier = Modifier
@@ -156,6 +157,7 @@ fun Messages(
     modifier: Modifier,
     scrollState: LazyListState,
     myId: Long,
+    readInfos: List<ReadInfo>,
     onImageClicked: (String) -> Unit,
     onClickAuthor: (Long) -> Unit
 ) {
@@ -188,7 +190,8 @@ fun Messages(
                         isLastMessageByAuthor = isLastMessageByAuthor,
                         timestampVisible = nextHour != item.hourText || isLastMessageByAuthor,
                         onImageClicked = onImageClicked,
-                        onClickAuthor = onClickAuthor
+                        onClickAuthor = onClickAuthor,
+                        readInfos = readInfos
                     )
                 }
             }
@@ -203,6 +206,7 @@ fun MessageItem(
     isFirstMessageByAuthor: Boolean,
     isLastMessageByAuthor: Boolean,
     timestampVisible: Boolean,
+    readInfos: List<ReadInfo>,
     onImageClicked: (String) -> Unit,
     onClickAuthor: (Long) -> Unit
 ) {
@@ -219,7 +223,8 @@ fun MessageItem(
                 TimestampAndUnreadCount(
                     message = message,
                     isMe = true,
-                    timestampVisible = timestampVisible
+                    timestampVisible = timestampVisible,
+                    readInfos = readInfos
                 )
             }
 
@@ -233,7 +238,8 @@ fun MessageItem(
                 TimestampAndUnreadCount(
                     message = message,
                     isMe = false,
-                    timestampVisible = timestampVisible
+                    timestampVisible = timestampVisible,
+                    readInfos = readInfos
                 )
             }
         }
@@ -334,15 +340,17 @@ fun ImageMessageItem(
 fun TimestampAndUnreadCount(
     message: Message,
     isMe: Boolean,
-    timestampVisible: Boolean
+    timestampVisible: Boolean,
+    readInfos: List<ReadInfo>
 ) {
     Column(
         modifier = Modifier.padding(horizontal = 2.dp, vertical = 1.dp),
         horizontalAlignment = if (isMe) Alignment.End else Alignment.Start
     ) {
-        if (message.unreadCount > 0) {
+        val unReadCount = message.getUnReadCount(readInfos)
+        if (unReadCount > 0) {
             Text(
-                text = "${message.unreadCount}",
+                text = "$unReadCount",
                 color = colorResource(R.color.primary_500),
                 fontSize = 12.sp,
                 lineHeight = 18.sp,

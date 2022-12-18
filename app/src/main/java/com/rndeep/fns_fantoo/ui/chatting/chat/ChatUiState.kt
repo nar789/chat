@@ -9,7 +9,8 @@ data class ChatUiState(
     val myId: Long = 0,
     val translateMode: Boolean = false,
     val userBlocked: Boolean = false,
-    val userFollowed: Boolean = false
+    val userFollowed: Boolean = false,
+    val readInfos: List<ReadInfo> = listOf()
 )
 
 val dateFormat = SimpleDateFormat("yyyy.MM.dd", Locale.ROOT)
@@ -32,4 +33,12 @@ data class Message(
         .replace("PM", "오후")
 
     fun isMyMessage(myId: Long) = authorId == myId
+    fun getUnReadCount(readInfos: List<ReadInfo>): Int {
+        return readInfos.filter { it.readTimeStamp <= timestamp }.size
+    }
 }
+
+data class ReadInfo(
+    val authorId: Long = 0,
+    val readTimeStamp: Long = System.currentTimeMillis()
+)
