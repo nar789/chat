@@ -11,6 +11,7 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.rndeep.fns_fantoo.R
 import com.rndeep.fns_fantoo.ui.chatting.chat.ChattingViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -19,7 +20,6 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class ProfileDetailDialog @Inject constructor() : DialogFragment() {
 
-    // TODO : temp viewModel remove this
     val viewModel: ChattingViewModel by viewModels({ findNavController().getBackStackEntry(R.id.chattingFragment) })
 
     override fun onCreateView(
@@ -27,6 +27,8 @@ class ProfileDetailDialog @Inject constructor() : DialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        val args by navArgs<ProfileDetailDialogArgs>()
+        viewModel.initProfileDetail(args.userId)
         return ComposeView(requireContext()).apply {
             setContent {
                 MaterialTheme {
@@ -35,8 +37,10 @@ class ProfileDetailDialog @Inject constructor() : DialogFragment() {
                     ProfileDetailScreen(
                         profileImage = "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMjA2MjFfMjYz%2FMDAxNjU1NzgxMTkyMTU5.YO7UnyTXMzeXg02Jz1tPCDba5Nsr7m-vuOMGwT1WXfEg.GfjVMhmbCK2UuWqIcvtpCPfvhX39IvwQ7smctj0-3I8g.JPEG.gydls004%2FInternet%25A3%25DF20220621%25A3%25DF121040%25A3%25DF8.jpeg&type=sc960_832",
                         userBlocked = uiState.userBlocked,
+                        userFollowed = uiState.userFollowed,
                         onClickCancel = { dismiss() },
-                        onClickBlock = { viewModel.setUserBlock(it) }
+                        onClickBlock = { viewModel.setUserBlock(it) },
+                        onClickFollow = { viewModel.followUser(it) }
                     )
                 }
             }

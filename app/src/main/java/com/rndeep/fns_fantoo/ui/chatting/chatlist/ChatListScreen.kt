@@ -46,7 +46,7 @@ private const val CARD_DRAG_AMOUNT = -162f
 @Composable
 fun ChatListScreen(
     viewModel: ChatListViewModel,
-    navigateToChat: (chatId: Long) -> Unit,
+    navigateToChat: (chatId: Long, roomName: String) -> Unit,
     navigateToAddChat: () -> Unit
 ) {
     val isUser by viewModel.isUser
@@ -105,7 +105,7 @@ fun ChatListHeader(navigateToAddChat: () -> Unit) {
 @Composable
 fun ChatList(
     viewModel: ChatListViewModel,
-    onClickChat: (chatId: Long) -> Unit
+    onClickChat: (chatId: Long, roomName: String) -> Unit
 ) {
     val optionOpenedChatId by viewModel.optionOpenedChatId.collectAsState()
     val chatList = viewModel.chatList
@@ -139,7 +139,7 @@ fun ChatList(
 @Composable
 fun ChatListItem(
     chat: ChatListResult,
-    onClickChat: (chatId: Long) -> Unit,
+    onClickChat: (chatId: Long, roomName: String) -> Unit,
     exitChat: (chatId: Long) -> Unit,
     isOptionOpened: Boolean,
     openOptions: (chatId: Long) -> Unit,
@@ -170,7 +170,7 @@ fun ChatListItem(
 @Composable
 fun ChatListContent(
     chat: ChatListResult,
-    onClickChat: (chatId: Long) -> Unit,
+    onClickChat: (chatId: Long, roomName: String) -> Unit,
     isOpened: Boolean,
     openOptions: (Long) -> Unit,
     closeOptions: (Long) -> Unit
@@ -205,7 +205,7 @@ fun ChatListContent(
                 .clickable {
                     if (isOpened) return@clickable
                     chat.count = 0
-                    onClickChat(chat.chatId)
+                    onClickChat(chat.chatId, chat.roomName)
                 }
         ) {
             val defaultImage = painterResource(R.drawable.profile_character11)
@@ -367,7 +367,7 @@ fun ChatListEditContent(
 fun ChatListItemPreview() {
     MaterialTheme {
         Surface {
-            ChatListItem(chat = ChatListResult(), {}, {}, false, {}, {})
+            ChatListItem(chat = ChatListResult(), { _, _ -> }, {}, false, {}, {})
         }
     }
 }

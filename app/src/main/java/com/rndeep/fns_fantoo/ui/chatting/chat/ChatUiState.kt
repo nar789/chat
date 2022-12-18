@@ -6,8 +6,10 @@ import java.util.*
 
 data class ChatUiState(
     val messages: List<Message>,
+    val myId: Long = 0,
     val translateMode: Boolean = false,
-    val userBlocked: Boolean = false
+    val userBlocked: Boolean = false,
+    val userFollowed: Boolean = false
 )
 
 val dateFormat = SimpleDateFormat("yyyy.MM.dd", Locale.ROOT)
@@ -28,4 +30,6 @@ data class Message(
     val hourText = hourFormat.format(timestamp).toString()
         .replace("AM", "오전")
         .replace("PM", "오후")
+
+    fun isMyMessage(myId: Long) = authorId == myId
 }

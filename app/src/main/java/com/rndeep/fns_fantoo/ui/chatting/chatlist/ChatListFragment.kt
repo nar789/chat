@@ -32,14 +32,18 @@ class ChatListFragment : Fragment() {
         initObserver()
         return ComposeView(requireContext()).apply {
             setContent {
-                ChatListScreen(viewModel, ::navigateToChat, ::navigateToAddChat)
+                ChatListScreen(
+                    viewModel,
+                    { id, name -> navigateToChat(id, name) },
+                    ::navigateToAddChat
+                )
             }
         }
     }
 
-    private fun navigateToChat(chatId: Long) {
+    private fun navigateToChat(chatId: Long, roomName: String) {
         findNavController().navigate(
-            ChatListFragmentDirections.actionChatListFragmentToChattingFragment(chatId)
+            ChatListFragmentDirections.actionChatListFragmentToChattingFragment(chatId, roomName)
         )
     }
 

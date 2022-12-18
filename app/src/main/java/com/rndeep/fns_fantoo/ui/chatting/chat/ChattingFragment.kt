@@ -32,7 +32,7 @@ class ChattingFragment : Fragment() {
                 MaterialTheme {
                     ChattingScreen(
                         uiState = uiState,
-                        titleText = "Dasol",
+                        titleText = args.chatTitle.orEmpty(),
                         onMessageSent = { viewModel.sendMessage(it) },
                         onTranslateClicked = { viewModel.setTranslateMode(!uiState.translateMode) },
                         onImageClicked = { imageUrl ->
@@ -45,7 +45,8 @@ class ChattingFragment : Fragment() {
                         onImageSelectorClicked = { navigateToImagePicker() },
                         onClickAuthor = { navigateToProfileDetail(it) },
                         onClickMore = { navigateToProfileSetting() },
-                        onBack = { onBack() }
+                        onBack = { onBack() },
+                        onClickUnBlock = { viewModel.setUserBlock(false) }
                     )
                 }
             }

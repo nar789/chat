@@ -9,7 +9,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
@@ -30,8 +30,10 @@ import com.rndeep.fns_fantoo.ui.chatting.compose.FantooChatTypography
 fun ProfileDetailScreen(
     profileImage: String,
     userBlocked: Boolean = false,
+    userFollowed: Boolean = false,
     onClickCancel: () -> Unit,
-    onClickBlock: (Boolean) -> Unit
+    onClickBlock: (Boolean) -> Unit,
+    onClickFollow: (Boolean) -> Unit
 ) {
     Box(
         modifier = Modifier,
@@ -41,8 +43,10 @@ fun ProfileDetailScreen(
             modifier = Modifier.padding(top = 27.dp),
             userName = "Dasol",
             userBlocked = userBlocked,
+            userFollowed = userFollowed,
             onClickCancel = onClickCancel,
-            onClickBlock = onClickBlock
+            onClickBlock = onClickBlock,
+            onClickFollow = onClickFollow
         )
 
         ProfileImage(
@@ -57,8 +61,10 @@ fun ProfileDetailContent(
     modifier: Modifier = Modifier,
     userName: String,
     userBlocked: Boolean,
+    userFollowed: Boolean = false,
     onClickCancel: () -> Unit,
-    onClickBlock: (Boolean) -> Unit
+    onClickBlock: (Boolean) -> Unit,
+    onClickFollow: (Boolean) -> Unit
 ) {
     Surface(
         modifier = modifier
@@ -98,14 +104,12 @@ fun ProfileDetailContent(
                     .padding(top = 14.dp, bottom = 29.dp),
                 horizontalArrangement = Arrangement.Center
             ) {
-                var followState by remember { mutableStateOf(false) }
-
                 IconSelector(
                     modifier = Modifier,
                     imageSource = painterResource(R.drawable.icon_outline_addfriend),
                     buttonName = stringResource(R.string.profile_detail_follow_btn),
-                    checked = followState,
-                    onClick = { followState = it }
+                    checked = userFollowed,
+                    onClick = onClickFollow
                 )
 
                 IconSelector(
@@ -200,7 +204,9 @@ fun ProfileImage(
 fun ProfileDetailScreenPreview() {
     ProfileDetailScreen(
         profileImage = "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMjA2MjFfMjYz%2FMDAxNjU1NzgxMTkyMTU5.YO7UnyTXMzeXg02Jz1tPCDba5Nsr7m-vuOMGwT1WXfEg.GfjVMhmbCK2UuWqIcvtpCPfvhX39IvwQ7smctj0-3I8g.JPEG.gydls004%2FInternet%25A3%25DF20220621%25A3%25DF121040%25A3%25DF8.jpeg&type=sc960_832",
+        userBlocked = false,
         onClickCancel = {},
-        onClickBlock = {}
+        onClickBlock = {},
+        onClickFollow = {}
     )
 }

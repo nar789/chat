@@ -64,15 +64,20 @@ fun ChattingScreen(
     onTranslateClicked: () -> Unit,
     onImageClicked: (String) -> Unit,
     onImageSelectorClicked: () -> Unit,
-    onClickUnBlock: () -> Unit = {},
-    onClickAuthor: (Long) -> Unit = {},
-    onClickMore: () -> Unit = {},
-    onBack: () -> Unit = {}
+    onClickUnBlock: () -> Unit,
+    onClickAuthor: (Long) -> Unit,
+    onClickMore: () -> Unit,
+    onBack: () -> Unit
 ) {
     val messageList = uiState.messages
 
     // LazyColumn scroll state
     val scrollState = rememberLazyListState()
+
+    // First visible item state
+    val firstVisibleItemIndex: Int by remember {
+        derivedStateOf { scrollState.firstVisibleItemIndex }
+    }
 
     // The coroutine scope for event handlers calling suspend functions.
     val coroutineScope = rememberCoroutineScope()
@@ -104,6 +109,7 @@ fun ChattingScreen(
                 Messages(
                     messages = messageList,
                     modifier = Modifier.fillMaxSize(),
+                    myId = uiState.myId,
                     onImageClicked = onImageClicked,
                     onClickAuthor = onClickAuthor,
                     scrollState = scrollState
@@ -113,7 +119,7 @@ fun ChattingScreen(
                         .align(Alignment.TopCenter)
                         .offset(0.dp, 14.dp),
                     shown = floatingDateShown,
-                    date = messageList.getOrNull(scrollState.firstVisibleItemIndex)?.dateText.orEmpty()
+                    date = messageList.getOrNull(firstVisibleItemIndex)?.dateText.orEmpty()
                 )
 
                 if (scrollState.isScrollInProgress) {
@@ -144,6 +150,7 @@ fun Messages(
     messages: List<Message>,
     modifier: Modifier,
     scrollState: LazyListState,
+    myId: Long,
     onImageClicked: (String) -> Unit,
     onClickAuthor: (Long) -> Unit
 ) {
@@ -156,7 +163,7 @@ fun Messages(
             state = scrollState
         ) {
             itemsIndexed(messages) { index, item ->
-                val isMe = item.authorName == "Me"
+                val isMe = item.isMyMessage(myId)
                 val prevAuthor = messages.getOrNull(index - 1)?.authorName
                 val nextAuthor = messages.getOrNull(index + 1)?.authorName
                 val nextHour = messages.getOrNull(index + 1)?.hourText
@@ -687,7 +694,11 @@ fun ChatScreenPreview() {
             onMessageSent = {},
             onTranslateClicked = {},
             onImageClicked = {},
-            onImageSelectorClicked = {}
+            onImageSelectorClicked = {},
+            onClickMore = {},
+            onClickAuthor = {},
+            onClickUnBlock = {},
+            onBack = {}
         )
     }
 }
