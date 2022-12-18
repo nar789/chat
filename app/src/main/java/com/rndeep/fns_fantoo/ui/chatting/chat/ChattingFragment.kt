@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.rndeep.fns_fantoo.R
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -17,6 +18,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class ChattingFragment : Fragment() {
 
     val viewModel: ChattingViewModel by viewModels({ findNavController().getBackStackEntry(R.id.chattingFragment) })
+    val args by navArgs<ChattingFragmentArgs>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,7 +32,7 @@ class ChattingFragment : Fragment() {
                 MaterialTheme {
                     ChattingScreen(
                         uiState = uiState,
-                        titleText = "Dasol",
+                        titleText = args.chatTitle.orEmpty(),
                         onMessageSent = { viewModel.sendMessage(it) },
                         onTranslateClicked = { viewModel.setTranslateMode(!uiState.translateMode) },
                         onImageClicked = { imageUrl ->
@@ -43,7 +45,8 @@ class ChattingFragment : Fragment() {
                         onImageSelectorClicked = { navigateToImagePicker() },
                         onClickAuthor = { navigateToProfileDetail(it) },
                         onClickMore = { navigateToProfileSetting() },
-                        onBack = { onBack() }
+                        onBack = { onBack() },
+                        onClickUnBlock = { viewModel.setUserBlock(false) }
                     )
                 }
             }
@@ -61,7 +64,9 @@ class ChattingFragment : Fragment() {
     }
 
     private fun navigateToProfileSetting() {
-        findNavController().navigate(R.id.action_chattingFragment_to_chattingSettingDialog)
+        val direction =
+            ChattingFragmentDirections.actionChattingFragmentToChattingSettingDialog(args.chatId)
+        findNavController().navigate(direction)
     }
 
     private fun onBack() {
