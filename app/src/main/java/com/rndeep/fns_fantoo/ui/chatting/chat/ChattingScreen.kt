@@ -121,16 +121,6 @@ fun ChattingScreen(
                     shown = floatingDateShown,
                     date = messageList.getOrNull(firstVisibleItemIndex)?.dateText.orEmpty()
                 )
-
-                if (scrollState.isScrollInProgress) {
-                    DisposableEffect(Unit) {
-                        jobState?.cancel()
-                        floatingDateShown = true
-                        onDispose {
-                            jobState = coroutineScope.launch { hideFloatingDate() }
-                        }
-                    }
-                }
             }
 
             if (uiState.userBlocked) {
@@ -138,8 +128,23 @@ fun ChattingScreen(
             } else {
                 BottomEditText(
                     onMessageSent,
-                    onImageSelectorClicked
+                    onImageSelectorClicked,
+                    resetScroll = {
+                        coroutineScope.launch {
+                            scrollState.scrollToItem(messageList.lastIndex)
+                        }
+                    }
                 )
+            }
+
+            if (scrollState.isScrollInProgress) {
+                DisposableEffect(Unit) {
+                    jobState?.cancel()
+                    if (!floatingDateShown) floatingDateShown = true
+                    onDispose {
+                        jobState = coroutineScope.launch { hideFloatingDate() }
+                    }
+                }
             }
         }
     }
@@ -362,7 +367,8 @@ var SemanticsPropertyReceiver.keyboardShownProperty by KeyboardShownKey
 @Composable
 fun BottomEditText(
     onMessageSent: (String) -> Unit,
-    onImageSelectorClicked: () -> Unit
+    onImageSelectorClicked: () -> Unit,
+    resetScroll: () -> Unit
 ) {
     var textState by rememberSaveable(stateSaver = TextFieldValue.Saver) {
         mutableStateOf(TextFieldValue())
@@ -403,7 +409,9 @@ fun BottomEditText(
                     textState = TextFieldValue()
                 },
                 onUserInputActivate = { inputActivateMode = true },
-                onImageSelectorClicked = onImageSelectorClicked
+                onImageSelectorClicked = onImageSelectorClicked,
+                sendBtnEnabled = textState.text.isNotEmpty(),
+                resetScroll = resetScroll
             )
         }
     }
@@ -450,9 +458,11 @@ fun UserInputText(
 @Composable
 fun UserInputSelector(
     userInputActivated: Boolean,
+    sendBtnEnabled: Boolean,
     onMessageSent: () -> Unit,
     onUserInputActivate: () -> Unit,
-    onImageSelectorClicked: () -> Unit
+    onImageSelectorClicked: () -> Unit,
+    resetScroll: () -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -472,11 +482,11 @@ fun UserInputSelector(
         )
 
         if (userInputActivated) {
-            SendButton(onMessageSent)
+            SendButton(sendBtnEnabled, onMessageSent, resetScroll)
         } else {
             Text(
                 modifier = Modifier
-                    .clickable { onUserInputActivate() }
+                    .clickable { onUserInputActivate(); resetScroll() }
                     .padding(start = 8.dp, top = 8.dp, bottom = 8.dp)
                     .weight(1f),
                 text = stringResource(R.string.chatting_edit_text_hint),
@@ -490,13 +500,19 @@ fun UserInputSelector(
 
 @Composable
 fun SendButton(
-    onSendClicked: () -> Unit
+    enabled: Boolean,
+    onSendClicked: () -> Unit,
+    resetScroll: () -> Unit
 ) {
+    val bgColor =
+        colorResource(if (enabled) R.color.primary_300 else R.color.state_disabled_gray_200)
+
     IconButton(
         modifier = Modifier
-            .background(colorResource(R.color.primary_300), shape = CircleShape)
+            .background(bgColor, shape = CircleShape)
             .size(32.dp),
-        onClick = onSendClicked
+        onClick = { onSendClicked(); resetScroll() },
+        enabled = enabled
     ) {
         Icon(
             modifier = Modifier
@@ -707,7 +723,7 @@ fun ChatScreenPreview() {
 @Composable
 fun BottomEditTextPreview() {
     MaterialTheme {
-        BottomEditText({}, {})
+        BottomEditText({}, {}, {})
     }
 }
 
@@ -717,11 +733,11 @@ fun UserInputSelector() {
     MaterialTheme {
         Column {
             Surface {
-                UserInputSelector(userInputActivated = true, {}, {}, {})
+                UserInputSelector(userInputActivated = true, true, {}, {}, {}, {})
             }
             Spacer(Modifier.size(15.dp))
             Surface {
-                UserInputSelector(userInputActivated = false, {}, {}, {})
+                UserInputSelector(userInputActivated = false, true, {}, {}, {}, {})
             }
         }
     }

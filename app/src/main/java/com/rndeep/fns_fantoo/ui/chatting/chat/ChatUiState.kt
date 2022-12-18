@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 data class ChatUiState(
-    val messages: List<Message>,
+    val messages: List<Message> = listOf(),
     val myId: Long = 0,
     val translateMode: Boolean = false,
     val userBlocked: Boolean = false,
