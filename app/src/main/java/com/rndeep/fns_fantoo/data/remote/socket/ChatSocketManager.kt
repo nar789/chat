@@ -14,19 +14,20 @@ class ChatSocketManager @Inject constructor() {
 
     private lateinit var socket: Socket
 
-    fun init() {
-        connectSocket()
-        listenForTest()
-        listenSocketError()
-    }
-
-    private fun connectSocket() {
-        Timber.d("try to connecting socket")
+    init {
         try {
             socket = IO.socket(SERVER_URL)
         } catch (e: URISyntaxException) {
             Timber.e("socket init error: ${e.reason}", e)
         }
+
+        listenForTest()
+        listenSocketError()
+    }
+
+    fun connectSocket() {
+        Timber.d("try to connecting socket")
+
         socket.connect()
         socket.on(Socket.EVENT_CONNECT) {
             //todo 연결 완료 시 서버에 보낼 정보 있는지 확인 필요
@@ -34,7 +35,7 @@ class ChatSocketManager @Inject constructor() {
         }
     }
 
-    fun listenForTest() {
+    private fun listenForTest() {
         socket.on("welcome") {
             Timber.d("receive connected message welcome!")
         }

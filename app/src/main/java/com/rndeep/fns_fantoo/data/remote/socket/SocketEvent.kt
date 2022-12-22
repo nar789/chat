@@ -9,3 +9,17 @@ object ChatSocketEvent {
     const val LOAD_MESSAGE = "loadmessage"
     const val UPLOAD_IMAGE = "uploadImage"
 }
+
+/*
+package com.rndeep.fns_fantoo.data.remote.socket
+
+enum class ChatSocketEvent(val event: String) {
+    WELCOME("welcome"),
+    CREATE_CONVERSATION("createConversation"),
+    LOAD_CONVERSATION("loadConversation"),
+    MESSAGE("message"),
+    READ_INFO("readinfo"),
+    LOAD_MESSAGE("loadmessage"),
+    UPLOAD_IMAGE("uploadImage")
+}
+ */

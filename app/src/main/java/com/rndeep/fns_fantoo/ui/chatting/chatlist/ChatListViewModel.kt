@@ -1,6 +1,5 @@
 package com.rndeep.fns_fantoo.ui.chatting.chatlist
 
-import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.toMutableStateList
@@ -9,7 +8,6 @@ import com.rndeep.fns_fantoo.data.remote.model.chat.ChatListResult
 import com.rndeep.fns_fantoo.repositories.DataStoreKey
 import com.rndeep.fns_fantoo.repositories.DataStoreRepository
 import com.rndeep.fns_fantoo.ui.common.viewmodel.SingleLiveEvent
-import com.rndeep.fns_fantoo.data.remote.socket.ChatSocketManager
 import com.rndeep.fns_fantoo.repositories.ChatRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -34,9 +32,10 @@ class ChatListViewModel @Inject constructor(
     private val _navigateToLogin = SingleLiveEvent<Unit>()
     val navigateToLogin: LiveData<Unit> = _navigateToLogin
 
-    fun load() {
+    val conversationList = chatRepository.chatList
+
+    init {
         loadUser()
-        loadChatList()
     }
 
     private fun loadUser() {
@@ -45,10 +44,6 @@ class ChatListViewModel @Inject constructor(
                 _isUser.value = it
             }
         }
-    }
-
-    private fun loadChatList() {
-        chatRepository.requestChatList()
     }
 
     private fun makeTmpChatList(): List<ChatListResult> = mutableListOf<ChatListResult>().apply {
@@ -80,7 +75,6 @@ class ChatListViewModel @Inject constructor(
     override fun onCreate(owner: LifecycleOwner) {
         super.onCreate(owner)
         chatRepository.startSocket()
-        load()
     }
 
     override fun onDestroy(owner: LifecycleOwner) {
