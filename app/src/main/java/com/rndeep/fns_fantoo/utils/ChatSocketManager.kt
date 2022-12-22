@@ -6,6 +6,7 @@ import timber.log.Timber
 import java.net.URISyntaxException
 import javax.inject.Inject
 
+
 class ChatSocketManager @Inject constructor() {
     companion object {
         private const val SERVER_URL = "http://nar005.cafe24.com:1225"
@@ -24,9 +25,8 @@ class ChatSocketManager @Inject constructor() {
         try {
             socket = IO.socket(SERVER_URL)
         } catch (e: URISyntaxException) {
-            Timber.e( "socket init error: ${e.reason}", e)
+            Timber.e("socket init error: ${e.reason}", e)
         }
-
         socket.connect()
         socket.on(Socket.EVENT_CONNECT) {
             //todo 연결 완료 시 서버에 보낼 정보 있는지 확인 필요
@@ -55,13 +55,9 @@ class ChatSocketManager @Inject constructor() {
 
     private fun listenSocketError() {
         socket.on(Socket.EVENT_DISCONNECT) {
-            closeSocket(Socket.EVENT_DISCONNECT)
+            closeSocket(Socket.EVENT_DISCONNECT + ": ${it.firstOrNull()}")
         }.on(Socket.EVENT_CONNECT_ERROR) {
-            closeSocket(Socket.EVENT_CONNECT_ERROR)
-        }.on(Socket.EVENT_CONNECT_TIMEOUT) {
-            closeSocket(Socket.EVENT_CONNECT_TIMEOUT)
-        }.on(Socket.EVENT_ERROR) {
-            closeSocket(Socket.EVENT_ERROR)
+            closeSocket(Socket.EVENT_CONNECT_ERROR + ": ${it.firstOrNull()}")
         }
     }
 
