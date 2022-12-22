@@ -21,6 +21,7 @@ import javax.inject.Inject
 class ChattingSettingDialog @Inject constructor() : BottomSheetDialogFragment() {
 
     private val viewModel by viewModels<ChattingSettingViewModel>()
+    private var toast: Toast? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,7 +55,8 @@ class ChattingSettingDialog @Inject constructor() : BottomSheetDialogFragment() 
         }
 
         viewModel.errorToastEvent.observe(viewLifecycleOwner) {
-            Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+            toast?.cancel()
+            toast = Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).also(Toast::show)
         }
     }
 

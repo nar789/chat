@@ -30,7 +30,7 @@ class ChattingSettingViewModel @Inject constructor() : ViewModel() {
 
     fun leaveChatting() {
         // leave chatting
-        val isSuccess = false
+        val isSuccess = true
         if (isSuccess) {
             _popBackStackEvent.call()
         } else {

@@ -35,9 +35,6 @@
             android:id="@+id/action_chattingFragment_to_imagePickerFragment"
             app:destination="@id/imagePickerDialog" />
         <action
-            android:id="@+id/action_chattingFragment_to_profileDetailDialog"
-            app:destination="@id/profileDetailDialog" />
-        <action
             android:id="@+id/action_chattingFragment_to_chattingSettingDialog"
             app:destination="@id/chattingSettingDialog" />
     </fragment>
@@ -67,15 +64,6 @@
         android:id="@+id/imagePickerDialog"
         android:name="com.rndeep.fns_fantoo.ui.chatting.imagepicker.ImagePickerDialog"
         android:label="ImagePickerDialog" />
-
-    <dialog
-        android:id="@+id/profileDetailDialog"
-        android:name="com.rndeep.fns_fantoo.ui.chatting.profiledetail.ProfileDetailDialog"
-        android:label="ProfileDetailDialog">
-        <argument
-            android:name="userId"
-            app:argType="long" />
-    </dialog>
 
     <dialog
         android:id="@+id/chattingSettingDialog"
