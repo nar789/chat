@@ -12,13 +12,13 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.rndeep.fns_fantoo.R
+import com.rndeep.fns_fantoo.ui.chatting.profiledetail.ProfileDetailDialog
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class ChattingFragment : Fragment() {
 
     val viewModel: ChattingViewModel by viewModels()
-//    viewModels({ findNavController().getBackStackEntry(R.id.chattingFragment) })
     val args by navArgs<ChattingFragmentArgs>()
 
     override fun onCreateView(
@@ -59,9 +59,7 @@ class ChattingFragment : Fragment() {
     }
 
     private fun navigateToProfileDetail(userId: Long) {
-        val direction =
-            ChattingFragmentDirections.actionChattingFragmentToProfileDetailDialog(userId)
-        findNavController().navigate(direction)
+        ProfileDetailDialog(userId).show(childFragmentManager, null)
     }
 
     private fun navigateToProfileSetting() {

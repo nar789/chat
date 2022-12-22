@@ -6,11 +6,15 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.rndeep.fns_fantoo.repositories.ChatRepository
+import com.rndeep.fns_fantoo.repositories.UserInfoRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class ChattingViewModel @Inject constructor(private val repository: ChatRepository) : ViewModel() {
+class ChattingViewModel @Inject constructor(
+    private val chatRepository: ChatRepository,
+    private val userInfoRepository: UserInfoRepository
+    ) : ViewModel() {
 
     init {
         // init userId

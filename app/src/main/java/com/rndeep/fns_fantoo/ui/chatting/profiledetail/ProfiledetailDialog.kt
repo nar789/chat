@@ -10,25 +10,24 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.rndeep.fns_fantoo.R
 import com.rndeep.fns_fantoo.ui.chatting.chat.ChattingViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class ProfileDetailDialog @Inject constructor() : DialogFragment() {
+class ProfileDetailDialog @Inject constructor(
+    val userId: Long
+) : DialogFragment() {
 
-    val viewModel: ChattingViewModel by viewModels({ findNavController().getBackStackEntry(R.id.chattingFragment) })
+    val viewModel: ChattingViewModel by viewModels({ requireParentFragment() })
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val args by navArgs<ProfileDetailDialogArgs>()
-        viewModel.initProfileDetail(args.userId)
+        viewModel.initProfileDetail(userId)
         return ComposeView(requireContext()).apply {
             setContent {
                 MaterialTheme {
