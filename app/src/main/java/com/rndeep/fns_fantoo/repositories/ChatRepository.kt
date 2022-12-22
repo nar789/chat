@@ -1,7 +1,6 @@
 package com.rndeep.fns_fantoo.repositories
 
-import android.util.Log
-import com.rndeep.fns_fantoo.data.remote.socket.ChatSocketEvent
+import androidx.compose.runtime.State
 import com.rndeep.fns_fantoo.data.remote.socket.ChatSocketManager
 import javax.inject.Inject
 
@@ -15,10 +14,11 @@ class ChatRepository @Inject constructor(private val socketManager: ChatSocketMa
         socketManager.finish()
     }
 
-    fun requestChatList() {
-        //todo coroutine?
-        socketManager.on(ChatSocketEvent.LOAD_CONVERSATION) {
-            Log.d("inwha", "data: ${it.firstOrNull()}, ${it.getOrNull(1)}")
-        }
+    // 방법 1
+    fun listenCreateConversation(listener: (Boolean) -> Unit) {
+        socketManager.addCreateConversationListener(listener)
     }
+
+    // 방법 2
+    fun getCreateConversationResult(): State<Boolean> = socketManager.createConversationResult
 }

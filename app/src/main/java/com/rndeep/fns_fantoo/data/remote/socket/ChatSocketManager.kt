@@ -1,5 +1,7 @@
 package com.rndeep.fns_fantoo.data.remote.socket
 
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import io.socket.client.IO
 import io.socket.client.Socket
 import timber.log.Timber
@@ -14,10 +16,18 @@ class ChatSocketManager @Inject constructor() {
 
     private lateinit var socket: Socket
 
+    // 방법 1
+    private val createConversationListeners = mutableListOf<((Boolean) -> Unit)>()
+
+    // 방법 2
+    private val _createConversationResult = mutableStateOf(false)
+    val createConversationResult: State<Boolean> get() = _createConversationResult
+
     fun init() {
         connectSocket()
         listenForTest()
         listenSocketError()
+        listenCreateConversation()
     }
 
     private fun connectSocket() {
@@ -34,13 +44,28 @@ class ChatSocketManager @Inject constructor() {
         }
     }
 
-    fun listenForTest() {
+    private fun listenForTest() {
         socket.on("welcome") {
             Timber.d("receive connected message welcome!")
         }
     }
 
-    fun on(event: String, onSuccess: (Array<Any>) -> Unit) {
+    // 방법1
+    fun addCreateConversationListener(listener: (Boolean) -> Unit) {
+        createConversationListeners.add(listener)
+    }
+
+    private fun listenCreateConversation() {
+        on(ChatSocketEvent.CREATE_CONVERSATION) {
+            val result = (it.firstOrNull() as? Boolean) ?: false
+            // 방법 1
+            createConversationListeners.forEach { listener -> listener(result) }
+            // 방법 2
+            _createConversationResult.value = result
+        }
+    }
+
+    private fun on(event: String, onSuccess: (Array<Any>) -> Unit) {
         socket.on(event) {
             Timber.d("on result: $it")
             onSuccess(it)
