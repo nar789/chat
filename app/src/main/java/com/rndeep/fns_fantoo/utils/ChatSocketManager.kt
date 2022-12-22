@@ -8,27 +8,35 @@ import javax.inject.Inject
 
 class ChatSocketManager @Inject constructor() {
     companion object {
-        private val TAG = "ChatSocketManager"
+        private const val SERVER_URL = "http://nar005.cafe24.com:1225"
     }
 
     private lateinit var socket: Socket
 
     fun init() {
         connectSocket()
+        listenForTest()
         listenSocketError()
     }
 
     private fun connectSocket() {
+        Timber.d("try to connecting socket")
         try {
-            socket = IO.socket("") // todo url 필요
+            socket = IO.socket(SERVER_URL)
         } catch (e: URISyntaxException) {
-            Timber.e(TAG, "socket init error: ${e.reason}", e)
+            Timber.e( "socket init error: ${e.reason}", e)
         }
 
         socket.connect()
         socket.on(Socket.EVENT_CONNECT) {
             //todo 연결 완료 시 서버에 보낼 정보 있는지 확인 필요
-            Timber.d(TAG, "Socket is connected")
+            Timber.d("Socket is connected")
+        }
+    }
+
+    fun listenForTest() {
+        socket.on("welcome") {
+            Timber.d("receive connected message welcome!")
         }
     }
 
@@ -62,7 +70,7 @@ class ChatSocketManager @Inject constructor() {
     }
 
     private fun closeSocket(reason: String = "") {
-        Timber.i(TAG, "session io is disconnected: $reason")
+        Timber.w("session is disconnected: $reason")
         socket.close()
     }
 }
