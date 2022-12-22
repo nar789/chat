@@ -1,6 +1,5 @@
 package com.rndeep.fns_fantoo.ui.chatting.chatlist
 
-import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.toMutableStateList
