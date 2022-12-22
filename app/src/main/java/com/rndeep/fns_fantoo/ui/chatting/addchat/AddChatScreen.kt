@@ -1,6 +1,5 @@
 package com.rndeep.fns_fantoo.ui.chatting.addchat
 
-import android.util.Log
 import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image

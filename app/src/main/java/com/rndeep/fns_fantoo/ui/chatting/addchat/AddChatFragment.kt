@@ -10,7 +10,9 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.rndeep.fns_fantoo.R
 import com.rndeep.fns_fantoo.utils.setDarkStatusBarIcon
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class AddChatFragment : Fragment() {
 
     private val viewModel by viewModels<AddChatViewModel>()

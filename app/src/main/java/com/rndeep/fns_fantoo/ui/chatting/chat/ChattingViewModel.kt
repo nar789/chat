@@ -5,11 +5,12 @@ import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import com.rndeep.fns_fantoo.utils.ChatSocketManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class ChattingViewModel @Inject constructor() : ViewModel() {
+class ChattingViewModel @Inject constructor(private val socketManager: ChatSocketManager) : ViewModel() {
 
     init {
         // init userId

@@ -29,6 +29,7 @@ class ChatListFragment : Fragment() {
             activity?.window?.statusBarColor = it.getColor(R.color.gray_25)
             it.setDarkStatusBarIcon()
         }
+        lifecycle.addObserver(viewModel)
         initObserver()
         return ComposeView(requireContext()).apply {
             setContent {

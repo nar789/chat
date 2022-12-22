@@ -1,15 +1,15 @@
 package com.rndeep.fns_fantoo.ui.chatting.chatlist
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.toMutableStateList
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.rndeep.fns_fantoo.data.remote.model.chat.ChatListResult
 import com.rndeep.fns_fantoo.repositories.DataStoreKey
 import com.rndeep.fns_fantoo.repositories.DataStoreRepository
 import com.rndeep.fns_fantoo.ui.common.viewmodel.SingleLiveEvent
+import com.rndeep.fns_fantoo.utils.ChatSocketManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -18,8 +18,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ChatListViewModel @Inject constructor(
-    private val dataStoreRepository: DataStoreRepository
-) : ViewModel() {
+    private val dataStoreRepository: DataStoreRepository,
+    private val socketManager: ChatSocketManager
+) : ViewModel(), DefaultLifecycleObserver {
     private val _chatList = makeTmpChatList().toMutableStateList()
     val chatList: List<ChatListResult> get() = _chatList
 
@@ -66,10 +67,13 @@ class ChatListViewModel @Inject constructor(
         _navigateToLogin.call()
     }
 
-//
-//    private fun onClickChat(chatId: Long) {
-//        viewModelScope.launch {
-//            _navigateToChat.emit(chatId)
-//        }
-//    }
+    override fun onCreate(owner: LifecycleOwner) {
+        super.onCreate(owner)
+        socketManager.init()
+    }
+
+    override fun onDestroy(owner: LifecycleOwner) {
+        socketManager.finish()
+        super.onDestroy(owner)
+    }
 }

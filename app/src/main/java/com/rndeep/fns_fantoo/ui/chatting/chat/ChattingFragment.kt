@@ -17,7 +17,8 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class ChattingFragment : Fragment() {
 
-    val viewModel: ChattingViewModel by viewModels({ findNavController().getBackStackEntry(R.id.chattingFragment) })
+    val viewModel: ChattingViewModel by viewModels()
+//    viewModels({ findNavController().getBackStackEntry(R.id.chattingFragment) })
     val args by navArgs<ChattingFragmentArgs>()
 
     override fun onCreateView(
