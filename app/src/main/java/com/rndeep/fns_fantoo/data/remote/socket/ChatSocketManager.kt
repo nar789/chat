@@ -1,4 +1,4 @@
-package com.rndeep.fns_fantoo.utils
+package com.rndeep.fns_fantoo.data.remote.socket
 
 import io.socket.client.IO
 import io.socket.client.Socket
@@ -40,17 +40,15 @@ class ChatSocketManager @Inject constructor() {
         }
     }
 
-    //todo listenr외부에서 받을건지, state문 주입받을건지 논의 필요
-    fun listenChatEvent() {
-        socket.on("chat") {
-
+    fun on(event: String, onSuccess: (Array<Any>) -> Unit) {
+        socket.on(event) {
+            Timber.d("on result: $it")
+            onSuccess(it)
         }
     }
 
-    fun listenChatListEvent() {
-        socket.on("chatList") {
-
-        }
+    fun emit(event: String, args: List<String>? = null) {
+        socket.emit(event, args)
     }
 
     private fun listenSocketError() {
