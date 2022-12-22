@@ -17,7 +17,7 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class ProfileDetailDialog @Inject constructor(
-    val userId: Long
+    val userId: String
 ) : DialogFragment() {
 
     val viewModel: ChattingViewModel by viewModels({ requireParentFragment() })
