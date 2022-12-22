@@ -1,5 +1,6 @@
 package com.rndeep.fns_fantoo.ui.chatting.chatlist
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.toMutableStateList
@@ -8,7 +9,8 @@ import com.rndeep.fns_fantoo.data.remote.model.chat.ChatListResult
 import com.rndeep.fns_fantoo.repositories.DataStoreKey
 import com.rndeep.fns_fantoo.repositories.DataStoreRepository
 import com.rndeep.fns_fantoo.ui.common.viewmodel.SingleLiveEvent
-import com.rndeep.fns_fantoo.utils.ChatSocketManager
+import com.rndeep.fns_fantoo.data.remote.socket.ChatSocketManager
+import com.rndeep.fns_fantoo.repositories.ChatRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -18,7 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ChatListViewModel @Inject constructor(
     private val dataStoreRepository: DataStoreRepository,
-    private val socketManager: ChatSocketManager
+    private val chatRepository: ChatRepository
 ) : ViewModel(), DefaultLifecycleObserver {
     private val _chatList = makeTmpChatList().toMutableStateList()
     val chatList: List<ChatListResult> get() = _chatList
@@ -32,12 +34,21 @@ class ChatListViewModel @Inject constructor(
     private val _navigateToLogin = SingleLiveEvent<Unit>()
     val navigateToLogin: LiveData<Unit> = _navigateToLogin
 
-    init {
+    fun load() {
+        loadUser()
+        loadChatList()
+    }
+
+    private fun loadUser() {
         viewModelScope.launch {
             dataStoreRepository.getBoolean(DataStoreKey.PREF_KEY_IS_LOGINED)?.let {
                 _isUser.value = it
             }
         }
+    }
+
+    private fun loadChatList() {
+        chatRepository.requestChatList()
     }
 
     private fun makeTmpChatList(): List<ChatListResult> = mutableListOf<ChatListResult>().apply {
@@ -68,11 +79,12 @@ class ChatListViewModel @Inject constructor(
 
     override fun onCreate(owner: LifecycleOwner) {
         super.onCreate(owner)
-        socketManager.init()
+        chatRepository.startSocket()
+        load()
     }
 
     override fun onDestroy(owner: LifecycleOwner) {
-        socketManager.finish()
+        chatRepository.finish()
         super.onDestroy(owner)
     }
 }

@@ -8,13 +8,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.rndeep.fns_fantoo.data.remote.model.chat.ChatSearchResult
 import com.rndeep.fns_fantoo.data.remote.model.chat.TmpUserInfo
+import com.rndeep.fns_fantoo.repositories.ChatRepository
 import com.rndeep.fns_fantoo.ui.common.viewmodel.SingleLiveEvent
-import com.rndeep.fns_fantoo.utils.ChatSocketManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class AddChatViewModel @Inject constructor(private val socketManager: ChatSocketManager): ViewModel() {
+class AddChatViewModel @Inject constructor(private val chatRepository: ChatRepository): ViewModel() {
     private val followListResult = makeTmpFollowerList(0..30)
     private val _followList = followListResult.toMutableStateList()
     val followList: List<TmpUserInfo> get() = _followList
