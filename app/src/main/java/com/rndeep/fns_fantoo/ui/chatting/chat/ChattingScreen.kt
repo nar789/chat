@@ -65,7 +65,7 @@ fun ChattingScreen(
     onImageClicked: (String) -> Unit,
     onImageSelectorClicked: () -> Unit,
     onClickUnBlock: () -> Unit,
-    onClickAuthor: (Long) -> Unit,
+    onClickAuthor: (String) -> Unit,
     onClickMore: () -> Unit,
     onBack: () -> Unit
 ) {
@@ -124,7 +124,7 @@ fun ChattingScreen(
                 )
             }
 
-            if (uiState.userBlocked) {
+            if (uiState.blocked) {
                 UserBlockView(onClickUnBlock = onClickUnBlock)
             } else {
                 BottomEditText(
@@ -132,7 +132,7 @@ fun ChattingScreen(
                     onImageSelectorClicked,
                     resetScroll = {
                         coroutineScope.launch {
-                            scrollState.scrollToItem(messageList.lastIndex)
+                            scrollState.scrollToItem(messageList.lastIndex.coerceAtLeast(0))
                         }
                     }
                 )
@@ -156,10 +156,10 @@ fun Messages(
     messages: List<Message>,
     modifier: Modifier,
     scrollState: LazyListState,
-    myId: Long,
+    myId: String,
     readInfos: List<ReadInfo>,
     onImageClicked: (String) -> Unit,
-    onClickAuthor: (Long) -> Unit
+    onClickAuthor: (String) -> Unit
 ) {
     Surface(
         modifier = modifier,
@@ -208,7 +208,7 @@ fun MessageItem(
     timestampVisible: Boolean,
     readInfos: List<ReadInfo>,
     onImageClicked: (String) -> Unit,
-    onClickAuthor: (Long) -> Unit
+    onClickAuthor: (String) -> Unit
 ) {
     Column {
         if (isFirstMessageByAuthor && !isMe) {
@@ -253,7 +253,7 @@ fun MessageItem(
 @Composable
 fun AuthorAndName(
     message: Message,
-    onClickAuthor: (Long) -> Unit
+    onClickAuthor: (String) -> Unit
 ) {
     Row(
         modifier = Modifier.clickable { onClickAuthor(message.authorId) },
@@ -712,7 +712,7 @@ fun UserBlockView(
 fun ChatScreenPreview() {
     MaterialTheme {
         ChattingScreen(
-            testUiState.copy(userBlocked = true),
+            testUiState.copy(blocked = true),
             Modifier,
             "Dasol",
             onMessageSent = {},
@@ -756,3 +756,46 @@ fun UserInputSelector() {
 fun UserBlockViewPreview() {
     UserBlockView(Modifier, {})
 }
+
+val testUiState = ChatUiState(
+    messages = listOf(
+        Message(
+            content = "상암 경기장에서 공연한다는데 맞아? 장소 바뀐거 아니지?",
+            authorId = "testId",
+            authorName = "Dasol",
+            authorImage = "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMjA2MjFfMjYz%2FMDAxNjU1NzgxMTkyMTU5.YO7UnyTXMzeXg02Jz1tPCDba5Nsr7m-vuOMGwT1WXfEg.GfjVMhmbCK2UuWqIcvtpCPfvhX39IvwQ7smctj0-3I8g.JPEG.gydls004%2FInternet%25A3%25DF20220621%25A3%25DF121040%25A3%25DF8.jpeg&type=sc960_832",
+            timestamp = 1667283734000
+        ),
+        Message(
+            content = "같이 갈꺼지? 공연 끝나고...",
+            authorId = "testId",
+            authorName = "Dasol",
+            authorImage = "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMjA2MjFfMjYz%2FMDAxNjU1NzgxMTkyMTU5.YO7UnyTXMzeXg02Jz1tPCDba5Nsr7m-vuOMGwT1WXfEg.GfjVMhmbCK2UuWqIcvtpCPfvhX39IvwQ7smctj0-3I8g.JPEG.gydls004%2FInternet%25A3%25DF20220621%25A3%25DF121040%25A3%25DF8.jpeg&type=sc960_832",
+            timestamp = 1667283734000
+        ),
+        Message(
+            content = "당연히 같이 가야지~ 스탠딩 공연이잖아 너무 재밌을것 같어~",
+            authorName = "Me",
+            authorImage = null,
+            timestamp = 1667290934000,
+            unreadCount = 1
+        ),
+        Message(
+            content = "하 빨리 다음주 됐으면...",
+            authorName = "Me",
+            authorImage = null,
+            timestamp = 1667290934000,
+            unreadCount = 1
+        ),
+        Message(
+            authorName = "Me",
+            authorImage = null,
+            timestamp = 1667290994000,
+            image = "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMjA2MjFfMjYz%2FMDAxNjU1NzgxMTkyMTU5.YO7UnyTXMzeXg02Jz1tPCDba5Nsr7m-vuOMGwT1WXfEg.GfjVMhmbCK2UuWqIcvtpCPfvhX39IvwQ7smctj0-3I8g.JPEG.gydls004%2FInternet%25A3%25DF20220621%25A3%25DF121040%25A3%25DF8.jpeg&type=sc960_832",
+            unreadCount = 1
+        ),
+    ),
+    readInfos = listOf(
+        ReadInfo("1", 1667283734001)
+    )
+)
