@@ -129,6 +129,7 @@ fun ChatList(
                         chat = chat,
                         onClickChat = onClickChat,
                         exitChat = viewModel::exitChat,
+                        blockChat = viewModel::blockChat,
                         isOptionOpened = optionOpenedChatId == chat.id,
                         openOptions = viewModel::openOptions,
                         closeOptions = viewModel::closeOptions
@@ -144,6 +145,7 @@ fun ChatListItem(
     chat: ChatRoomModel,
     onClickChat: (chatId: Int, roomName: String) -> Unit,
     exitChat: (chatId: Int) -> Unit,
+    blockChat: (chatId: Int) -> Unit,
     isOptionOpened: Boolean,
     openOptions: (chatId: Int) -> Unit,
     closeOptions: (chatId: Int) -> Unit
@@ -158,7 +160,7 @@ fun ChatListItem(
         backgroundColor = colorResource(id = R.color.gray_25),
         border = BorderStroke(width = 0.5.dp, color = colorResource(id = R.color.gray_200))
     ) {
-        ChatListEditContent(chat, {}, {}, exitChat)
+        ChatListEditContent(chat, {}, blockChat, exitChat)
         ChatListContent(
             chat = chat,
             onClickChat = onClickChat,
@@ -379,7 +381,7 @@ fun ChatListItemPreview() {
                     message = "하이하이",
                     updated = System.currentTimeMillis(),
                     unreads = 4
-                ), { _, _ -> }, {}, false, {}, {})
+                ), { _, _ -> }, {}, {}, false, {}, {})
         }
     }
 }

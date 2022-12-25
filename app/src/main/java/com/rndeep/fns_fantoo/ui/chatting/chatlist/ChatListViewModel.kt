@@ -3,10 +3,11 @@ package com.rndeep.fns_fantoo.ui.chatting.chatlist
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.*
+import com.rndeep.fns_fantoo.repositories.ChatRepository
+import com.rndeep.fns_fantoo.repositories.ChatUserRepository
 import com.rndeep.fns_fantoo.repositories.DataStoreKey
 import com.rndeep.fns_fantoo.repositories.DataStoreRepository
 import com.rndeep.fns_fantoo.ui.common.viewmodel.SingleLiveEvent
-import com.rndeep.fns_fantoo.repositories.ChatRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -16,7 +17,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ChatListViewModel @Inject constructor(
     private val dataStoreRepository: DataStoreRepository,
-    private val chatRepository: ChatRepository
+    private val chatRepository: ChatRepository,
+    private val chatUserRepository: ChatUserRepository
 ) : ViewModel(), DefaultLifecycleObserver {
     val chatList get() = chatRepository.chatList
 
@@ -54,6 +56,13 @@ class ChatListViewModel @Inject constructor(
     fun exitChat(chatId: Int) {
         closeOptions(chatId)
 //        _chatList.removeIf { it.id == chatId }
+    }
+
+    fun blockChat(chatId: Int) {
+        viewModelScope.launch {
+            closeOptions(chatId)
+            chatUserRepository.setConversationBlocked(userId, chatId, true)
+        }
     }
 
     fun openOptions(chatId: Int) {

@@ -20,7 +20,7 @@ interface ChatUserService {
     @GET("/blockconversation/{myUserId}/{conversationId}")
     suspend fun getConversationBlockState(
         @Path("myUserId") myUserId: String,
-        @Path("conversationId") conversationId: Long
+        @Path("conversationId") conversationId: Int
     ): Int
 
     @GET("/block/{myUserId}/{userId}/{status}")
@@ -40,7 +40,7 @@ interface ChatUserService {
     @GET("/blockconversation/{myUserId}/{conversationId}/{status}")
     suspend fun setConversationBlockState(
         @Path("myUserId") myUserId: String,
-        @Path("conversationId") conversationId: Long,
+        @Path("conversationId") conversationId: Int,
         @Path("status") status: Int
     ): String
 }
