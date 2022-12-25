@@ -9,6 +9,8 @@ import com.rndeep.fns_fantoo.data.remote.model.chat.ChatListResult
 import com.rndeep.fns_fantoo.data.remote.model.chat.CreateChatBody
 import com.rndeep.fns_fantoo.data.remote.socket.ChatSocketEvent
 import com.rndeep.fns_fantoo.data.remote.socket.ChatSocketManager
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
 
@@ -25,8 +27,8 @@ class ChatRepository @Inject constructor(private val socketManager: ChatSocketMa
     private val _createConversationResult = mutableStateOf(false)
     val createConversationResult: State<Boolean> get() = _createConversationResult
 
-    private val _chatList = mutableStateOf<List<ChatRoomModel>>(emptyList())
-    val chatList: State<List<ChatRoomModel>> get() = _chatList
+    private val _chatList = mutableStateListOf<ChatRoomModel>()
+    val chatList: List<ChatRoomModel> get() = _chatList
 
     init {
         listenAll()
@@ -46,10 +48,10 @@ class ChatRepository @Inject constructor(private val socketManager: ChatSocketMa
 
     private fun listenLoadConversation() {
         socketManager.on<ChatListResult>(ChatSocketEvent.LOAD_CONVERSATION) { response ->
-            if (response?.result?.isSuccess() != false) {
+            if (response?.result?.isSuccess() != true) {
                 return@on
             }
-            _chatList.value = response.data ?: return@on
+            _chatList.addAll(response.data ?: return@on)
         }
     }
 
