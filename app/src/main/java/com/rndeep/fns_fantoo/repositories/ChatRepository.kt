@@ -7,8 +7,10 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.rndeep.fns_fantoo.data.remote.model.chat.ChatRoomModel
 import com.rndeep.fns_fantoo.data.remote.model.chat.CreateChatUserInfo
+import com.rndeep.fns_fantoo.data.remote.model.chat.Message
 import com.rndeep.fns_fantoo.data.remote.socket.ChatSocketEvent
 import com.rndeep.fns_fantoo.data.remote.socket.ChatSocketManager
+import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -20,11 +22,14 @@ class ChatRepository @Inject constructor(private val socketManager: ChatSocketMa
 
         private const val KEY_RESULT = "result"
         private const val KEY_DATA = "data"
+        private const val KEY_ROWS = "rows"
 
         private const val PARAM_USER_ID = "userId"
         private const val PARAM_INFO = "info"
         private const val PARAM_NAME = "name"
         private const val PARAM_CONVERSATION_ID = "conversationId"
+        private const val PARAM_OFFSET = "offset"
+        private const val PARAM_SIZE = "size"
     }
 
     private val _createConversationResult = mutableStateOf(false)
@@ -32,6 +37,9 @@ class ChatRepository @Inject constructor(private val socketManager: ChatSocketMa
 
     private val _chatList = mutableStateListOf<ChatRoomModel>()
     val chatList: List<ChatRoomModel> get() = _chatList
+
+    private val _messageList = mutableStateListOf<Message>()
+    val messageList: List<Message> get() = _messageList
 
     init {
         listenAll()
@@ -54,13 +62,23 @@ class ChatRepository @Inject constructor(private val socketManager: ChatSocketMa
                 return@on
             }
 
-            val data: String = response[KEY_DATA]?: return@on
+            val data: String = response[KEY_DATA] ?: return@on
             _chatList.clear()
             _chatList.addAll(data.toObjectList())
         }
     }
 
+    fun listenLoadMessage() {
+        socketManager.on(ChatSocketEvent.LOAD_MESSAGE) { response ->
+            _messageList.clear()
+            val rows: String = response?.get(KEY_ROWS) ?: return@on
+            val messageList: List<Message> = rows.toObjectList<Message>().reversed()
+            _messageList.addAll(messageList)
+        }
+    }
+
     fun requestChatList(userId: String) {
+        Timber.d("requestChatList: $userId")
         socketManager.emit(ChatSocketEvent.LOAD_CONVERSATION, mapOf(PARAM_USER_ID to userId))
     }
 
@@ -85,7 +103,25 @@ class ChatRepository @Inject constructor(private val socketManager: ChatSocketMa
     }
 
     fun requestExitChatRoom(userId: String, name: String, conversationId: Int) {
-        socketManager.emit(ChatSocketEvent.OUT_CONVERSATION, mapOf(PARAM_USER_ID to userId, PARAM_NAME to name, PARAM_CONVERSATION_ID to conversationId.toString()))
+        socketManager.emit(
+            ChatSocketEvent.OUT_CONVERSATION,
+            mapOf(
+                PARAM_USER_ID to userId,
+                PARAM_NAME to name,
+                PARAM_CONVERSATION_ID to conversationId.toString()
+            )
+        )
+    }
+
+    fun requestLoadMessage(conversationId: Int, offset: Int, size: Int) {
+        socketManager.emit(
+            ChatSocketEvent.LOAD_MESSAGE,
+            mapOf(
+                PARAM_CONVERSATION_ID to conversationId.toString(),
+                PARAM_OFFSET to offset.toString(),
+                PARAM_SIZE to size.toString()
+            )
+        )
     }
 
     fun startSocket() {
@@ -104,7 +140,7 @@ class ChatRepository @Inject constructor(private val socketManager: ChatSocketMa
         val list: ArrayList<Map<String, Any?>>? = this.toObject()
         return mutableListOf<T>().apply {
             list?.forEach {
-                add(mapToObject(it, T::class.java)?: return@forEach)
+                add(mapToObject(it, T::class.java) ?: return@forEach)
             }
         }
     }

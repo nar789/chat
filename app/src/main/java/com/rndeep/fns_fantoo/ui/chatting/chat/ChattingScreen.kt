@@ -50,6 +50,8 @@ import androidx.constraintlayout.compose.Dimension
 import androidx.core.content.ContextCompat
 import coil.compose.rememberAsyncImagePainter
 import com.rndeep.fns_fantoo.R
+import com.rndeep.fns_fantoo.data.remote.model.chat.Message
+import com.rndeep.fns_fantoo.data.remote.model.chat.ReadInfo
 import com.rndeep.fns_fantoo.ui.chatting.compose.FantooChatTypography
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -171,11 +173,11 @@ fun Messages(
         ) {
             itemsIndexed(messages) { index, item ->
                 val isMe = item.isMyMessage(myId)
-                val prevAuthor = messages.getOrNull(index - 1)?.authorName
-                val nextAuthor = messages.getOrNull(index + 1)?.authorName
+                val prevAuthor = messages.getOrNull(index - 1)?.name
+                val nextAuthor = messages.getOrNull(index + 1)?.name
                 val nextHour = messages.getOrNull(index + 1)?.hourText
-                val isFirstMessageByAuthor = prevAuthor != item.authorName
-                val isLastMessageByAuthor = nextAuthor != item.authorName
+                val isFirstMessageByAuthor = prevAuthor != item.name
+                val isLastMessageByAuthor = nextAuthor != item.name
 
                 Box(
                     modifier = Modifier
@@ -256,7 +258,7 @@ fun AuthorAndName(
     onClickAuthor: (String) -> Unit
 ) {
     Row(
-        modifier = Modifier.clickable { onClickAuthor(message.authorId) },
+        modifier = Modifier.clickable { message.userId?.let(onClickAuthor) },
         verticalAlignment = Alignment.CenterVertically
     ) {
         val defaultImage = painterResource(R.drawable.profile_character1)
@@ -265,7 +267,7 @@ fun AuthorAndName(
                 .size(22.dp)
                 .clip(RoundedCornerShape(6.dp)),
             painter = rememberAsyncImagePainter(
-                model = message.authorImage,
+                model = message.image,
                 fallback = defaultImage,
                 error = defaultImage,
                 placeholder = defaultImage
@@ -274,7 +276,7 @@ fun AuthorAndName(
         )
         Spacer(modifier = Modifier.size(6.dp))
         Text(
-            text = message.authorName,
+            text = message.name.orEmpty(),
             fontSize = 12.sp,
             color = colorResource(R.color.gray_400),
         )
@@ -309,7 +311,7 @@ fun TextMessageItem(
         border = border
     ) {
         Text(
-            text = message.content,
+            text = message.message,
             color = textColor,
             modifier = Modifier.padding(horizontal = 14.dp, vertical = 8.dp)
         )
@@ -712,7 +714,7 @@ fun UserBlockView(
 fun ChatScreenPreview() {
     MaterialTheme {
         ChattingScreen(
-            testUiState.copy(blocked = true),
+            ChatUiState(),
             Modifier,
             "Dasol",
             onMessageSent = {},
@@ -756,46 +758,46 @@ fun UserInputSelector() {
 fun UserBlockViewPreview() {
     UserBlockView(Modifier, {})
 }
-
-val testUiState = ChatUiState(
-    messages = listOf(
-        Message(
-            content = "상암 경기장에서 공연한다는데 맞아? 장소 바뀐거 아니지?",
-            authorId = "testId",
-            authorName = "Dasol",
-            authorImage = "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMjA2MjFfMjYz%2FMDAxNjU1NzgxMTkyMTU5.YO7UnyTXMzeXg02Jz1tPCDba5Nsr7m-vuOMGwT1WXfEg.GfjVMhmbCK2UuWqIcvtpCPfvhX39IvwQ7smctj0-3I8g.JPEG.gydls004%2FInternet%25A3%25DF20220621%25A3%25DF121040%25A3%25DF8.jpeg&type=sc960_832",
-            timestamp = 1667283734000
-        ),
-        Message(
-            content = "같이 갈꺼지? 공연 끝나고...",
-            authorId = "testId",
-            authorName = "Dasol",
-            authorImage = "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMjA2MjFfMjYz%2FMDAxNjU1NzgxMTkyMTU5.YO7UnyTXMzeXg02Jz1tPCDba5Nsr7m-vuOMGwT1WXfEg.GfjVMhmbCK2UuWqIcvtpCPfvhX39IvwQ7smctj0-3I8g.JPEG.gydls004%2FInternet%25A3%25DF20220621%25A3%25DF121040%25A3%25DF8.jpeg&type=sc960_832",
-            timestamp = 1667283734000
-        ),
-        Message(
-            content = "당연히 같이 가야지~ 스탠딩 공연이잖아 너무 재밌을것 같어~",
-            authorName = "Me",
-            authorImage = null,
-            timestamp = 1667290934000,
-            unreadCount = 1
-        ),
-        Message(
-            content = "하 빨리 다음주 됐으면...",
-            authorName = "Me",
-            authorImage = null,
-            timestamp = 1667290934000,
-            unreadCount = 1
-        ),
-        Message(
-            authorName = "Me",
-            authorImage = null,
-            timestamp = 1667290994000,
-            image = "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMjA2MjFfMjYz%2FMDAxNjU1NzgxMTkyMTU5.YO7UnyTXMzeXg02Jz1tPCDba5Nsr7m-vuOMGwT1WXfEg.GfjVMhmbCK2UuWqIcvtpCPfvhX39IvwQ7smctj0-3I8g.JPEG.gydls004%2FInternet%25A3%25DF20220621%25A3%25DF121040%25A3%25DF8.jpeg&type=sc960_832",
-            unreadCount = 1
-        ),
-    ),
-    readInfos = listOf(
-        ReadInfo("1", 1667283734001)
-    )
-)
+//
+//val testUiState = ChatUiState(
+//    messages = listOf(
+//        Message(
+//            content = "상암 경기장에서 공연한다는데 맞아? 장소 바뀐거 아니지?",
+//            authorId = "testId",
+//            authorName = "Dasol",
+//            authorImage = "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMjA2MjFfMjYz%2FMDAxNjU1NzgxMTkyMTU5.YO7UnyTXMzeXg02Jz1tPCDba5Nsr7m-vuOMGwT1WXfEg.GfjVMhmbCK2UuWqIcvtpCPfvhX39IvwQ7smctj0-3I8g.JPEG.gydls004%2FInternet%25A3%25DF20220621%25A3%25DF121040%25A3%25DF8.jpeg&type=sc960_832",
+//            timestamp = 1667283734000
+//        ),
+//        Message(
+//            content = "같이 갈꺼지? 공연 끝나고...",
+//            authorId = "testId",
+//            authorName = "Dasol",
+//            authorImage = "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMjA2MjFfMjYz%2FMDAxNjU1NzgxMTkyMTU5.YO7UnyTXMzeXg02Jz1tPCDba5Nsr7m-vuOMGwT1WXfEg.GfjVMhmbCK2UuWqIcvtpCPfvhX39IvwQ7smctj0-3I8g.JPEG.gydls004%2FInternet%25A3%25DF20220621%25A3%25DF121040%25A3%25DF8.jpeg&type=sc960_832",
+//            timestamp = 1667283734000
+//        ),
+//        Message(
+//            content = "당연히 같이 가야지~ 스탠딩 공연이잖아 너무 재밌을것 같어~",
+//            authorName = "Me",
+//            authorImage = null,
+//            timestamp = 1667290934000,
+//            unreadCount = 1
+//        ),
+//        Message(
+//            content = "하 빨리 다음주 됐으면...",
+//            authorName = "Me",
+//            authorImage = null,
+//            timestamp = 1667290934000,
+//            unreadCount = 1
+//        ),
+//        Message(
+//            authorName = "Me",
+//            authorImage = null,
+//            timestamp = 1667290994000,
+//            image = "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMjA2MjFfMjYz%2FMDAxNjU1NzgxMTkyMTU5.YO7UnyTXMzeXg02Jz1tPCDba5Nsr7m-vuOMGwT1WXfEg.GfjVMhmbCK2UuWqIcvtpCPfvhX39IvwQ7smctj0-3I8g.JPEG.gydls004%2FInternet%25A3%25DF20220621%25A3%25DF121040%25A3%25DF8.jpeg&type=sc960_832",
+//            unreadCount = 1
+//        ),
+//    ),
+//    readInfos = listOf(
+//        ReadInfo("1", 1667283734001)
+//    )
+//)

@@ -6,6 +6,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.rndeep.fns_fantoo.data.remote.model.chat.Message
 import com.rndeep.fns_fantoo.repositories.ChatRepository
 import com.rndeep.fns_fantoo.repositories.ChatUserRepository
 import com.rndeep.fns_fantoo.repositories.DataStoreKey
@@ -23,7 +24,7 @@ class ChattingViewModel @Inject constructor(
     private val chatUserRepository: ChatUserRepository
 ) : ViewModel() {
 
-    private val _chatUiState = mutableStateOf(testUiState)
+    private val _chatUiState = mutableStateOf(ChatUiState())
     val chatUiState: State<ChatUiState> get() = _chatUiState
 
     private val _profileUiState = mutableStateOf(ProfileUiState())
@@ -44,6 +45,17 @@ class ChattingViewModel @Inject constructor(
     fun init(chatId: Int) {
         this.chatId = chatId
         checkChatBlockedState()
+        initMessageState()
+    }
+
+    private fun initMessageState() {
+        viewModelScope.launch {
+            chatRepository.requestLoadMessage(chatId, 0, 100)
+            chatRepository.listenLoadMessage()
+            _chatUiState.value = _chatUiState.value.copy(
+                messages = chatRepository.messageList
+            )
+        }
     }
 
     fun initProfileDetail(userId: String) {
@@ -67,9 +79,9 @@ class ChattingViewModel @Inject constructor(
         _chatUiState.value = _chatUiState.value.copy(
             messages = oldMessages + listOf(
                 Message(
-                    authorId = _chatUiState.value.myId,
-                    authorName = "me",
-                    content = message
+                    userId = _chatUiState.value.myId,
+                    name = "me",
+                    message = message
                 )
             )
         )
