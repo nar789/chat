@@ -6,12 +6,9 @@ import androidx.compose.runtime.mutableStateOf
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.rndeep.fns_fantoo.data.remote.model.chat.ChatRoomModel
-import com.rndeep.fns_fantoo.data.remote.model.chat.ChatListResult
-import com.rndeep.fns_fantoo.data.remote.model.chat.CreateChatBody
+import com.rndeep.fns_fantoo.data.remote.model.chat.CreateChatUserInfo
 import com.rndeep.fns_fantoo.data.remote.socket.ChatSocketEvent
 import com.rndeep.fns_fantoo.data.remote.socket.ChatSocketManager
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
 
@@ -26,6 +23,8 @@ class ChatRepository @Inject constructor(private val socketManager: ChatSocketMa
 
         private const val PARAM_USER_ID = "userId"
         private const val PARAM_INFO = "info"
+        private const val PARAM_NAME = "name"
+        private const val PARAM_CONVERSATION_ID = "conversationId"
     }
 
     private val _createConversationResult = mutableStateOf(false)
@@ -39,15 +38,14 @@ class ChatRepository @Inject constructor(private val socketManager: ChatSocketMa
     }
 
     private fun listenAll() {
+        listenCreateConversation()
         listenLoadConversation()
     }
 
-    //todo
     private fun listenCreateConversation() {
-//        socketManager.on(ChatSocketEvent.CREATE_CONVERSATION) {
-//            _createConversationResult.value = true
-////                it.get()
-//        }
+        socketManager.on(ChatSocketEvent.CREATE_CONVERSATION) { response ->
+            _createConversationResult.value = response?.get(KEY_RESULT).isSuccess()
+        }
     }
 
     private fun listenLoadConversation() {
@@ -57,34 +55,38 @@ class ChatRepository @Inject constructor(private val socketManager: ChatSocketMa
             }
 
             val data: String = response[KEY_DATA]?: return@on
+            _chatList.clear()
             _chatList.addAll(data.toObjectList())
         }
     }
 
     fun requestChatList(userId: String) {
-        _chatList.clear()
         socketManager.emit(ChatSocketEvent.LOAD_CONVERSATION, mapOf(PARAM_USER_ID to userId))
     }
 
-    fun requestCreateChat(userId: String) {
-        val test1 = CreateChatBody(
-            id = userId,
-            name = "hi",
-            profile = "https://search.pstatic.net/sunny/?src=https%3A%2F%2Fi.pinimg.com%2Foriginals%2Fba%2F72%2Fe6%2Fba72e63ac96ccaeb4f128701f9d4cd7d.jpg&type=sc960_832"
-        )
-        val test2 = CreateChatBody(
-            id = "1",
-            name = "hi",
-            profile = "https://search.pstatic.net/sunny/?src=https%3A%2F%2Fi.pinimg.com%2Foriginals%2Fba%2F72%2Fe6%2Fba72e63ac96ccaeb4f128701f9d4cd7d.jpg&type=sc960_832"
-        )
-        val test3 = CreateChatBody(
-            id = "2",
-            name = "hi",
-            profile = "https://search.pstatic.net/sunny/?src=https%3A%2F%2Fi.pinimg.com%2Foriginals%2Fba%2F72%2Fe6%2Fba72e63ac96ccaeb4f128701f9d4cd7d.jpg&type=sc960_832"
-        )
-        val body = Gson().toJson(listOf(test1, test2, test3)).toString()
-
+    fun requestCreateChat(users: List<CreateChatUserInfo>) {
+//        val test1 = CreateChatUserInfo(
+//            id = userId,
+//            name = "hi",
+//            profile = "https://search.pstatic.net/sunny/?src=https%3A%2F%2Fi.pinimg.com%2Foriginals%2Fba%2F72%2Fe6%2Fba72e63ac96ccaeb4f128701f9d4cd7d.jpg&type=sc960_832"
+//        )
+//        val test2 = CreateChatUserInfo(
+//            id = "1",
+//            name = "hi",
+//            profile = "https://search.pstatic.net/sunny/?src=https%3A%2F%2Fi.pinimg.com%2Foriginals%2Fba%2F72%2Fe6%2Fba72e63ac96ccaeb4f128701f9d4cd7d.jpg&type=sc960_832"
+//        )
+//        val test3 = CreateChatUserInfo(
+//            id = "2",
+//            name = "hi",
+//            profile = "https://search.pstatic.net/sunny/?src=https%3A%2F%2Fi.pinimg.com%2Foriginals%2Fba%2F72%2Fe6%2Fba72e63ac96ccaeb4f128701f9d4cd7d.jpg&type=sc960_832"
+//        )
+        val body = Gson().toJson(users).toString()
         socketManager.emit(ChatSocketEvent.CREATE_CONVERSATION, mapOf(PARAM_INFO to body))
+    }
+
+
+    fun requestExitChatRoom(userId: String, name: String, conversationId: Int) {
+        socketManager.emit(ChatSocketEvent.OUT_CONVERSATION, mapOf(PARAM_USER_ID to userId, PARAM_NAME to name, PARAM_CONVERSATION_ID to conversationId.toString()))
     }
 
     fun startSocket() {
@@ -95,7 +97,7 @@ class ChatRepository @Inject constructor(private val socketManager: ChatSocketMa
         socketManager.finish()
     }
 
-    private fun String.isSuccess() = this == RESULT_SUCCESS
+    private fun String?.isSuccess(): Boolean = this == RESULT_SUCCESS
 
     private fun <T> String.toObject(): T = Gson().fromJson(this, object : TypeToken<T>() {}.type)
 

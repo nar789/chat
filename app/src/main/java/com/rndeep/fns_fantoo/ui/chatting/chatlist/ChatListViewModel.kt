@@ -3,6 +3,7 @@ package com.rndeep.fns_fantoo.ui.chatting.chatlist
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.*
+import com.rndeep.fns_fantoo.data.remote.model.chat.ChatRoomModel
 import com.rndeep.fns_fantoo.repositories.ChatRepository
 import com.rndeep.fns_fantoo.repositories.ChatUserRepository
 import com.rndeep.fns_fantoo.repositories.DataStoreKey
@@ -53,9 +54,10 @@ class ChatListViewModel @Inject constructor(
         chatRepository.requestChatList(userId)
     }
 
-    fun exitChat(chatId: Int) {
-        closeOptions(chatId)
-//        _chatList.removeIf { it.id == chatId }
+    fun exitChat(chat: ChatRoomModel) {
+        closeOptions(chat.id)
+        chatRepository.requestExitChatRoom(chat.userId?: return, chat.title?: return, chat.id)
+        chatRepository.requestChatList(userId)
     }
 
     fun blockChat(chatId: Int) {
@@ -74,10 +76,6 @@ class ChatListViewModel @Inject constructor(
             return
         }
         _optionOpenedChatId.value = null
-    }
-
-    fun tmpAddChat() {
-        chatRepository.requestCreateChat(userId)
     }
 
     fun navigateToLogin() {

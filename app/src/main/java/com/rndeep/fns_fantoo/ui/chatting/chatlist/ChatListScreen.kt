@@ -54,7 +54,6 @@ fun ChatListScreen(
     Surface(modifier = Modifier) {
         Column {
             ChatListHeader {
-                viewModel.tmpAddChat()
                 navigateToAddChat()
             }
             if (isUser) {
@@ -147,7 +146,7 @@ fun ChatList(
 fun ChatListItem(
     chat: ChatRoomModel,
     onClickChat: (chatId: Int, roomName: String) -> Unit,
-    exitChat: (chatId: Int) -> Unit,
+    exitChat: (chat: ChatRoomModel) -> Unit,
     blockChat: (chatId: Int) -> Unit,
     isOptionOpened: Boolean,
     openOptions: (chatId: Int) -> Unit,
@@ -307,7 +306,7 @@ fun ChatListEditContent(
     chat: ChatRoomModel,
     onClickAlarm: (chatId: Int) -> Unit,
     onClickBlock: (chatId: Int) -> Unit,
-    onClickExit: (chatId: Int) -> Unit
+    onClickExit: (chat: ChatRoomModel) -> Unit
 ) {
     val modifier = Modifier
         .width(54.dp)
@@ -355,7 +354,7 @@ fun ChatListEditContent(
         Box(
             modifier = modifier
                 .background(color = colorResource(id = R.color.state_danger))
-                .clickable { onClickExit(chatId) },
+                .clickable { onClickExit(chat) },
             contentAlignment = Alignment.Center
         ) {
             Text(

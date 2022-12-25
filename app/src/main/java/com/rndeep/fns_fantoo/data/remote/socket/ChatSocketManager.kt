@@ -61,7 +61,6 @@ class ChatSocketManager @Inject constructor() {
 
     fun emit(event: String, args: Map<String, String> = emptyMap()) {
         if (args.isEmpty()) {
-            socket.emit(event)
             return
         }
         val parms = JSONObject()
@@ -69,6 +68,10 @@ class ChatSocketManager @Inject constructor() {
             parms.put(it.key, it.value)
         }
         socket.emit(event, parms)
+    }
+
+    fun emit(event: String) {
+        socket.emit(event)
     }
 
     private fun listenSocketError() {
