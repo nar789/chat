@@ -9,7 +9,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ChattingSettingViewModel @Inject constructor() : ViewModel() {
 
-    private var chatId: Long = 0
+    private var chatId: Int = 0
 
     private val _isAlarmOn = mutableStateOf(true)
     val isAlarmOn = _isAlarmOn
@@ -20,7 +20,7 @@ class ChattingSettingViewModel @Inject constructor() : ViewModel() {
     private val _errorToastEvent = SingleLiveEvent<String>()
     val errorToastEvent = _errorToastEvent
 
-    fun init(chatId: Long) {
+    fun init(chatId: Int) {
         this.chatId = chatId
     }
 
