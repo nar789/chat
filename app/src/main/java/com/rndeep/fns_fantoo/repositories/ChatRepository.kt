@@ -4,6 +4,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.rndeep.fns_fantoo.data.remote.model.chat.ChatRoomModel
 import com.rndeep.fns_fantoo.data.remote.model.chat.ChatListResult
 import com.rndeep.fns_fantoo.data.remote.model.chat.CreateChatBody
@@ -19,6 +20,9 @@ class ChatRepository @Inject constructor(private val socketManager: ChatSocketMa
     companion object {
         private const val RESULT_SUCCESS = "success"
         private const val RESULT_FAIL = "fail"
+
+        private const val KEY_RESULT = "result"
+        private const val KEY_DATA = "data"
 
         private const val PARAM_USER_ID = "userId"
         private const val PARAM_INFO = "info"
@@ -47,15 +51,18 @@ class ChatRepository @Inject constructor(private val socketManager: ChatSocketMa
     }
 
     private fun listenLoadConversation() {
-        socketManager.on<ChatListResult>(ChatSocketEvent.LOAD_CONVERSATION) { response ->
-            if (response?.result?.isSuccess() != true) {
+        socketManager.on(ChatSocketEvent.LOAD_CONVERSATION) { response ->
+            if (response?.get(KEY_RESULT)?.isSuccess() != true) {
                 return@on
             }
-            _chatList.addAll(response.data ?: return@on)
+
+            val data: String = response[KEY_DATA]?: return@on
+            _chatList.addAll(data.toObjectList())
         }
     }
 
     fun requestChatList(userId: String) {
+        _chatList.clear()
         socketManager.emit(ChatSocketEvent.LOAD_CONVERSATION, mapOf(PARAM_USER_ID to userId))
     }
 
@@ -89,4 +96,24 @@ class ChatRepository @Inject constructor(private val socketManager: ChatSocketMa
     }
 
     private fun String.isSuccess() = this == RESULT_SUCCESS
+
+    private fun <T> String.toObject(): T = Gson().fromJson(this, object : TypeToken<T>() {}.type)
+
+    private inline fun <reified T> String.toObjectList(): List<T> {
+        val list: ArrayList<Map<String, Any?>>? = this.toObject()
+        return mutableListOf<T>().apply {
+            list?.forEach {
+                add(mapToObject(it, T::class.java)?: return@forEach)
+            }
+        }
+    }
+
+    private fun <T> mapToObject(map: Map<String, Any?>?, type: Class<T>): T? {
+        if (map == null) return null
+
+        val gson = Gson()
+        val json = gson.toJson(map)
+        return gson.fromJson(json, type)
+    }
+
 }
