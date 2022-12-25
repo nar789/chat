@@ -7,6 +7,7 @@ import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.rndeep.fns_fantoo.data.remote.model.chat.ChatSearchResult
+import com.rndeep.fns_fantoo.data.remote.model.chat.CreateChatUserInfo
 import com.rndeep.fns_fantoo.data.remote.model.chat.TmpUserInfo
 import com.rndeep.fns_fantoo.repositories.ChatRepository
 import com.rndeep.fns_fantoo.ui.common.viewmodel.SingleLiveEvent
@@ -79,7 +80,10 @@ class AddChatViewModel @Inject constructor(private val chatRepository: ChatRepos
         if (checkedUserList.isEmpty()) {
             return
         }
-        //todo 채팅방생성 api 호출 필요
-        _navigateToChat.value = 123
+        chatRepository.requestCreateChat(makeUserList())
     }
+
+   private fun makeUserList(): List<CreateChatUserInfo> = mutableListOf<CreateChatUserInfo>().apply {
+
+   }
 }

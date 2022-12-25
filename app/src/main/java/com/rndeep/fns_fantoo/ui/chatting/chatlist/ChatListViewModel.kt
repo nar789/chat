@@ -1,14 +1,17 @@
 package com.rndeep.fns_fantoo.ui.chatting.chatlist
 
 import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.*
+import com.rndeep.fns_fantoo.data.remote.model.chat.ChatRoomModel
 import com.rndeep.fns_fantoo.repositories.ChatRepository
 import com.rndeep.fns_fantoo.repositories.ChatUserRepository
 import com.rndeep.fns_fantoo.repositories.DataStoreKey
 import com.rndeep.fns_fantoo.repositories.DataStoreRepository
 import com.rndeep.fns_fantoo.ui.common.viewmodel.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -27,10 +30,17 @@ class ChatListViewModel @Inject constructor(
     val optionOpenedChatId: StateFlow<Int?> get() = _optionOpenedChatId
     private val _isUser = mutableStateOf(false)
 
+    private val _muteChatIds = mutableStateListOf<Int>()
+    val muteChatIds: List<Int> = _muteChatIds
+
+    private val _updateMuteState = SingleLiveEvent<Pair<Int, Boolean>>()
+    val updateMuteChatState: LiveData<Pair<Int, Boolean>> = _updateMuteState
+
     val isUser: State<Boolean> = _isUser
 
     private var userId: String = ""
     private val _navigateToLogin = SingleLiveEvent<Unit>()
+
 
     val navigateToLogin: LiveData<Unit> = _navigateToLogin
 
@@ -53,14 +63,17 @@ class ChatListViewModel @Inject constructor(
         chatRepository.requestChatList(userId)
     }
 
-    fun exitChat(chatId: Int) {
-        closeOptions(chatId)
-//        _chatList.removeIf { it.id == chatId }
+    fun exitChat(chat: ChatRoomModel) {
+        closeOptions(chat.id)
+        chatRepository.requestExitChatRoom(chat.userId?: return, chat.title?: return, chat.id)
+        chatRepository.requestChatList(userId)
     }
 
     fun blockChat(chatId: Int) {
         viewModelScope.launch {
-            closeOptions(chatId)
+            launch(Dispatchers.Main) {
+                closeOptions(chatId)
+            }
             chatUserRepository.setConversationBlocked(userId, chatId, true)
         }
     }
@@ -74,10 +87,6 @@ class ChatListViewModel @Inject constructor(
             return
         }
         _optionOpenedChatId.value = null
-    }
-
-    fun tmpAddChat() {
-        chatRepository.requestCreateChat(userId)
     }
 
     fun navigateToLogin() {
@@ -97,5 +106,15 @@ class ChatListViewModel @Inject constructor(
     override fun onResume(owner: LifecycleOwner) {
         super.onResume(owner)
         loadChatList()
+    }
+
+    fun updateMuteChatIds(list: List<Int>) {
+        _muteChatIds.clear()
+        _muteChatIds.addAll(list)
+    }
+
+    fun updateChatMuteState(chatId: Int, isMute: Boolean) {
+        closeOptions(chatId)
+        _updateMuteState.value = chatId to isMute
     }
 }

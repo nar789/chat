@@ -8,6 +8,7 @@ object ChatSocketEvent {
     const val READ_INFO = "readinfo"
     const val LOAD_MESSAGE = "loadmessage"
     const val UPLOAD_IMAGE = "uploadImage"
+    const val OUT_CONVERSATION = "outconversation"
 }
 
 /*
