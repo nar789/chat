@@ -124,7 +124,7 @@ fun ChattingScreen(
                 )
             }
 
-            if (uiState.userBlocked) {
+            if (uiState.blocked) {
                 UserBlockView(onClickUnBlock = onClickUnBlock)
             } else {
                 BottomEditText(
@@ -712,7 +712,7 @@ fun UserBlockView(
 fun ChatScreenPreview() {
     MaterialTheme {
         ChattingScreen(
-            testUiState.copy(userBlocked = true),
+            testUiState.copy(blocked = true),
             Modifier,
             "Dasol",
             onMessageSent = {},
@@ -761,14 +761,14 @@ val testUiState = ChatUiState(
     messages = listOf(
         Message(
             content = "상암 경기장에서 공연한다는데 맞아? 장소 바뀐거 아니지?",
-            authorId = "1",
+            authorId = "testId",
             authorName = "Dasol",
             authorImage = "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMjA2MjFfMjYz%2FMDAxNjU1NzgxMTkyMTU5.YO7UnyTXMzeXg02Jz1tPCDba5Nsr7m-vuOMGwT1WXfEg.GfjVMhmbCK2UuWqIcvtpCPfvhX39IvwQ7smctj0-3I8g.JPEG.gydls004%2FInternet%25A3%25DF20220621%25A3%25DF121040%25A3%25DF8.jpeg&type=sc960_832",
             timestamp = 1667283734000
         ),
         Message(
             content = "같이 갈꺼지? 공연 끝나고...",
-            authorId = "1",
+            authorId = "testId",
             authorName = "Dasol",
             authorImage = "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMjA2MjFfMjYz%2FMDAxNjU1NzgxMTkyMTU5.YO7UnyTXMzeXg02Jz1tPCDba5Nsr7m-vuOMGwT1WXfEg.GfjVMhmbCK2UuWqIcvtpCPfvhX39IvwQ7smctj0-3I8g.JPEG.gydls004%2FInternet%25A3%25DF20220621%25A3%25DF121040%25A3%25DF8.jpeg&type=sc960_832",
             timestamp = 1667283734000

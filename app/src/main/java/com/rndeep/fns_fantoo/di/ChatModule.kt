@@ -1,7 +1,9 @@
 package com.rndeep.fns_fantoo.di
 
+import com.rndeep.fns_fantoo.data.remote.api.ChatUserService
 import com.rndeep.fns_fantoo.data.remote.socket.ChatSocketManager
 import com.rndeep.fns_fantoo.repositories.ChatRepository
+import com.rndeep.fns_fantoo.repositories.ChatUserRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,4 +22,10 @@ class ChatModule {
     @Provides
     fun provideChatRepository(chatSocketManager: ChatSocketManager): ChatRepository =
         ChatRepository(chatSocketManager)
+
+    @Singleton
+    @Provides
+    fun provideUserRepository(
+        @NetworkModule.ChatUserServer chatUserService: ChatUserService
+    ): ChatUserRepository = ChatUserRepository(chatUserService)
 }

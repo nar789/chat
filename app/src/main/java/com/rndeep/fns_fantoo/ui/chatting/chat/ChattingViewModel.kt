@@ -7,8 +7,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rndeep.fns_fantoo.repositories.ChatRepository
+import com.rndeep.fns_fantoo.repositories.ChatUserRepository
 import com.rndeep.fns_fantoo.repositories.DataStoreKey
 import com.rndeep.fns_fantoo.repositories.DataStoreRepository
+import com.rndeep.fns_fantoo.ui.chatting.profiledetail.ProfileUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -17,11 +19,18 @@ import javax.inject.Inject
 @HiltViewModel
 class ChattingViewModel @Inject constructor(
     private val chatRepository: ChatRepository,
-    private val dataStoreRepository: DataStoreRepository
+    private val dataStoreRepository: DataStoreRepository,
+    private val chatUserRepository: ChatUserRepository
 ) : ViewModel() {
 
-    private val _chatUiState = mutableStateOf(ChatUiState())
+    private val _chatUiState = mutableStateOf(testUiState)
     val chatUiState: State<ChatUiState> get() = _chatUiState
+
+    private val _profileUiState = mutableStateOf(ProfileUiState())
+    val profileUiState: State<ProfileUiState> get() = _profileUiState
+
+    private var chatId: Long = 0L
+    private var otherUserId: String = "testId"
 
     init {
         Timber.d("init")
@@ -29,12 +38,24 @@ class ChattingViewModel @Inject constructor(
             val myUid = dataStoreRepository.getString(DataStoreKey.PREF_KEY_UID).toString()
             _chatUiState.value = _chatUiState.value.copy(myId = myUid)
         }
+    }
 
-        // get userBlocked State
+    fun init(chatId: Long) {
+        this.chatId = chatId
+        checkChatBlockedState()
     }
 
     fun initProfileDetail(userId: String) {
-        // sync userBlockedState, userFollowedState
+        Timber.d("initProfileDetail $userId")
+        viewModelScope.launch {
+            otherUserId = userId
+
+            val myId = _chatUiState.value.myId
+            val blocked = chatUserRepository.isUserBlocked(myId, userId)
+            val followed = chatUserRepository.isUserFollowed(myId, userId)
+            _profileUiState.value =
+                _profileUiState.value.copy(blocked = blocked, followed = followed)
+        }
     }
 
     fun sendMessage(message: String) {
@@ -63,12 +84,28 @@ class ChattingViewModel @Inject constructor(
     }
 
     fun setUserBlock(blocked: Boolean) {
-        _chatUiState.value = _chatUiState.value.copy(userBlocked = blocked)
-        // TODO: user block server call
+        viewModelScope.launch {
+            _profileUiState.value = _profileUiState.value.copy(blocked = blocked)
+            chatUserRepository.setUserBlocked(_chatUiState.value.myId, otherUserId, blocked)
+        }
     }
 
     fun followUser(follow: Boolean) {
-        _chatUiState.value = _chatUiState.value.copy(userFollowed = follow)
-        // follow server call
+        viewModelScope.launch {
+            _profileUiState.value = _profileUiState.value.copy(followed = follow)
+            chatUserRepository.setUserFollowed(_chatUiState.value.myId, otherUserId, follow)
+        }
+    }
+
+    private fun checkChatBlockedState() {
+        viewModelScope.launch {
+            val convBlocked =
+                chatUserRepository.isConversationBlocked(_chatUiState.value.myId, chatId)
+
+            // TODO: check user blocked state
+            val anyUserBlocked = false
+
+            _chatUiState.value = _chatUiState.value.copy(blocked = convBlocked || anyUserBlocked)
+        }
     }
 }

@@ -8,8 +8,7 @@ data class ChatUiState(
     val messages: List<Message> = listOf(),
     val myId: String = "",
     val translateMode: Boolean = false,
-    val userBlocked: Boolean = false,
-    val userFollowed: Boolean = false,
+    val blocked: Boolean = false,
     val readInfos: List<ReadInfo> = listOf()
 )
 
