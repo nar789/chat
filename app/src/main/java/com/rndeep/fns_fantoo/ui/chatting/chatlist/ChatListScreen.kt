@@ -1,6 +1,7 @@
 package com.rndeep.fns_fantoo.ui.chatting.chatlist
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -111,7 +112,8 @@ fun ChatList(
     onClickChat: (chatId: Int, roomName: String) -> Unit
 ) {
     val optionOpenedChatId by viewModel.optionOpenedChatId.collectAsState()
-    val chatList by viewModel.chatList
+    val chatList = viewModel.chatList
+    Log.d("chat", "chatlist: $chatList")
 
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -119,6 +121,7 @@ fun ChatList(
     ) {
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             itemsIndexed(chatList) { index, chat ->
+                Log.d("chat", "chatlist Index: $index")
                 Box(
                     modifier = Modifier.padding(
                         top = if (index == 0) 18.dp else 8.dp,
