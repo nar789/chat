@@ -788,6 +788,7 @@
     <string name="ch_chatting">채팅</string>
     <string name="chattingFragment">chatting String.</string>
     <string name="chat_list_alarm_on">알림\nON</string>
+    <string name="chat_list_alarm_off">알림\nOFF</string>
     <string name="chat_list_block">차단</string>
     <string name="chat_list_exit">채팅방\n나가기</string>
     <string name="chat_list_error_require_login">로그인 하여 채팅을 시작해 보세요.\n팬투 회원이라면 모두 가능합니다.</string>

@@ -1,7 +1,6 @@
 package com.rndeep.fns_fantoo.ui.chatting.chatlist
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -15,6 +14,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.pointer.pointerInput
@@ -112,7 +112,7 @@ fun ChatList(
 ) {
     val optionOpenedChatId by viewModel.optionOpenedChatId.collectAsState()
     val chatList = viewModel.chatList
-    Log.d("chat", "chatlist: $chatList")
+    val muteList = viewModel.muteChatIds
 
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -120,7 +120,6 @@ fun ChatList(
     ) {
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             itemsIndexed(chatList) { index, chat ->
-                Log.d("chat", "chatlist Index: $index")
                 Box(
                     modifier = Modifier.padding(
                         top = if (index == 0) 18.dp else 8.dp,
@@ -134,7 +133,9 @@ fun ChatList(
                         blockChat = viewModel::blockChat,
                         isOptionOpened = optionOpenedChatId == chat.id,
                         openOptions = viewModel::openOptions,
-                        closeOptions = viewModel::closeOptions
+                        closeOptions = viewModel::closeOptions,
+                        alarmChat = viewModel::updateChatMuteState,
+                        isMute = muteList.contains(chat.id)
                     )
                 }
             }
@@ -145,8 +146,10 @@ fun ChatList(
 @Composable
 fun ChatListItem(
     chat: ChatRoomModel,
+    isMute: Boolean,
     onClickChat: (chatId: Int, roomName: String) -> Unit,
     exitChat: (chat: ChatRoomModel) -> Unit,
+    alarmChat: (chatId: Int, isMute: Boolean) -> Unit,
     blockChat: (chatId: Int) -> Unit,
     isOptionOpened: Boolean,
     openOptions: (chatId: Int) -> Unit,
@@ -162,13 +165,14 @@ fun ChatListItem(
         backgroundColor = colorResource(id = R.color.gray_25),
         border = BorderStroke(width = 0.5.dp, color = colorResource(id = R.color.gray_200))
     ) {
-        ChatListEditContent(chat, {}, blockChat, exitChat)
+        ChatListEditContent(chat, isMute, alarmChat, blockChat, exitChat)
         ChatListContent(
             chat = chat,
             onClickChat = onClickChat,
             isOpened = isOptionOpened,
             openOptions = openOptions,
-            closeOptions = closeOptions
+            closeOptions = closeOptions,
+            isMute = isMute
         )
     }
 }
@@ -179,6 +183,7 @@ fun ChatListContent(
     chat: ChatRoomModel,
     onClickChat: (chatId: Int, roomName: String) -> Unit,
     isOpened: Boolean,
+    isMute: Boolean,
     openOptions: (Int) -> Unit,
     closeOptions: (Int) -> Unit
 ) {
@@ -211,8 +216,6 @@ fun ChatListContent(
                 .padding(12.dp)
                 .clickable {
                     if (isOpened) return@clickable
-                    //todo 읽음 api
-//                    chat.unreads = 0
                     onClickChat(chat.id, chat.title ?: "")
                 }
         ) {
@@ -238,13 +241,26 @@ fun ChatListContent(
                     .weight(1f)
                     .align(Alignment.CenterVertically)
             ) {
-                Text(
-                    modifier = Modifier.fillMaxWidth(),
-                    text = chat.title ?: "",
-                    style = FantooChatTypography.h3.copy(color = colorResource(id = R.color.gray_700)),
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
+                Row(modifier = Modifier.fillMaxWidth()) {
+                    Text(
+                        modifier = Modifier.wrapContentSize(),
+                        text = chat.title ?: "",
+                        style = FantooChatTypography.h3.copy(color = colorResource(id = R.color.gray_700)),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                    if (isMute) {
+                        Image(
+                            modifier = Modifier
+                                .size(12.dp)
+                                .align(CenterVertically)
+                                .padding(start = 2.dp),
+                            painter = painterResource(id = R.drawable.icon_alarm_off),
+                            contentDescription = null
+                        )
+                    }
+                }
+
 
                 Text(
                     modifier = Modifier
@@ -304,7 +320,8 @@ fun ChatListContent(
 @Composable
 fun ChatListEditContent(
     chat: ChatRoomModel,
-    onClickAlarm: (chatId: Int) -> Unit,
+    isMute: Boolean,
+    onClickAlarm: (chatId: Int, isMute: Boolean) -> Unit,
     onClickBlock: (chatId: Int) -> Unit,
     onClickExit: (chat: ChatRoomModel) -> Unit
 ) {
@@ -320,11 +337,11 @@ fun ChatListEditContent(
         Box(
             modifier = modifier
                 .background(color = colorResource(id = R.color.primary_default))
-                .clickable { onClickAlarm(chatId) },
+                .clickable { onClickAlarm(chatId, !isMute) },
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = stringResource(id = R.string.chat_list_alarm_on),
+                text = stringResource(id = if (isMute) R.string.chat_list_alarm_off else R.string.chat_list_alarm_on),
                 style = TextStyle(
                     color = colorResource(id = R.color.gray_25),
                     fontSize = 11.sp,
@@ -383,7 +400,15 @@ fun ChatListItemPreview() {
                     message = "하이하이",
                     updated = System.currentTimeMillis(),
                     unreads = 4
-                ), { _, _ -> }, {}, {}, false, {}, {})
+                ),
+                isMute = true,
+                onClickChat = { _, _ -> },
+                exitChat = {},
+                alarmChat = { _, _ -> },
+                blockChat = {},
+                isOptionOpened = false,
+                openOptions = {},
+                closeOptions = {})
         }
     }
 }
