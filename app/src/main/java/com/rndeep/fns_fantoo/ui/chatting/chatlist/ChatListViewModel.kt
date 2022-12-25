@@ -2,9 +2,7 @@ package com.rndeep.fns_fantoo.ui.chatting.chatlist
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.*
-import com.rndeep.fns_fantoo.data.remote.model.chat.ChatListResult
 import com.rndeep.fns_fantoo.repositories.DataStoreKey
 import com.rndeep.fns_fantoo.repositories.DataStoreRepository
 import com.rndeep.fns_fantoo.ui.common.viewmodel.SingleLiveEvent
@@ -20,19 +18,19 @@ class ChatListViewModel @Inject constructor(
     private val dataStoreRepository: DataStoreRepository,
     private val chatRepository: ChatRepository
 ) : ViewModel(), DefaultLifecycleObserver {
-    private val _chatList = makeTmpChatList().toMutableStateList()
-    val chatList: List<ChatListResult> get() = _chatList
+    val chatList get() = chatRepository.chatList
 
-    private val _optionOpenedChatId = MutableStateFlow<Long?>(null)
-    val optionOpenedChatId: StateFlow<Long?> get() = _optionOpenedChatId
+    private val _optionOpenedChatId = MutableStateFlow<Int?>(null)
 
+    val optionOpenedChatId: StateFlow<Int?> get() = _optionOpenedChatId
     private val _isUser = mutableStateOf(false)
+
     val isUser: State<Boolean> = _isUser
 
+    private var userId: String = ""
     private val _navigateToLogin = SingleLiveEvent<Unit>()
-    val navigateToLogin: LiveData<Unit> = _navigateToLogin
 
-    val conversationList = chatRepository.chatList
+    val navigateToLogin: LiveData<Unit> = _navigateToLogin
 
     init {
         loadUser()
@@ -43,29 +41,34 @@ class ChatListViewModel @Inject constructor(
             dataStoreRepository.getBoolean(DataStoreKey.PREF_KEY_IS_LOGINED)?.let {
                 _isUser.value = it
             }
+            dataStoreRepository.getString(DataStoreKey.PREF_KEY_UID).toString().let {
+                userId = it
+            }
         }
     }
 
-    private fun makeTmpChatList(): List<ChatListResult> = mutableListOf<ChatListResult>().apply {
-        (0L..30L).forEach {
-            add(ChatListResult(chatId = it, count = it))
-        }
+    private fun loadChatList() {
+        chatRepository.requestChatList(userId)
     }
 
-    fun exitChat(chatId: Long) {
+    fun exitChat(chatId: Int) {
         closeOptions(chatId)
-        _chatList.removeIf { it.chatId == chatId }
+//        _chatList.removeIf { it.id == chatId }
     }
 
-    fun openOptions(chatId: Long) {
+    fun openOptions(chatId: Int) {
         _optionOpenedChatId.value = chatId
     }
 
-    fun closeOptions(cardId: Long) {
+    fun closeOptions(cardId: Int) {
         if (_optionOpenedChatId.value != cardId) {
             return
         }
         _optionOpenedChatId.value = null
+    }
+
+    fun tmpAddChat() {
+        chatRepository.requestCreateChat(userId)
     }
 
     fun navigateToLogin() {
@@ -80,5 +83,10 @@ class ChatListViewModel @Inject constructor(
     override fun onDestroy(owner: LifecycleOwner) {
         chatRepository.finish()
         super.onDestroy(owner)
+    }
+
+    override fun onResume(owner: LifecycleOwner) {
+        super.onResume(owner)
+        loadChatList()
     }
 }

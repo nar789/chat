@@ -42,7 +42,7 @@ class ChatListFragment : Fragment() {
         }
     }
 
-    private fun navigateToChat(chatId: Long, roomName: String) {
+    private fun navigateToChat(chatId: Int, roomName: String) {
         findNavController().navigate(
             ChatListFragmentDirections.actionChatListFragmentToChattingFragment(chatId, roomName)
         )

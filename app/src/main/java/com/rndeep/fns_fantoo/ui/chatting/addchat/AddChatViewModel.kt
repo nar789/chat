@@ -35,8 +35,8 @@ class AddChatViewModel @Inject constructor(private val chatRepository: ChatRepos
     private val _checkedUserList = mutableStateListOf<String>()
     val checkedUserList: List<String> get() = _checkedUserList
 
-    private val _navigateToChat = SingleLiveEvent<Long>()
-    val navigateToChat: LiveData<Long> = _navigateToChat
+    private val _navigateToChat = SingleLiveEvent<Int>()
+    val navigateToChat: LiveData<Int> = _navigateToChat
 
     private fun makeTmpFollowerList(range: IntRange) = mutableListOf<TmpUserInfo>().apply {
         range.withIndex().forEach { (index, num) ->
@@ -80,6 +80,6 @@ class AddChatViewModel @Inject constructor(private val chatRepository: ChatRepos
             return
         }
         //todo 채팅방생성 api 호출 필요
-        _navigateToChat.value = 123L
+        _navigateToChat.value = 123
     }
 }

@@ -22,7 +22,7 @@
         android:label="fragment_chatting">
         <argument
             android:name="chatId"
-            app:argType="long" />
+            app:argType="integer" />
         <argument
             android:name="chatTitle"
             android:defaultValue="@null"
@@ -71,6 +71,6 @@
         android:label="ChattingSettingDialog" >
         <argument
             android:name="chatId"
-            app:argType="long" />
+            app:argType="integer" />
     </dialog>
 </navigation>

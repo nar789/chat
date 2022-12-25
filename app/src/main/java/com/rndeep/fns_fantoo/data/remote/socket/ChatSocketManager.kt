@@ -1,7 +1,10 @@
 package com.rndeep.fns_fantoo.data.remote.socket
 
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import io.socket.client.IO
 import io.socket.client.Socket
+import org.json.JSONObject
 import timber.log.Timber
 import java.net.URISyntaxException
 import javax.inject.Inject
@@ -41,15 +44,33 @@ class ChatSocketManager @Inject constructor() {
         }
     }
 
-    fun on(event: String, onSuccess: (Array<Any>) -> Unit) {
+    @Suppress("NON_PUBLIC_CALL_FROM_PUBLIC_INLINE")
+    inline fun <reified T> on(event: String, crossinline onSuccess: (T?) -> Unit) {
         socket.on(event) {
-            Timber.d("on result: $it")
-            onSuccess(it)
+            val mapResponse = it.getResponse<T>()
+            val response = mapResponse?.toObject<T, String, Any>()
+            Timber.d("socket on --> evnet: $event, result: $response")
+            onSuccess(response)
         }
     }
 
-    fun emit(event: String, args: List<String>? = null) {
-        socket.emit(event, args)
+    fun on(event: String, onSuccess: () -> Unit) {
+        socket.on(event) {
+            Timber.d("socket on --> evnet: $event")
+            onSuccess()
+        }
+    }
+
+    fun emit(event: String, args: Map<String, String> = emptyMap()) {
+        if (args.isEmpty()) {
+            socket.emit(event)
+            return
+        }
+        val parms = JSONObject()
+        args.forEach{
+            parms.put(it.key, it.value)
+        }
+        socket.emit(event, parms)
     }
 
     private fun listenSocketError() {
@@ -68,4 +89,30 @@ class ChatSocketManager @Inject constructor() {
         Timber.w("session is disconnected: $reason")
         socket.close()
     }
+
+    private fun <T> Array<Any>.getResponse(): Map<String, Any>? =
+        (firstOrNull() as? JSONObject)?.toMap<T>()
+
+
+////    private inline fun <reified T> String.fromJsonToObject(): T {
+////        val gson = Gson()
+////        return gson.fromJson(this, T::class.java)
+////    }
+
+    private fun <T> JSONObject.toMap(): Map<String, Any> = mutableMapOf<String, Any>().apply {
+        keys().forEach {
+            var value: Any =  this@toMap[it].toString()
+            if (value is String && value.startsWith("[{")) {
+                value = value.toObject<List<T>>()
+            }
+            this[it] = value
+        }
+    }
+    private fun <T> String.toObject(): T {
+        return Gson().fromJson(this, object : TypeToken<T>() {}.type)
+    }
+
+    private inline fun <reified T> T.toJson(): String = Gson().toJson(this)
+
+    private inline fun <reified T, K, V> Map<K, V>.toObject(): T = Gson().fromJson(this.toJson(), T::class.java)
 }

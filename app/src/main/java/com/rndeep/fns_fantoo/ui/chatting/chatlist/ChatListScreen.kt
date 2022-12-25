@@ -32,7 +32,7 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import coil.compose.rememberAsyncImagePainter
 import com.rndeep.fns_fantoo.R
-import com.rndeep.fns_fantoo.data.remote.model.chat.ChatListResult
+import com.rndeep.fns_fantoo.data.remote.model.chat.ChatRoomModel
 import com.rndeep.fns_fantoo.ui.chatting.compose.FantooChatTypography
 import com.rndeep.fns_fantoo.utils.TimeUtils.convertDiffTime
 import com.rndeep.fns_fantoo.utils.toDp
@@ -46,13 +46,16 @@ private const val CARD_DRAG_AMOUNT = -162f
 @Composable
 fun ChatListScreen(
     viewModel: ChatListViewModel,
-    navigateToChat: (chatId: Long, roomName: String) -> Unit,
+    navigateToChat: (chatId: Int, roomName: String) -> Unit,
     navigateToAddChat: () -> Unit
 ) {
     val isUser by viewModel.isUser
     Surface(modifier = Modifier) {
         Column {
-            ChatListHeader(navigateToAddChat)
+            ChatListHeader {
+                viewModel.tmpAddChat()
+                navigateToAddChat()
+            }
             if (isUser) {
                 ChatList(viewModel, navigateToChat)
             } else {
@@ -105,10 +108,10 @@ fun ChatListHeader(navigateToAddChat: () -> Unit) {
 @Composable
 fun ChatList(
     viewModel: ChatListViewModel,
-    onClickChat: (chatId: Long, roomName: String) -> Unit
+    onClickChat: (chatId: Int, roomName: String) -> Unit
 ) {
     val optionOpenedChatId by viewModel.optionOpenedChatId.collectAsState()
-    val chatList = viewModel.chatList
+    val chatList by viewModel.chatList
 
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -126,7 +129,7 @@ fun ChatList(
                         chat = chat,
                         onClickChat = onClickChat,
                         exitChat = viewModel::exitChat,
-                        isOptionOpened = optionOpenedChatId == chat.chatId,
+                        isOptionOpened = optionOpenedChatId == chat.id,
                         openOptions = viewModel::openOptions,
                         closeOptions = viewModel::closeOptions
                     )
@@ -138,12 +141,12 @@ fun ChatList(
 
 @Composable
 fun ChatListItem(
-    chat: ChatListResult,
-    onClickChat: (chatId: Long, roomName: String) -> Unit,
-    exitChat: (chatId: Long) -> Unit,
+    chat: ChatRoomModel,
+    onClickChat: (chatId: Int, roomName: String) -> Unit,
+    exitChat: (chatId: Int) -> Unit,
     isOptionOpened: Boolean,
-    openOptions: (chatId: Long) -> Unit,
-    closeOptions: (chatId: Long) -> Unit
+    openOptions: (chatId: Int) -> Unit,
+    closeOptions: (chatId: Int) -> Unit
 ) {
     Card(
         modifier = Modifier
@@ -169,11 +172,11 @@ fun ChatListItem(
 @SuppressLint("UnusedTransitionTargetStateParameter")
 @Composable
 fun ChatListContent(
-    chat: ChatListResult,
-    onClickChat: (chatId: Long, roomName: String) -> Unit,
+    chat: ChatRoomModel,
+    onClickChat: (chatId: Int, roomName: String) -> Unit,
     isOpened: Boolean,
-    openOptions: (Long) -> Unit,
-    closeOptions: (Long) -> Unit
+    openOptions: (Int) -> Unit,
+    closeOptions: (Int) -> Unit
 ) {
     val transitionState = remember {
         MutableTransitionState(isOpened).apply {
@@ -190,11 +193,11 @@ fun ChatListContent(
         modifier = Modifier
             .fillMaxSize()
             .offset { IntOffset(offsetTransition.roundToInt(), 0) }
-            .pointerInput(key1 = chat.chatId) {
+            .pointerInput(key1 = chat.id) {
                 detectHorizontalDragGestures { _, dragAmount ->
                     when {
-                        dragAmount >= MIN_DRAG_AMOUNT -> closeOptions(chat.chatId)
-                        dragAmount < -MIN_DRAG_AMOUNT -> openOptions(chat.chatId)
+                        dragAmount >= MIN_DRAG_AMOUNT -> closeOptions(chat.id)
+                        dragAmount < -MIN_DRAG_AMOUNT -> openOptions(chat.id)
                     }
                 }
             }) {
@@ -204,8 +207,9 @@ fun ChatListContent(
                 .padding(12.dp)
                 .clickable {
                     if (isOpened) return@clickable
-                    chat.count = 0
-                    onClickChat(chat.chatId, chat.roomName)
+                    //todo 읽음 api
+//                    chat.unreads = 0
+                    onClickChat(chat.id, chat.title ?: "")
                 }
         ) {
             val defaultImage = painterResource(R.drawable.profile_character11)
@@ -215,7 +219,7 @@ fun ChatListContent(
                     .align(Alignment.CenterVertically)
                     .clip(RoundedCornerShape(16.dp)),
                 painter = rememberAsyncImagePainter(
-                    model = chat.profileImg,
+                    model = chat.thumbnail ?: "",
                     fallback = defaultImage,
                     error = defaultImage,
                     placeholder = defaultImage
@@ -232,7 +236,7 @@ fun ChatListContent(
             ) {
                 Text(
                     modifier = Modifier.fillMaxWidth(),
-                    text = chat.roomName,
+                    text = chat.title ?: "",
                     style = FantooChatTypography.h3.copy(color = colorResource(id = R.color.gray_700)),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
@@ -242,7 +246,7 @@ fun ChatListContent(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 2.dp),
-                    text = chat.chat,
+                    text = chat.message ?: "",
                     style = FantooChatTypography.h4.copy(color = colorResource(id = R.color.gray_400)),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
@@ -255,7 +259,7 @@ fun ChatListContent(
                     .padding(start = 2.dp)
             ) {
                 Text(
-                    text = chat.time.convertDiffTime(),
+                    text = (chat.updated ?: 0).convertDiffTime(),
                     style = TextStyle(
                         fontWeight = FontWeight.Normal,
                         fontSize = 11.sp,
@@ -264,7 +268,7 @@ fun ChatListContent(
                         )
                     )
                 )
-                if (chat.count > 1) {
+                if (chat.unreads != null && chat.unreads > 1) {
                     Card(
                         elevation = 0.dp,
                         modifier = Modifier
@@ -275,7 +279,7 @@ fun ChatListContent(
                         shape = RoundedCornerShape(30.dp)
                     ) {
                         Text(
-                            text = chat.count.toString(),
+                            text = chat.unreads.toString(),
                             modifier = Modifier
                                 .wrapContentSize(align = Alignment.Center)
                                 .padding(horizontal = 3.dp, vertical = 2.dp),
@@ -295,16 +299,16 @@ fun ChatListContent(
 
 @Composable
 fun ChatListEditContent(
-    chat: ChatListResult,
-    onClickAlarm: (chatId: Long) -> Unit,
-    onClickBlock: (chatId: Long) -> Unit,
-    onClickExit: (chatId: Long) -> Unit
+    chat: ChatRoomModel,
+    onClickAlarm: (chatId: Int) -> Unit,
+    onClickBlock: (chatId: Int) -> Unit,
+    onClickExit: (chatId: Int) -> Unit
 ) {
     val modifier = Modifier
         .width(54.dp)
         .height(70.dp)
 
-    val chatId = chat.chatId
+    val chatId = chat.id
     Row(
         Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.End
@@ -367,7 +371,15 @@ fun ChatListEditContent(
 fun ChatListItemPreview() {
     MaterialTheme {
         Surface {
-            ChatListItem(chat = ChatListResult(), { _, _ -> }, {}, false, {}, {})
+            ChatListItem(
+                chat = ChatRoomModel(
+                    id = 1,
+                    thumbnail = "https://search.pstatic.net/sunny/?src=https%3A%2F%2Fi.pinimg.com%2Foriginals%2Fba%2F72%2Fe6%2Fba72e63ac96ccaeb4f128701f9d4cd7d.jpg&type=sc960_832",
+                    title = "채팅방 이름",
+                    message = "하이하이",
+                    updated = System.currentTimeMillis(),
+                    unreads = 4
+                ), { _, _ -> }, {}, false, {}, {})
         }
     }
 }
