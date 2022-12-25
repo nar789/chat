@@ -21,7 +21,7 @@ class ChatUserRepository @Inject constructor(
         }
     }
 
-    suspend fun isConversationBlocked(myUserId: String, conversationId: Long): Boolean {
+    suspend fun isConversationBlocked(myUserId: String, conversationId: Int): Boolean {
         safeApiCall(Dispatchers.IO) {
             chatUserApi.getConversationBlockState(myUserId, conversationId)
         }.run {
@@ -51,7 +51,7 @@ class ChatUserRepository @Inject constructor(
         }
     }
 
-    suspend fun setConversationBlocked(myUserId: String, conversationId: Long, block: Boolean) {
+    suspend fun setConversationBlocked(myUserId: String, conversationId: Int, block: Boolean) {
         safeApiCall(Dispatchers.IO) {
             chatUserApi.setConversationBlockState(myUserId, conversationId, if (block) 1 else 0)
         }.run {

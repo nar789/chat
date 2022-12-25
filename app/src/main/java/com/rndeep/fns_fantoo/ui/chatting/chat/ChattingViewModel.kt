@@ -29,18 +29,19 @@ class ChattingViewModel @Inject constructor(
     private val _profileUiState = mutableStateOf(ProfileUiState())
     val profileUiState: State<ProfileUiState> get() = _profileUiState
 
-    private var chatId: Long = 0L
+    private var chatId: Int = 0
     private var otherUserId: String = "testId"
 
     init {
         Timber.d("init")
         viewModelScope.launch {
-            val myUid = dataStoreRepository.getString(DataStoreKey.PREF_KEY_UID).toString()
-            _chatUiState.value = _chatUiState.value.copy(myId = myUid)
+            dataStoreRepository.getString(DataStoreKey.PREF_KEY_UID)?.let { myUid ->
+                _chatUiState.value = _chatUiState.value.copy(myId = myUid)
+            }
         }
     }
 
-    fun init(chatId: Long) {
+    fun init(chatId: Int) {
         this.chatId = chatId
         checkChatBlockedState()
     }
