@@ -5,27 +5,57 @@ import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.rndeep.fns_fantoo.repositories.ChatRepository
-import com.rndeep.fns_fantoo.repositories.UserInfoRepository
+import com.rndeep.fns_fantoo.repositories.ChatUserRepository
+import com.rndeep.fns_fantoo.repositories.DataStoreKey
+import com.rndeep.fns_fantoo.repositories.DataStoreRepository
+import com.rndeep.fns_fantoo.ui.chatting.profiledetail.ProfileUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class ChattingViewModel @Inject constructor(
     private val chatRepository: ChatRepository,
-    private val userInfoRepository: UserInfoRepository
-    ) : ViewModel() {
-
-    init {
-        // init userId
-        // get userBlocked State
-    }
+    private val dataStoreRepository: DataStoreRepository,
+    private val chatUserRepository: ChatUserRepository
+) : ViewModel() {
 
     private val _chatUiState = mutableStateOf(testUiState)
     val chatUiState: State<ChatUiState> get() = _chatUiState
 
-    fun initProfileDetail(userId: Long) {
-        // sync userBlockedState, userFollowedState
+    private val _profileUiState = mutableStateOf(ProfileUiState())
+    val profileUiState: State<ProfileUiState> get() = _profileUiState
+
+    private var chatId: Long = 0L
+    private var otherUserId: String = "testId"
+
+    init {
+        Timber.d("init")
+        viewModelScope.launch {
+            val myUid = dataStoreRepository.getString(DataStoreKey.PREF_KEY_UID).toString()
+            _chatUiState.value = _chatUiState.value.copy(myId = myUid)
+        }
+    }
+
+    fun init(chatId: Long) {
+        this.chatId = chatId
+        checkChatBlockedState()
+    }
+
+    fun initProfileDetail(userId: String) {
+        Timber.d("initProfileDetail $userId")
+        viewModelScope.launch {
+            otherUserId = userId
+
+            val myId = _chatUiState.value.myId
+            val blocked = chatUserRepository.isUserBlocked(myId, userId)
+            val followed = chatUserRepository.isUserFollowed(myId, userId)
+            _profileUiState.value =
+                _profileUiState.value.copy(blocked = blocked, followed = followed)
+        }
     }
 
     fun sendMessage(message: String) {
@@ -54,55 +84,28 @@ class ChattingViewModel @Inject constructor(
     }
 
     fun setUserBlock(blocked: Boolean) {
-        _chatUiState.value = _chatUiState.value.copy(userBlocked = blocked)
-        // TODO: user block server call
+        viewModelScope.launch {
+            _profileUiState.value = _profileUiState.value.copy(blocked = blocked)
+            chatUserRepository.setUserBlocked(_chatUiState.value.myId, otherUserId, blocked)
+        }
     }
 
     fun followUser(follow: Boolean) {
-        _chatUiState.value = _chatUiState.value.copy(userFollowed = follow)
-        // follow server call
+        viewModelScope.launch {
+            _profileUiState.value = _profileUiState.value.copy(followed = follow)
+            chatUserRepository.setUserFollowed(_chatUiState.value.myId, otherUserId, follow)
+        }
+    }
+
+    private fun checkChatBlockedState() {
+        viewModelScope.launch {
+            val convBlocked =
+                chatUserRepository.isConversationBlocked(_chatUiState.value.myId, chatId)
+
+            // TODO: check user blocked state
+            val anyUserBlocked = false
+
+            _chatUiState.value = _chatUiState.value.copy(blocked = convBlocked || anyUserBlocked)
+        }
     }
 }
-
-val testUiState = ChatUiState(
-    messages = listOf(
-        Message(
-            content = "상암 경기장에서 공연한다는데 맞아? 장소 바뀐거 아니지?",
-            authorId = 111L,
-            authorName = "Dasol",
-            authorImage = "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMjA2MjFfMjYz%2FMDAxNjU1NzgxMTkyMTU5.YO7UnyTXMzeXg02Jz1tPCDba5Nsr7m-vuOMGwT1WXfEg.GfjVMhmbCK2UuWqIcvtpCPfvhX39IvwQ7smctj0-3I8g.JPEG.gydls004%2FInternet%25A3%25DF20220621%25A3%25DF121040%25A3%25DF8.jpeg&type=sc960_832",
-            timestamp = 1667283734000
-        ),
-        Message(
-            content = "같이 갈꺼지? 공연 끝나고...",
-            authorId = 111L,
-            authorName = "Dasol",
-            authorImage = "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMjA2MjFfMjYz%2FMDAxNjU1NzgxMTkyMTU5.YO7UnyTXMzeXg02Jz1tPCDba5Nsr7m-vuOMGwT1WXfEg.GfjVMhmbCK2UuWqIcvtpCPfvhX39IvwQ7smctj0-3I8g.JPEG.gydls004%2FInternet%25A3%25DF20220621%25A3%25DF121040%25A3%25DF8.jpeg&type=sc960_832",
-            timestamp = 1667283734000
-        ),
-        Message(
-            content = "당연히 같이 가야지~ 스탠딩 공연이잖아 너무 재밌을것 같어~",
-            authorName = "Me",
-            authorImage = null,
-            timestamp = 1667290934000,
-            unreadCount = 1
-        ),
-        Message(
-            content = "하 빨리 다음주 됐으면...",
-            authorName = "Me",
-            authorImage = null,
-            timestamp = 1667290934000,
-            unreadCount = 1
-        ),
-        Message(
-            authorName = "Me",
-            authorImage = null,
-            timestamp = 1667290994000,
-            image = "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMjA2MjFfMjYz%2FMDAxNjU1NzgxMTkyMTU5.YO7UnyTXMzeXg02Jz1tPCDba5Nsr7m-vuOMGwT1WXfEg.GfjVMhmbCK2UuWqIcvtpCPfvhX39IvwQ7smctj0-3I8g.JPEG.gydls004%2FInternet%25A3%25DF20220621%25A3%25DF121040%25A3%25DF8.jpeg&type=sc960_832",
-            unreadCount = 1
-        ),
-    ),
-    readInfos = listOf(
-        ReadInfo(111L, 1667283734001)
-    )
-)

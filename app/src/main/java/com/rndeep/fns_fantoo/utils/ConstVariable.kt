@@ -1,7 +1,6 @@
 package com.rndeep.fns_fantoo.utils
 
 import com.rndeep.fns_fantoo.ui.login.SocialInfo
-import java.security.Key
 
 object ConstVariable {
 
@@ -9,6 +8,7 @@ object ConstVariable {
     const val BASE_API_URL = "https://fapi.fantoo.co.kr:9121"
     const val CLOUDFLARE_URL = "https://api.cloudflare.com"
     const val TRANSLATE_URL = "http://ntrans.fantoo.co.kr:5000"
+    const val CHAT_USER_URL = "http://nar005.cafe24.com:1224"
 
     //카테고리 초기 설정값
     const val CURRENT_NOTING = "noting"

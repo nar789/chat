@@ -21,6 +21,11 @@ class ChattingFragment : Fragment() {
     val viewModel: ChattingViewModel by viewModels()
     val args by navArgs<ChattingFragmentArgs>()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel.init(args.chatId)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -58,7 +63,7 @@ class ChattingFragment : Fragment() {
         findNavController().navigate(R.id.action_chattingFragment_to_imagePickerFragment)
     }
 
-    private fun navigateToProfileDetail(userId: Long) {
+    private fun navigateToProfileDetail(userId: String) {
         ProfileDetailDialog(userId).show(childFragmentManager, null)
     }
 

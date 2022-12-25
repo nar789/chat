@@ -3,12 +3,13 @@ package com.rndeep.fns_fantoo.di
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.rndeep.fns_fantoo.data.remote.api.*
-import com.rndeep.fns_fantoo.utils.ConstVariable.BASE_API_URL
-import com.rndeep.fns_fantoo.utils.ConstVariable.BASE_URL
-import com.rndeep.fns_fantoo.utils.ConstVariable.CLOUDFLARE_URL
 import com.rndeep.fns_fantoo.repositories.DataStoreRepository
 import com.rndeep.fns_fantoo.utils.ApiUrlInterceptor
 import com.rndeep.fns_fantoo.utils.CloudFlareUrlInterceptor
+import com.rndeep.fns_fantoo.utils.ConstVariable.BASE_API_URL
+import com.rndeep.fns_fantoo.utils.ConstVariable.BASE_URL
+import com.rndeep.fns_fantoo.utils.ConstVariable.CHAT_USER_URL
+import com.rndeep.fns_fantoo.utils.ConstVariable.CLOUDFLARE_URL
 import com.rndeep.fns_fantoo.utils.ConstVariable.TRANSLATE_URL
 import com.rndeep.fns_fantoo.utils.TokenRefreshInterceptor
 import dagger.Module
@@ -19,13 +20,8 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.security.SecureRandom
-import java.security.cert.X509Certificate
 import javax.inject.Qualifier
 import javax.inject.Singleton
-import javax.net.ssl.SSLContext
-import javax.net.ssl.TrustManager
-import javax.net.ssl.X509TrustManager
 
 @InstallIn(SingletonComponent::class)
 @Module
@@ -46,6 +42,10 @@ class NetworkModule {
     @Qualifier
     @Retention(AnnotationRetention.BINARY)
     annotation class TranslateServer
+
+    @Qualifier
+    @Retention(AnnotationRetention.BINARY)
+    annotation class ChatUserServer
 
     @Qualifier
     @Retention(AnnotationRetention.BINARY)
@@ -74,6 +74,10 @@ class NetworkModule {
     @TranslateServer
     @Provides
     fun provideTransLateServer() = TRANSLATE_URL
+
+    @ChatUserServer
+    @Provides
+    fun provideChatUserApiUrl() = CHAT_USER_URL
 
     @Singleton
     @Provides
@@ -165,6 +169,16 @@ class NetworkModule {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
+    @ChatUserServer
+    @Singleton
+    @Provides
+    fun provideChatUserRetrofit(client: OkHttpClient, @ChatUserServer baseUrl: String): Retrofit =
+        Retrofit.Builder()
+            .baseUrl(baseUrl)
+            .client(client)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
     @AuthServer
     @Singleton
     @Provides
@@ -235,6 +249,13 @@ class NetworkModule {
     @Provides
     fun provideFantooClubService(@ApiServer retrofit: Retrofit): FantooClubService {
         return retrofit.create(FantooClubService::class.java)
+    }
+
+    @ChatUserServer
+    @Singleton
+    @Provides
+    fun provideChatUserService(@ChatUserServer retrofit: Retrofit): ChatUserService {
+        return retrofit.create(ChatUserService::class.java)
     }
 
     @Singleton

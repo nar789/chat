@@ -6,10 +6,9 @@ import java.util.*
 
 data class ChatUiState(
     val messages: List<Message> = listOf(),
-    val myId: Long = 0,
+    val myId: String = "",
     val translateMode: Boolean = false,
-    val userBlocked: Boolean = false,
-    val userFollowed: Boolean = false,
+    val blocked: Boolean = false,
     val readInfos: List<ReadInfo> = listOf()
 )
 
@@ -20,7 +19,7 @@ val hourFormat = SimpleDateFormat("a hh:mm", Locale.ROOT)
 data class Message(
     val id: Long = 0,
     val content: String = "",
-    val authorId: Long = 0,
+    val authorId: String = "",
     val authorName: String = "",
     val authorImage: String? = null,
     private val timestamp: Long = System.currentTimeMillis(),
@@ -32,13 +31,13 @@ data class Message(
         .replace("AM", "오전")
         .replace("PM", "오후")
 
-    fun isMyMessage(myId: Long) = authorId == myId
+    fun isMyMessage(myId: String) = authorId == myId
     fun getUnReadCount(readInfos: List<ReadInfo>): Int {
         return readInfos.filter { it.readTimeStamp <= timestamp }.size
     }
 }
 
 data class ReadInfo(
-    val authorId: Long = 0,
+    val authorId: String = "",
     val readTimeStamp: Long = System.currentTimeMillis()
 )
