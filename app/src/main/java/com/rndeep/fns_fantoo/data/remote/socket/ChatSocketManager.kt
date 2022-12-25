@@ -44,20 +44,18 @@ class ChatSocketManager @Inject constructor() {
         }
     }
 
-    @Suppress("NON_PUBLIC_CALL_FROM_PUBLIC_INLINE")
-    inline fun <reified T> on(event: String, crossinline onSuccess: (T?) -> Unit) {
+    fun on(event: String, onResponse: (Map<String, String>?) -> Unit) {
         socket.on(event) {
-            val mapResponse = it.getResponse<T>()
-            val response = mapResponse?.toObject<T, String, Any>()
-            Timber.d("socket on --> evnet: $event, result: $response")
-            onSuccess(response)
+            val response = it.getResponse()
+            Timber.d("socket on --> event: $event, response: $response")
+            onResponse(response)
         }
     }
 
-    fun on(event: String, onSuccess: () -> Unit) {
+    fun on(event: String, onResponse: () -> Unit) {
         socket.on(event) {
             Timber.d("socket on --> evnet: $event")
-            onSuccess()
+            onResponse()
         }
     }
 
@@ -90,23 +88,18 @@ class ChatSocketManager @Inject constructor() {
         socket.close()
     }
 
-    private fun <T> Array<Any>.getResponse(): Map<String, Any>? =
-        (firstOrNull() as? JSONObject)?.toMap<T>()
+    private fun Array<Any>.getResponse(): Map<String, String>? = (firstOrNull() as? JSONObject)?.toMap()
 
-    private fun <T> JSONObject.toMap(): Map<String, Any> = mutableMapOf<String, Any>().apply {
+    private fun JSONObject.toMap(): Map<String, String> = mutableMapOf<String, String>().apply {
         keys().forEach {
-            var value: Any =  this@toMap[it].toString()
-            if (value is String && value.startsWith("[{")) {
-                value = value.toObject<List<T>>()
-            }
-            this[it] = value
+            this[it] = this@toMap[it].toString()
         }
     }
-    private fun <T> String.toObject(): T {
-        return Gson().fromJson(this, object : TypeToken<T>() {}.type)
-    }
+//    private fun <T> String.toObject(): T? {
+//        return Gson().fromJson(this, object : TypeToken<T>() {}.type)
+//    }
 
-    private inline fun <reified T> T.toJson(): String = Gson().toJson(this)
-
-    private inline fun <reified T, K, V> Map<K, V>.toObject(): T = Gson().fromJson(this.toJson(), T::class.java)
+//    private inline fun <reified T> T.toJson(): String = Gson().toJson(this)
+//
+//    private inline fun <reified T, K, V> Map<K, V>.toObject(): T = Gson().fromJson(this.toJson(), T::class.java)
 }
