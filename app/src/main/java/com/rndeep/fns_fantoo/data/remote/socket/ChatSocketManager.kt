@@ -93,12 +93,6 @@ class ChatSocketManager @Inject constructor() {
     private fun <T> Array<Any>.getResponse(): Map<String, Any>? =
         (firstOrNull() as? JSONObject)?.toMap<T>()
 
-
-////    private inline fun <reified T> String.fromJsonToObject(): T {
-////        val gson = Gson()
-////        return gson.fromJson(this, T::class.java)
-////    }
-
     private fun <T> JSONObject.toMap(): Map<String, Any> = mutableMapOf<String, Any>().apply {
         keys().forEach {
             var value: Any =  this@toMap[it].toString()

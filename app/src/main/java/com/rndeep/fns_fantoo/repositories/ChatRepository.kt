@@ -36,6 +36,7 @@ class ChatRepository @Inject constructor(private val socketManager: ChatSocketMa
         listenLoadConversation()
     }
 
+    //todo
     private fun listenCreateConversation() {
 //        socketManager.on(ChatSocketEvent.CREATE_CONVERSATION) {
 //            _createConversationResult.value = true
@@ -49,20 +50,6 @@ class ChatRepository @Inject constructor(private val socketManager: ChatSocketMa
                 return@on
             }
             _chatList.value = response.data ?: return@on
-//            val result = response?.get(KEY_RESULT)?: return@on
-//            if (result.isSuccess().not()) {
-//                return@on
-//            }
-//            val data = response[KEY_DATA]?.fromJson<List<ChatListResult>>()
-//            _chatList.addAll(data?: emptyList())
-
-
-//            if ( response?.get(KEY_RESULT)?.isSuccess() != true)  {
-//                return@on
-//            }
-//
-//            val data = response[KEY_DATA]?.fromJsonToObject<List<ChatListResult>>()
-//            _chatList.addAll(data?: return@on)
         }
     }
 
@@ -100,17 +87,4 @@ class ChatRepository @Inject constructor(private val socketManager: ChatSocketMa
     }
 
     private fun String.isSuccess() = this == RESULT_SUCCESS
-
-//    private fun <T> String.fromJsonToObject(): T {
-//        return Gson().fromJson(this, object : TypeToken<T>() {}.type)
-//    }
-
-//    private fun <T> String.fromJsonToList(): List<T> {
-//        val
-//    }
-//
-//    fun <T> stringToArray(s: String?, clazz: Class<Array<T>>?): List<T>? {
-//        val arr = Gson().fromJson(s, clazz)
-//        return Arrays.asList(arr) //or return Arrays.asList(new Gson().fromJson(s, clazz)); for a one-liner
-//    }
 }
