@@ -75,16 +75,15 @@ class ChattingViewModel @Inject constructor(
         // TODO : upload message to server
 
         // TODO : temp code remove this
-        val oldMessages = _chatUiState.value.messages
-        _chatUiState.value = _chatUiState.value.copy(
-            messages = oldMessages + listOf(
+        viewModelScope.launch {
+            chatRepository.sendMessage(
                 Message(
                     userId = _chatUiState.value.myId,
                     name = "me",
                     message = message
                 )
             )
-        )
+        }
     }
 
     fun sendImageMessage(images: List<Uri>) {

@@ -69,8 +69,8 @@ class ChatRepository @Inject constructor(private val socketManager: ChatSocketMa
     }
 
     fun listenLoadMessage() {
+        _messageList.clear()
         socketManager.on(ChatSocketEvent.LOAD_MESSAGE) { response ->
-            _messageList.clear()
             val rows: String = response?.get(KEY_ROWS) ?: return@on
             val messageList: List<Message> = rows.toObjectList<Message>().reversed()
             _messageList.addAll(messageList)
@@ -122,6 +122,10 @@ class ChatRepository @Inject constructor(private val socketManager: ChatSocketMa
                 PARAM_SIZE to size.toString()
             )
         )
+    }
+
+    fun sendMessage(message: Message) {
+        _messageList.add(message)
     }
 
     fun startSocket() {
