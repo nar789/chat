@@ -57,7 +57,7 @@ class ChattingViewModel @Inject constructor(
 
     private fun initMessageState() {
         viewModelScope.launch {
-            chatRepository.requestLeave(chatId)
+            chatRepository.requestJoin(chatId)
             chatRepository.requestLoadMessage(chatId, 0, 100)
             _chatUiState.value = _chatUiState.value.copy(
                 messages = chatRepository.messageList

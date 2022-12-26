@@ -139,6 +139,15 @@ class ChatRepository @Inject constructor(private val socketManager: ChatSocketMa
         )
     }
 
+    fun requestJoin(conversationId: Int) {
+        socketManager.emit(
+            ChatSocketEvent.JOIN,
+            mapOf(
+                PARAM_ROOM to conversationId.toString()
+            )
+        )
+    }
+
     fun sendMessage(message: Message) {
         Log.d("sujini", " sendMessage: $message")
         _messageList.add(message)

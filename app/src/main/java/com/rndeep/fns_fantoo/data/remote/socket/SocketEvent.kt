@@ -10,6 +10,7 @@ object ChatSocketEvent {
     const val UPLOAD_IMAGE = "uploadImage"
     const val OUT_CONVERSATION = "outconversation"
     const val LEAVE = "leave"
+    const val JOIN = "join"
 }
 
 /*
