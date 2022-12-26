@@ -43,6 +43,7 @@ class ChattingViewModel @Inject constructor(
     }
 
     fun init(chatId: Int) {
+        Log.d("sujini", "init: $chatId")
         this.chatId = chatId
         checkChatBlockedState()
         initMessageState()
@@ -51,7 +52,6 @@ class ChattingViewModel @Inject constructor(
     private fun initMessageState() {
         viewModelScope.launch {
             chatRepository.requestLoadMessage(chatId, 0, 100)
-            chatRepository.listenLoadMessage()
             _chatUiState.value = _chatUiState.value.copy(
                 messages = chatRepository.messageList
             )
@@ -80,7 +80,8 @@ class ChattingViewModel @Inject constructor(
                 Message(
                     userId = _chatUiState.value.myId,
                     name = "me",
-                    message = message
+                    message = message,
+                    conversationId = chatId
                 )
             )
         }
@@ -99,6 +100,12 @@ class ChattingViewModel @Inject constructor(
         viewModelScope.launch {
             _profileUiState.value = _profileUiState.value.copy(blocked = blocked)
             chatUserRepository.setUserBlocked(_chatUiState.value.myId, otherUserId, blocked)
+        }
+    }
+
+    fun setConversationUnBlock() {
+        viewModelScope.launch {
+            chatUserRepository.setConversationBlocked(_chatUiState.value.myId, chatId, true)
         }
     }
 

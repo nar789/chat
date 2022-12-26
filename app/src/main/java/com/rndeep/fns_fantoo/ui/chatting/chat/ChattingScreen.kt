@@ -679,7 +679,7 @@ fun UserBlockView(
         ) {
             Text(
                 modifier = Modifier.padding(horizontal = 49.dp),
-                text = String.format(stringResource(R.string.chatting_block_description), "Dasol"),
+                text = stringResource(R.string.chatting_block_description),
                 fontSize = 12.sp,
                 lineHeight = 18.sp,
                 color = colorResource(R.color.gray_400),
