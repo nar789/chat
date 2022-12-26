@@ -52,7 +52,7 @@ class ChattingFragment : Fragment() {
                         onClickAuthor = { navigateToProfileDetail(it) },
                         onClickMore = { navigateToProfileSetting() },
                         onBack = { onBack() },
-                        onClickUnBlock = { viewModel.setUserBlock(false) }
+                        onClickUnBlock = { viewModel.setConversationUnBlock() }
                     )
                 }
             }

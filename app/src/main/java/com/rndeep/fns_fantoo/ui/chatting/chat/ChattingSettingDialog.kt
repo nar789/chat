@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.compose.material.MaterialTheme
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.viewModels
@@ -21,7 +20,6 @@ import javax.inject.Inject
 class ChattingSettingDialog @Inject constructor() : BottomSheetDialogFragment() {
 
     private val viewModel by viewModels<ChattingSettingViewModel>()
-    private var toast: Toast? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,12 +49,7 @@ class ChattingSettingDialog @Inject constructor() : BottomSheetDialogFragment() 
 
     private fun setObserver() {
         viewModel.popBackStackEvent.observe(viewLifecycleOwner) {
-            findNavController().popBackStack()
-        }
-
-        viewModel.errorToastEvent.observe(viewLifecycleOwner) {
-            toast?.cancel()
-            toast = Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).also(Toast::show)
+            findNavController().popBackStack(R.id.chattingFragment, true)
         }
     }
 
