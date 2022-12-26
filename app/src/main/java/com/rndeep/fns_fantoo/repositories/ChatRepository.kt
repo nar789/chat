@@ -1,5 +1,6 @@
 package com.rndeep.fns_fantoo.repositories
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -48,6 +49,7 @@ class ChatRepository @Inject constructor(private val socketManager: ChatSocketMa
     private fun listenAll() {
         listenCreateConversation()
         listenLoadConversation()
+        listenLoadMessage()
     }
 
     private fun listenCreateConversation() {
@@ -68,11 +70,13 @@ class ChatRepository @Inject constructor(private val socketManager: ChatSocketMa
         }
     }
 
-    fun listenLoadMessage() {
-        _messageList.clear()
+    private fun listenLoadMessage() {
+        Log.d("sujini", "listenLoadMessage")
         socketManager.on(ChatSocketEvent.LOAD_MESSAGE) { response ->
             val rows: String = response?.get(KEY_ROWS) ?: return@on
-            val messageList: List<Message> = rows.toObjectList<Message>().reversed()
+            val messageList: List<Message> = rows.toObjectList<Message>().reversed().also {
+                Log.d("sujini", "messages: $it")
+            }
             _messageList.addAll(messageList)
         }
     }
@@ -114,6 +118,7 @@ class ChatRepository @Inject constructor(private val socketManager: ChatSocketMa
     }
 
     fun requestLoadMessage(conversationId: Int, offset: Int, size: Int) {
+        _messageList.clear()
         socketManager.emit(
             ChatSocketEvent.LOAD_MESSAGE,
             mapOf(
@@ -125,6 +130,7 @@ class ChatRepository @Inject constructor(private val socketManager: ChatSocketMa
     }
 
     fun sendMessage(message: Message) {
+        Log.d("sujini", " sendMessage: $message")
         _messageList.add(message)
     }
 

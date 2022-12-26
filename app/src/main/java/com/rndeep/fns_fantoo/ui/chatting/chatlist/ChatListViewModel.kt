@@ -65,6 +65,7 @@ class ChatListViewModel @Inject constructor(
 
     fun exitChat(chat: ChatRoomModel) {
         closeOptions(chat.id)
+        // TODO : change name chat.title to userName
         chatRepository.requestExitChatRoom(chat.userId?: return, chat.title?: return, chat.id)
         chatRepository.requestChatList(userId)
     }
