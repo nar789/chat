@@ -104,18 +104,22 @@ fun ProfileDetailContent(
                     .padding(top = 14.dp, bottom = 29.dp),
                 horizontalArrangement = Arrangement.Center
             ) {
+                val followBtnName =
+                    stringResource(if (userFollowed) R.string.profile_detail_following_btn else R.string.profile_detail_follow_btn)
                 IconSelector(
                     modifier = Modifier,
                     imageSource = painterResource(R.drawable.icon_outline_addfriend),
-                    buttonName = stringResource(R.string.profile_detail_follow_btn),
+                    buttonName = followBtnName,
                     checked = userFollowed,
                     onClick = onClickFollow
                 )
 
+                val blockBtnName =
+                    stringResource(if (userBlocked) R.string.profile_detail_un_block_btn else R.string.profile_detail_block_btn)
                 IconSelector(
                     modifier = Modifier,
                     imageSource = painterResource(R.drawable.icon_outline_blockaccount),
-                    buttonName = stringResource(R.string.profile_detail_block_btn),
+                    buttonName = blockBtnName,
                     checked = userBlocked,
                     onClick = onClickBlock
                 )
