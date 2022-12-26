@@ -31,6 +31,7 @@ class ChatRepository @Inject constructor(private val socketManager: ChatSocketMa
         private const val PARAM_CONVERSATION_ID = "conversationId"
         private const val PARAM_OFFSET = "offset"
         private const val PARAM_SIZE = "size"
+        private const val PARAM_ROOM = "room"
     }
 
     private val _createConversationResult = mutableStateOf(false)
@@ -125,6 +126,15 @@ class ChatRepository @Inject constructor(private val socketManager: ChatSocketMa
                 PARAM_CONVERSATION_ID to conversationId.toString(),
                 PARAM_OFFSET to offset.toString(),
                 PARAM_SIZE to size.toString()
+            )
+        )
+    }
+
+    fun requestLeave(conversationId: Int) {
+        socketManager.emit(
+            ChatSocketEvent.LEAVE,
+            mapOf(
+                PARAM_ROOM to conversationId.toString()
             )
         )
     }

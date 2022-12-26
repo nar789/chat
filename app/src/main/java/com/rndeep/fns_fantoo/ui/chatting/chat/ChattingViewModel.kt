@@ -42,6 +42,12 @@ class ChattingViewModel @Inject constructor(
         }
     }
 
+    override fun onCleared() {
+        viewModelScope.launch {
+            chatRepository.requestLeave(chatId)
+        }
+    }
+
     fun init(chatId: Int) {
         Log.d("sujini", "init: $chatId")
         this.chatId = chatId
@@ -51,6 +57,7 @@ class ChattingViewModel @Inject constructor(
 
     private fun initMessageState() {
         viewModelScope.launch {
+            chatRepository.requestLeave(chatId)
             chatRepository.requestLoadMessage(chatId, 0, 100)
             _chatUiState.value = _chatUiState.value.copy(
                 messages = chatRepository.messageList
