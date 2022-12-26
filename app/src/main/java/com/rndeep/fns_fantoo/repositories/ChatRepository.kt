@@ -1,6 +1,5 @@
 package com.rndeep.fns_fantoo.repositories
 
-import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -51,6 +50,7 @@ class ChatRepository @Inject constructor(private val socketManager: ChatSocketMa
         listenCreateConversation()
         listenLoadConversation()
         listenLoadMessage()
+        listenMessage()
     }
 
     private fun listenCreateConversation() {
@@ -72,13 +72,27 @@ class ChatRepository @Inject constructor(private val socketManager: ChatSocketMa
     }
 
     private fun listenLoadMessage() {
-        Log.d("sujini", "listenLoadMessage")
         socketManager.on(ChatSocketEvent.LOAD_MESSAGE) { response ->
             val rows: String = response?.get(KEY_ROWS) ?: return@on
-            val messageList: List<Message> = rows.toObjectList<Message>().reversed().also {
-                Log.d("sujini", "messages: $it")
-            }
+            val messageList: List<Message> = rows.toObjectList<Message>().reversed()
             _messageList.addAll(messageList)
+        }
+    }
+
+    private fun listenMessage() {
+        socketManager.on(ChatSocketEvent.MESSAGE) { response ->
+            if (response == null) return@on
+            val message = Message(
+                id = response["messageId"]?.toInt() ?: 0,
+                conversationId = response["conversationId"]?.toInt(),
+                userId = response["userId"],
+                messageType = response["messageType"]?.toInt() ?: 1,
+                message = response["message"].orEmpty(),
+                updated = response["updated"]?.toLong() ?: 0L,
+                image = response["image"],
+                name = response["name"]
+            )
+            _messageList.add(message)
         }
     }
 
@@ -149,8 +163,18 @@ class ChatRepository @Inject constructor(private val socketManager: ChatSocketMa
     }
 
     fun sendMessage(message: Message) {
-        Log.d("sujini", " sendMessage: $message")
-        _messageList.add(message)
+        socketManager.emit(
+            ChatSocketEvent.MESSAGE,
+            mapOf(
+                "conversationId" to message.conversationId.toString(),
+                "userId" to message.userId,
+                "name" to message.name,
+                "message" to message.message,
+                "image" to message.image,
+                "messageType" to message.messageType.toString(),
+                "updated" to (message.updated?.div(1000L)).toString()
+            )
+        )
     }
 
     fun startSocket() {
@@ -181,5 +205,23 @@ class ChatRepository @Inject constructor(private val socketManager: ChatSocketMa
         val json = gson.toJson(map)
         return gson.fromJson(json, type)
     }
+
+    //convert a data class to a map
+    fun <T> T.serializeToMap(): Map<String, String> {
+        return convert()
+    }
+
+    //convert a map to a data class
+    inline fun <reified T> Map<String, Any>.toDataClass(): T {
+        return convert()
+    }
+
+    //convert an object of type I to type O
+    inline fun <I, reified O> I.convert(): O {
+        val gson = Gson()
+        val json = gson.toJson(this)
+        return gson.fromJson(json, object : TypeToken<O>() {}.type)
+    }
+
 
 }

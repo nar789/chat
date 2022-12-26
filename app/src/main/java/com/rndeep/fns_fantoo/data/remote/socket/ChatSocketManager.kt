@@ -1,7 +1,5 @@
 package com.rndeep.fns_fantoo.data.remote.socket
 
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import io.socket.client.IO
 import io.socket.client.Socket
 import org.json.JSONObject
@@ -59,7 +57,7 @@ class ChatSocketManager @Inject constructor() {
         }
     }
 
-    fun emit(event: String, args: Map<String, String> = emptyMap()) {
+    fun emit(event: String, args: Map<String, String?> = emptyMap()) {
         if (args.isEmpty()) {
             return
         }

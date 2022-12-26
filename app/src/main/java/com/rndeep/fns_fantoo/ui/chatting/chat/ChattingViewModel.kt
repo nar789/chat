@@ -6,11 +6,11 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.rndeep.fns_fantoo.data.remote.ResultWrapper
+import com.rndeep.fns_fantoo.data.remote.dto.UserInfoResponse
+import com.rndeep.fns_fantoo.data.remote.model.IntegUid
 import com.rndeep.fns_fantoo.data.remote.model.chat.Message
-import com.rndeep.fns_fantoo.repositories.ChatRepository
-import com.rndeep.fns_fantoo.repositories.ChatUserRepository
-import com.rndeep.fns_fantoo.repositories.DataStoreKey
-import com.rndeep.fns_fantoo.repositories.DataStoreRepository
+import com.rndeep.fns_fantoo.repositories.*
 import com.rndeep.fns_fantoo.ui.chatting.profiledetail.ProfileUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -21,7 +21,8 @@ import javax.inject.Inject
 class ChattingViewModel @Inject constructor(
     private val chatRepository: ChatRepository,
     private val dataStoreRepository: DataStoreRepository,
-    private val chatUserRepository: ChatUserRepository
+    private val chatUserRepository: ChatUserRepository,
+    private val userInfoRepository: UserInfoRepository,
 ) : ViewModel() {
 
     private val _chatUiState = mutableStateOf(ChatUiState())
@@ -32,6 +33,10 @@ class ChattingViewModel @Inject constructor(
 
     private var chatId: Int = 0
     private var otherUserId: String = "testId"
+    private lateinit var accessToken: String
+    private lateinit var myUserInfo: UserInfoResponse
+    private lateinit var myName: String
+    private lateinit var myPhoto: String
 
     init {
         Timber.d("init")
@@ -39,6 +44,11 @@ class ChattingViewModel @Inject constructor(
             dataStoreRepository.getString(DataStoreKey.PREF_KEY_UID)?.let { myUid ->
                 _chatUiState.value = _chatUiState.value.copy(myId = myUid)
             }
+
+            accessToken =
+                dataStoreRepository.getString(DataStoreKey.PREF_KEY_ACCESS_TOKEN).toString()
+
+            fetchUserInfo()
         }
     }
 
@@ -86,9 +96,11 @@ class ChattingViewModel @Inject constructor(
             chatRepository.sendMessage(
                 Message(
                     userId = _chatUiState.value.myId,
-                    name = "me",
+                    name = myName,
                     message = message,
-                    conversationId = chatId
+                    conversationId = chatId,
+                    messageType = 1,
+                    updated = System.currentTimeMillis()
                 )
             )
         }
@@ -132,6 +144,24 @@ class ChattingViewModel @Inject constructor(
             val anyUserBlocked = false
 
             _chatUiState.value = _chatUiState.value.copy(blocked = convBlocked || anyUserBlocked)
+        }
+    }
+
+    private fun fetchUserInfo() = viewModelScope.launch {
+        val response = userInfoRepository.fetchUserInfo(accessToken, IntegUid(_chatUiState.value.myId))
+        Timber.d("responseData : $response")
+        when (response) {
+            is ResultWrapper.Success -> {
+                myUserInfo = response.data
+                myName = myUserInfo.userNick.orEmpty()
+                myPhoto = myUserInfo.userPhoto.orEmpty()
+            }
+            is ResultWrapper.GenericError -> {
+                Timber.d("response error code : ${response.code} , server msg : ${response.message} , message : ${response.errorData?.message}")
+            }
+            is ResultWrapper.NetworkError -> {
+                Timber.d("network error")
+            }
         }
     }
 }

@@ -27,7 +27,7 @@ class ChattingSettingViewModel @Inject constructor(
     private lateinit var accessToken: String
     private lateinit var userInfo: UserInfoResponse
     private lateinit var myUid: String
-    private lateinit var userName: String
+    private lateinit var myName: String
 
     private val _isAlarmOn = mutableStateOf(true)
     val isAlarmOn = _isAlarmOn
@@ -57,9 +57,7 @@ class ChattingSettingViewModel @Inject constructor(
         when (response) {
             is ResultWrapper.Success -> {
                 userInfo = response.data
-                userName = userInfo.userNick.orEmpty()
-                // TODO: example get user profile
-//                userPhoto = userInfo.userPhoto
+                myName = userInfo.userNick.orEmpty()
             }
             is ResultWrapper.GenericError -> {
                 Timber.d("response error code : ${response.code} , server msg : ${response.message} , message : ${response.errorData?.message}")
@@ -76,7 +74,7 @@ class ChattingSettingViewModel @Inject constructor(
 
     fun leaveChatting() {
         viewModelScope.launch {
-            chatRepository.requestExitChatRoom(myUid, userName, chatId)
+            chatRepository.requestExitChatRoom(myUid, myName, chatId)
             _popBackStackEvent.call()
         }
     }
