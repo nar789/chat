@@ -7,7 +7,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rndeep.fns_fantoo.data.remote.ResultWrapper
-import com.rndeep.fns_fantoo.data.remote.dto.UserInfoResponse
 import com.rndeep.fns_fantoo.data.remote.model.IntegUid
 import com.rndeep.fns_fantoo.data.remote.model.chat.Message
 import com.rndeep.fns_fantoo.repositories.*
@@ -34,7 +33,6 @@ class ChattingViewModel @Inject constructor(
     private var chatId: Int = 0
     private var otherUserId: String = "testId"
     private lateinit var accessToken: String
-    private lateinit var myUserInfo: UserInfoResponse
     private lateinit var myName: String
     private lateinit var myPhoto: String
 
@@ -48,7 +46,7 @@ class ChattingViewModel @Inject constructor(
             accessToken =
                 dataStoreRepository.getString(DataStoreKey.PREF_KEY_ACCESS_TOKEN).toString()
 
-            fetchUserInfo()
+            fetchUserInfo(_chatUiState.value.myId)
         }
     }
 
@@ -67,6 +65,7 @@ class ChattingViewModel @Inject constructor(
 
     private fun initMessageState() {
         viewModelScope.launch {
+            chatRepository.requestLeave(chatId)
             chatRepository.requestJoin(chatId)
             chatRepository.requestLoadMessage(chatId, 0, 100)
             _chatUiState.value = _chatUiState.value.copy(
@@ -147,14 +146,13 @@ class ChattingViewModel @Inject constructor(
         }
     }
 
-    private fun fetchUserInfo() = viewModelScope.launch {
-        val response = userInfoRepository.fetchUserInfo(accessToken, IntegUid(_chatUiState.value.myId))
+    private fun fetchUserInfo(userId: String) = viewModelScope.launch {
+        val response = userInfoRepository.fetchUserInfo(accessToken, IntegUid(userId))
         Timber.d("responseData : $response")
         when (response) {
             is ResultWrapper.Success -> {
-                myUserInfo = response.data
-                myName = myUserInfo.userNick.orEmpty()
-                myPhoto = myUserInfo.userPhoto.orEmpty()
+                myName = response.data.userNick.orEmpty()
+                myPhoto = response.data.userPhoto.orEmpty()
             }
             is ResultWrapper.GenericError -> {
                 Timber.d("response error code : ${response.code} , server msg : ${response.message} , message : ${response.errorData?.message}")

@@ -14,8 +14,8 @@ data class Message(
     @SerializedName("image") val image: String? = null,
     @SerializedName("name") val name: String? = null
 ) {
-    val dateText = updated?.let { dateFormat.format(it * 1000).toString() }.orEmpty()
-    val hourText = updated?.let { hourFormat.format(it * 1000).toString() }.orEmpty()
+    val dateText get() = updated?.let { dateFormat.format(it * 1000).toString() }.orEmpty()
+    val hourText get() = updated?.let { hourFormat.format(it * 1000).toString() }.orEmpty()
         .replace("AM", "오전")
         .replace("PM", "오후")
 
