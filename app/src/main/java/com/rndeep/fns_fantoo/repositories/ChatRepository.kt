@@ -1,5 +1,6 @@
 package com.rndeep.fns_fantoo.repositories
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -8,8 +9,11 @@ import com.google.gson.reflect.TypeToken
 import com.rndeep.fns_fantoo.data.remote.model.chat.ChatRoomModel
 import com.rndeep.fns_fantoo.data.remote.model.chat.CreateChatUserInfo
 import com.rndeep.fns_fantoo.data.remote.model.chat.Message
+import com.rndeep.fns_fantoo.data.remote.model.chat.ReadInfo
 import com.rndeep.fns_fantoo.data.remote.socket.ChatSocketEvent
 import com.rndeep.fns_fantoo.data.remote.socket.ChatSocketManager
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -31,6 +35,7 @@ class ChatRepository @Inject constructor(private val socketManager: ChatSocketMa
         private const val PARAM_OFFSET = "offset"
         private const val PARAM_SIZE = "size"
         private const val PARAM_ROOM = "room"
+        private const val PARAM_LAST_MESSAGE_ID = "lastMessageId"
     }
 
     private val _createConversationResult = mutableStateOf(false)
@@ -42,6 +47,9 @@ class ChatRepository @Inject constructor(private val socketManager: ChatSocketMa
     private val _messageList = mutableStateListOf<Message>()
     val messageList: List<Message> get() = _messageList
 
+    private val _readInfoFlow = MutableStateFlow<ReadInfo?>(null)
+    val readInfoFlow: StateFlow<ReadInfo?> get() = _readInfoFlow
+
     init {
         listenAll()
     }
@@ -51,6 +59,36 @@ class ChatRepository @Inject constructor(private val socketManager: ChatSocketMa
         listenLoadConversation()
         listenLoadMessage()
         listenMessage()
+        listenLoadReadInfo()
+        listenReadInfo()
+    }
+
+    private fun listenReadInfo() {
+        socketManager.on(ChatSocketEvent.READ_INFO) { response ->
+            if (response == null) return@on
+            val readInfo = ReadInfo(
+                conversationId = response["conversationId"]?.toInt(),
+                userId = response["userId"],
+                lastMessageId = response["lastMessageId"]?.toInt()
+            )
+            Log.d("sujini", "listenReadInfo:$readInfo")
+
+            _readInfoFlow.value = readInfo
+        }
+    }
+
+    private fun listenLoadReadInfo() {
+        socketManager.on(ChatSocketEvent.LOAD_READ_INFO) { response ->
+            if (response == null) return@on
+            val readInfo = ReadInfo(
+                conversationId = response["conversationId"]?.toInt(),
+                userId = response["userId"],
+                lastMessageId = response["lastMessageId"]?.toInt()
+            )
+
+            Log.d("sujini", "listenLoadReadInfo:$readInfo")
+            _readInfoFlow.value = readInfo
+        }
     }
 
     private fun listenCreateConversation() {
@@ -173,6 +211,35 @@ class ChatRepository @Inject constructor(private val socketManager: ChatSocketMa
                 "image" to message.image,
                 "messageType" to message.messageType.toString(),
                 "updated" to (message.updated?.div(1000L)).toString()
+            )
+        )
+    }
+
+    fun requestLoadReadInfo(conversationId: Int) {
+        socketManager.emit(
+            ChatSocketEvent.LOAD_READ_INFO,
+            mapOf(PARAM_CONVERSATION_ID to conversationId.toString())
+        )
+    }
+
+    fun requestReadInfo(conversationId: Int, userId: String) {
+        socketManager.emit(
+            ChatSocketEvent.READ_INFO,
+            mapOf(
+                PARAM_CONVERSATION_ID to conversationId.toString(),
+                PARAM_USER_ID to userId,
+            )
+        )
+    }
+
+    // TODO : call this method when read last message
+    fun requestReadInfo(conversationId: Int, userId: String, lastMessageId: Int) {
+        socketManager.emit(
+            ChatSocketEvent.READ_INFO,
+            mapOf(
+                PARAM_CONVERSATION_ID to conversationId.toString(),
+                PARAM_USER_ID to userId,
+                PARAM_LAST_MESSAGE_ID to lastMessageId.toString()
             )
         )
     }

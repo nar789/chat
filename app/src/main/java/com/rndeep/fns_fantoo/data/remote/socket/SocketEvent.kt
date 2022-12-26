@@ -11,6 +11,7 @@ object ChatSocketEvent {
     const val OUT_CONVERSATION = "outconversation"
     const val LEAVE = "leave"
     const val JOIN = "join"
+    const val LOAD_READ_INFO = "loadreadinfo"
 }
 
 /*

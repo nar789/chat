@@ -9,9 +9,13 @@ import androidx.lifecycle.viewModelScope
 import com.rndeep.fns_fantoo.data.remote.ResultWrapper
 import com.rndeep.fns_fantoo.data.remote.model.IntegUid
 import com.rndeep.fns_fantoo.data.remote.model.chat.Message
+import com.rndeep.fns_fantoo.data.remote.model.chat.ReadInfo
 import com.rndeep.fns_fantoo.repositories.*
 import com.rndeep.fns_fantoo.ui.chatting.profiledetail.ProfileUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -32,6 +36,7 @@ class ChattingViewModel @Inject constructor(
 
     private var chatId: Int = 0
     private var otherUserId: String = "testId"
+    private var readInfoMap: MutableMap<String, ReadInfo> = mutableMapOf()
     private lateinit var accessToken: String
     private lateinit var myName: String
     private lateinit var myPhoto: String
@@ -68,9 +73,21 @@ class ChattingViewModel @Inject constructor(
             chatRepository.requestLeave(chatId)
             chatRepository.requestJoin(chatId)
             chatRepository.requestLoadMessage(chatId, 0, 100)
+            chatRepository.requestReadInfo(chatId, _chatUiState.value.myId)
+            chatRepository.requestLoadReadInfo(chatId)
             _chatUiState.value = _chatUiState.value.copy(
                 messages = chatRepository.messageList
             )
+
+            chatRepository.readInfoFlow
+                .filterNotNull()
+                .onEach {
+                    readInfoMap[it.userId.orEmpty()] = it
+                    _chatUiState.value = _chatUiState.value.copy(
+                        readInfos = readInfoMap.values.toList()
+                    )
+                }
+                .collect()
         }
     }
 
