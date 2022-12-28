@@ -14,37 +14,11 @@ class ChatUserRepository @Inject constructor(
     private val chatApi: ChatService
 ) : BaseNetRepo() {
 
-    /*        safeApiCall(Dispatchers.IO) {
-            chatUserApi.getConversationBlockState(myUserId, conversationId)
-        }.run {
-            Timber.d("isConversationBlocked: $this")
-            return when (this) {
-                is ResultWrapper.Success -> this.data
-                else -> -1
-            } == BLOCKED
-        }*/
-
-    suspend fun isUserBlocked(myUserId: String, userId: String): Boolean {
-        return false
-    }
-
     suspend fun isConversationBlocked(myUserId: String, conversationId: Int): Boolean {
         return false
     }
 
-    suspend fun isUserFollowed(myUserId: String, userId: String): Boolean {
-        return true
-    }
-
-    suspend fun setUserBlocked(myUserId: String, userId: String, block: Boolean) {
-
-    }
-
     suspend fun setConversationBlocked(myUserId: String, conversationId: Int, block: Boolean) {
-
-    }
-
-    suspend fun setUserFollowed(myUserId: String, userId: String, follow: Boolean) {
 
     }
 
@@ -82,9 +56,11 @@ class ChatUserRepository @Inject constructor(
 
     suspend fun fetchChatUserInfo(
         accessToken: String,
-        targetIntegUid: TargetIntegUid
+        myUid: String,
+        targetUid: String
     ): ResultWrapper<ChatUserInfoResponse> = safeApiCall(Dispatchers.IO) {
-        chatApi.fetchChatUserInfo(accessToken, targetIntegUid)
+        val targetUidDto = TargetIntegUid(myUid, targetUid)
+        chatApi.fetchChatUserInfo(accessToken, targetUidDto)
     }.also { logCallResult("fetchChatUserInfo", it) }
 
     private fun <T> logCallResult(callName: String, resultWrapper: ResultWrapper<T>) {

@@ -31,12 +31,8 @@ class ProfileDetailDialog @Inject constructor(
         return ComposeView(requireContext()).apply {
             setContent {
                 MaterialTheme {
-                    val uiState = viewModel.profileUiState.value
-
                     ProfileDetailScreen(
-                        profileImage = "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMjA2MjFfMjYz%2FMDAxNjU1NzgxMTkyMTU5.YO7UnyTXMzeXg02Jz1tPCDba5Nsr7m-vuOMGwT1WXfEg.GfjVMhmbCK2UuWqIcvtpCPfvhX39IvwQ7smctj0-3I8g.JPEG.gydls004%2FInternet%25A3%25DF20220621%25A3%25DF121040%25A3%25DF8.jpeg&type=sc960_832",
-                        userBlocked = uiState.blocked,
-                        userFollowed = uiState.followed,
+                        uiState = viewModel.profileUiState.value,
                         onClickCancel = { dismiss() },
                         onClickBlock = { viewModel.setUserBlock(it) },
                         onClickFollow = { viewModel.followUser(it) }
