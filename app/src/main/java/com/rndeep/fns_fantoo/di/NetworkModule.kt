@@ -8,7 +8,6 @@ import com.rndeep.fns_fantoo.utils.ApiUrlInterceptor
 import com.rndeep.fns_fantoo.utils.CloudFlareUrlInterceptor
 import com.rndeep.fns_fantoo.utils.ConstVariable.BASE_API_URL
 import com.rndeep.fns_fantoo.utils.ConstVariable.BASE_URL
-import com.rndeep.fns_fantoo.utils.ConstVariable.CHAT_USER_URL
 import com.rndeep.fns_fantoo.utils.ConstVariable.CLOUDFLARE_URL
 import com.rndeep.fns_fantoo.utils.ConstVariable.TRANSLATE_URL
 import com.rndeep.fns_fantoo.utils.TokenRefreshInterceptor
@@ -45,10 +44,6 @@ class NetworkModule {
 
     @Qualifier
     @Retention(AnnotationRetention.BINARY)
-    annotation class ChatUserServer
-
-    @Qualifier
-    @Retention(AnnotationRetention.BINARY)
     annotation class ApiOkHttpClient
 
     @Qualifier
@@ -74,10 +69,6 @@ class NetworkModule {
     @TranslateServer
     @Provides
     fun provideTransLateServer() = TRANSLATE_URL
-
-    @ChatUserServer
-    @Provides
-    fun provideChatUserApiUrl() = CHAT_USER_URL
 
     @Singleton
     @Provides
@@ -169,16 +160,6 @@ class NetworkModule {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
-    @ChatUserServer
-    @Singleton
-    @Provides
-    fun provideChatUserRetrofit(client: OkHttpClient, @ChatUserServer baseUrl: String): Retrofit =
-        Retrofit.Builder()
-            .baseUrl(baseUrl)
-            .client(client)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-
     @AuthServer
     @Singleton
     @Provides
@@ -251,11 +232,11 @@ class NetworkModule {
         return retrofit.create(FantooClubService::class.java)
     }
 
-    @ChatUserServer
+    @ApiServer
     @Singleton
     @Provides
-    fun provideChatUserService(@ChatUserServer retrofit: Retrofit): ChatUserService {
-        return retrofit.create(ChatUserService::class.java)
+    fun provideChatService(@ApiServer retrofit: Retrofit): ChatService {
+        return retrofit.create(ChatService::class.java)
     }
 
     @Singleton
