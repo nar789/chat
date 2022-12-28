@@ -20,14 +20,19 @@ class ProfileDetailDialog @Inject constructor(
     val userId: String
 ) : DialogFragment() {
 
-    val viewModel: ChattingViewModel by viewModels({ requireParentFragment() })
+    val chattingViewModel: ChattingViewModel by viewModels({ requireParentFragment() })
+    val viewModel: ProfileDetailViewModel by viewModels()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel.initProfileDetail(chattingViewModel.accessToken, chattingViewModel.myUid, userId)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        viewModel.initProfileDetail(userId)
         return ComposeView(requireContext()).apply {
             setContent {
                 MaterialTheme {
