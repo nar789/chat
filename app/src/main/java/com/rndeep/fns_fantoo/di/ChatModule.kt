@@ -26,6 +26,6 @@ class ChatModule {
     @Singleton
     @Provides
     fun provideUserRepository(
-        @NetworkModule.ChatUserServer chatService: ChatService
+        @NetworkModule.ApiServer chatService: ChatService
     ): ChatUserRepository = ChatUserRepository(chatService)
 }

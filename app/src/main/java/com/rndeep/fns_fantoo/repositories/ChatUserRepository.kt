@@ -35,7 +35,7 @@ class ChatUserRepository @Inject constructor(
             } else {
                 chatApi.deleteUserBlockState(accessToken, targetUidDto)
             }
-        }
+        }.also { logCallResult("setUserBlock", it) }
     }
 
     suspend fun setUserFollow(
@@ -51,7 +51,7 @@ class ChatUserRepository @Inject constructor(
             } else {
                 chatApi.deleteUserFollow(accessToken, targetUidDto)
             }
-        }
+        }.also { logCallResult("setUserFollow", it) }
     }
 
     suspend fun fetchChatUserInfo(
@@ -63,9 +63,11 @@ class ChatUserRepository @Inject constructor(
         chatApi.fetchChatUserInfo(accessToken, targetUidDto)
     }.also { logCallResult("fetchChatUserInfo", it) }
 
-    private fun <T> logCallResult(callName: String, resultWrapper: ResultWrapper<T>) {
-        if (resultWrapper is ResultWrapper.Success) {
-            Timber.d("$callName: ${resultWrapper.data}")
+    private fun <T> logCallResult(callName: String, result: ResultWrapper<T>) {
+        when (result) {
+            is ResultWrapper.Success -> Timber.d("$callName: ${result.data}")
+            is ResultWrapper.GenericError -> Timber.e("$callName response error code : ${result.code} , server msg : ${result.message} , message : ${result.errorData?.message}")
+            is ResultWrapper.NetworkError -> Timber.e("$callName NetworkError")
         }
     }
 }
