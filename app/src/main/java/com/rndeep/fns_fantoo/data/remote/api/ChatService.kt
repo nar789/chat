@@ -47,7 +47,7 @@ interface ChatService {
         @Query("size") size: Int,
     ): GetUserListResponse
 
-    @POST("chat/user/info")
+    @POST("/$PATH_CHAT/user/info")
     suspend fun fetchChatUserInfo(
         @Header("access_token") accessToken: String,
         @Body targetIntegUid: TargetIntegUid
