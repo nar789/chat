@@ -14,6 +14,7 @@ import com.rndeep.fns_fantoo.data.remote.model.chat.ReadInfo
 import com.rndeep.fns_fantoo.repositories.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -69,24 +70,14 @@ class ChattingViewModel @Inject constructor(
 
     private fun initMessageState() {
         viewModelScope.launch {
+            launch { collectMessageFlow() }
+            launch { collectReadInfoFlow() }
+
             chatRepository.requestLeave(chatId)
             chatRepository.requestJoin(chatId)
             chatRepository.requestLoadMessage(chatId, 0, 100)
             chatRepository.requestReadInfo(chatId, myUid)
             chatRepository.requestLoadReadInfo(chatId)
-            _chatUiState.value = _chatUiState.value.copy(
-                messages = chatRepository.messageList
-            )
-
-            chatRepository.readInfoFlow
-                .filterNotNull()
-                .onEach {
-                    readInfoMap[it.userId.orEmpty()] = it
-                    _chatUiState.value = _chatUiState.value.copy(
-                        readInfos = readInfoMap.values.toList()
-                    )
-                }
-                .collect()
         }
     }
 
@@ -142,5 +133,30 @@ class ChattingViewModel @Inject constructor(
             is ResultWrapper.Success -> response.data
             else -> null
         }
+    }
+
+    private suspend fun collectReadInfoFlow() {
+        chatRepository.readInfoFlow
+            .filterNotNull()
+            .onEach {
+                readInfoMap[it.userId.orEmpty()] = it
+                _chatUiState.value = _chatUiState.value.copy(
+                    readInfos = readInfoMap.values.toList()
+                )
+            }
+            .collect()
+    }
+
+    private suspend fun collectMessageFlow() {
+        chatRepository.messagesFlow
+            .filter { it.isNotEmpty() }
+            .onEach {
+                val prevMessages = _chatUiState.value.messages
+                _chatUiState.value = _chatUiState.value.copy(
+                    messages = prevMessages + it
+                )
+                chatRepository.requestReadInfo(chatId, myUid)
+            }
+            .collect()
     }
 }

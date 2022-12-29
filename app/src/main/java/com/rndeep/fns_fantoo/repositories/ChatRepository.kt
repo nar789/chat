@@ -1,6 +1,5 @@
 package com.rndeep.fns_fantoo.repositories
 
-import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -11,8 +10,11 @@ import com.rndeep.fns_fantoo.data.remote.model.chat.Message
 import com.rndeep.fns_fantoo.data.remote.model.chat.ReadInfo
 import com.rndeep.fns_fantoo.data.remote.socket.ChatSocketEvent
 import com.rndeep.fns_fantoo.data.remote.socket.ChatSocketManager
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -42,11 +44,11 @@ class ChatRepository @Inject constructor(private val socketManager: ChatSocketMa
     private val _chatList = mutableStateListOf<ChatRoomModel>()
     val chatList: List<ChatRoomModel> get() = _chatList
 
-    private val _messageList = mutableStateListOf<Message>()
-    val messageList: List<Message> get() = _messageList
+    private val _messagesFlow = MutableSharedFlow<List<Message>>()
+    val messagesFlow: SharedFlow<List<Message>> get() = _messagesFlow
 
-    private val _readInfoFlow = MutableStateFlow<ReadInfo?>(null)
-    val readInfoFlow: StateFlow<ReadInfo?> get() = _readInfoFlow
+    private val _readInfoFlow = MutableSharedFlow<ReadInfo>()
+    val readInfoFlow: SharedFlow<ReadInfo?> get() = _readInfoFlow
 
     init {
         listenAll()
@@ -57,7 +59,6 @@ class ChatRepository @Inject constructor(private val socketManager: ChatSocketMa
         listenLoadConversation()
         listenLoadMessage()
         listenMessage()
-        listenLoadReadInfo()
         listenReadInfo()
     }
 
@@ -69,23 +70,10 @@ class ChatRepository @Inject constructor(private val socketManager: ChatSocketMa
                 userId = response["userId"],
                 lastMessageId = response["lastMessageId"]?.toInt()
             )
-            Log.d("sujini", "listenReadInfo:$readInfo")
 
-            _readInfoFlow.value = readInfo
-        }
-    }
-
-    private fun listenLoadReadInfo() {
-        socketManager.on(ChatSocketEvent.LOAD_READ_INFO) { response ->
-            if (response == null) return@on
-            val readInfo = ReadInfo(
-                conversationId = response["conversationId"]?.toInt(),
-                userId = response["userId"],
-                lastMessageId = response["lastMessageId"]?.toInt()
-            )
-
-            Log.d("sujini", "listenLoadReadInfo:$readInfo")
-            _readInfoFlow.value = readInfo
+            CoroutineScope(Dispatchers.IO).launch {
+                _readInfoFlow.emit(readInfo)
+            }
         }
     }
 
@@ -126,7 +114,9 @@ class ChatRepository @Inject constructor(private val socketManager: ChatSocketMa
         socketManager.on(ChatSocketEvent.LOAD_MESSAGE) { response ->
             val rows: String = response?.get(KEY_ROWS) ?: return@on
             val messageList: List<Message> = rows.toObjectList<Message>().reversed()
-            _messageList.addAll(messageList)
+            CoroutineScope(Dispatchers.IO).launch {
+                _messagesFlow.emit(messageList)
+            }
         }
     }
 
@@ -143,7 +133,9 @@ class ChatRepository @Inject constructor(private val socketManager: ChatSocketMa
                 image = response["image"],
                 name = response["name"]
             )
-            _messageList.add(message)
+            CoroutineScope(Dispatchers.IO).launch {
+                _messagesFlow.emit(listOf(message))
+            }
         }
     }
 
@@ -174,7 +166,6 @@ class ChatRepository @Inject constructor(private val socketManager: ChatSocketMa
     }
 
     fun requestLoadMessage(conversationId: Int, offset: Int, size: Int) {
-        _messageList.clear()
         socketManager.emit(
             ChatSocketEvent.LOAD_MESSAGE,
             mapOf(
@@ -231,18 +222,6 @@ class ChatRepository @Inject constructor(private val socketManager: ChatSocketMa
             mapOf(
                 PARAM_CONVERSATION_ID to conversationId.toString(),
                 PARAM_USER_ID to userId,
-            )
-        )
-    }
-
-    // TODO : call this method when read last message
-    fun requestReadInfo(conversationId: Int, userId: String, lastMessageId: Int) {
-        socketManager.emit(
-            ChatSocketEvent.READ_INFO,
-            mapOf(
-                PARAM_CONVERSATION_ID to conversationId.toString(),
-                PARAM_USER_ID to userId,
-                PARAM_LAST_MESSAGE_ID to lastMessageId.toString()
             )
         )
     }
