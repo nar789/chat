@@ -5,18 +5,15 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.LiveData
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.rndeep.fns_fantoo.data.remote.dto.GetUserListResponse
 import com.rndeep.fns_fantoo.data.remote.model.chat.ChatRoomModel
-import com.rndeep.fns_fantoo.data.remote.model.chat.ChatUserInfo
 import com.rndeep.fns_fantoo.data.remote.model.chat.Message
 import com.rndeep.fns_fantoo.data.remote.model.chat.ReadInfo
 import com.rndeep.fns_fantoo.data.remote.socket.ChatSocketEvent
 import com.rndeep.fns_fantoo.data.remote.socket.ChatSocketManager
 import com.rndeep.fns_fantoo.ui.common.viewmodel.SingleLiveEvent
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -147,7 +144,7 @@ class ChatRepository @Inject constructor(private val socketManager: ChatSocketMa
         socketManager.emit(ChatSocketEvent.LOAD_CONVERSATION, mapOf(PARAM_USER_ID to userId))
     }
 
-    fun requestCreateChat(users: List<ChatUserInfo>) {
+    fun requestCreateChat(users: List<GetUserListResponse.ChatUserDto>) {
         val body = Gson().toJson(users).toString()
         socketManager.emit(ChatSocketEvent.CREATE_CONVERSATION, mapOf(PARAM_INFO to body))
     }

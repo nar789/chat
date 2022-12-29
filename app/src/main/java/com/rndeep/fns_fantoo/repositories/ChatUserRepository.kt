@@ -1,11 +1,18 @@
 package com.rndeep.fns_fantoo.repositories
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import com.rndeep.fns_fantoo.data.remote.BaseNetRepo
 import com.rndeep.fns_fantoo.data.remote.ResultWrapper
 import com.rndeep.fns_fantoo.data.remote.api.ChatService
 import com.rndeep.fns_fantoo.data.remote.dto.ChatUserInfoResponse
+import com.rndeep.fns_fantoo.data.remote.dto.GetUserListResponse
 import com.rndeep.fns_fantoo.data.remote.dto.TargetIntegUid
+import com.rndeep.fns_fantoo.ui.chatting.addchat.AddChatFollowDataSource
+import com.rndeep.fns_fantoo.ui.chatting.addchat.AddChatSearchDataSource
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -70,4 +77,23 @@ class ChatUserRepository @Inject constructor(
             is ResultWrapper.NetworkError -> Timber.e("$callName NetworkError")
         }
     }
+
+    fun getMyFollowList(
+        integUid: String,
+        accessToken: String
+    ): Flow<PagingData<GetUserListResponse.ChatUserDto>> = Pager(PagingConfig(pageSize = 10)) {
+        AddChatFollowDataSource(
+            chatApi, integUid, accessToken
+        )
+    }.flow
+
+
+    fun getSearchList(
+        accessToken: String,
+        query: String
+    ): Flow<PagingData<GetUserListResponse.ChatUserDto>> = Pager(PagingConfig(pageSize = 10)) {
+        AddChatSearchDataSource(
+            chatService = chatApi, accessToken = accessToken, query = query
+        )
+    }.flow
 }

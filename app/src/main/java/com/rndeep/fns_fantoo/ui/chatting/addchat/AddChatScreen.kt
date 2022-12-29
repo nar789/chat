@@ -7,7 +7,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
@@ -15,8 +14,7 @@ import androidx.compose.material.Card
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.State
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
@@ -33,23 +31,37 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.rememberAsyncImagePainter
 import com.rndeep.fns_fantoo.R
-import com.rndeep.fns_fantoo.data.remote.model.chat.ChatUserInfo
+import com.rndeep.fns_fantoo.data.remote.dto.GetUserListResponse
 import com.rndeep.fns_fantoo.ui.chatting.compose.FantooChatTypography
 
 @Composable
 fun AddChatScreen(viewModel: AddChatViewModel, onBack: () -> Unit) {
     Surface(modifier = Modifier) {
+        val followList = viewModel.followList.collectAsLazyPagingItems()
+
         ConstraintLayout(modifier = Modifier.fillMaxSize()) {
             val (header, content) = createRefs()
             AddChatHeader(modifier = Modifier.constrainAs(header) {
                 top.linkTo(parent.top)
             }, onBack)
-            AddChatContent(modifier = Modifier.constrainAs(content) {
-                top.linkTo(header.bottom)
-            }, viewModel)
-            if (!viewModel.showEmptyFollow) {
+
+            val query by viewModel.searchQuery.collectAsState("")
+            AddChatContent(
+                modifier = Modifier.constrainAs(content) {
+                    top.linkTo(header.bottom)
+                }, followList = followList,
+                searchList = viewModel.searchList.collectAsLazyPagingItems(),
+                checkedUserList = viewModel.checkedUserList,
+                onCheckStateChanged = viewModel::onCheckStateChanged,
+                query = query,
+                onQueryInput = viewModel::updateQuery
+            )
+
+            if (followList.itemCount > 0) {
                 val startBtn = createRef()
                 AddChatStartBtn(
                     modifier = Modifier
@@ -128,85 +140,79 @@ fun AddChatHeader(modifier: Modifier, onBack: () -> Unit) {
 }
 
 @Composable
-fun AddChatContent(modifier: Modifier, viewModel: AddChatViewModel) {
+fun AddChatContent(
+    modifier: Modifier,
+    followList: LazyPagingItems<GetUserListResponse.ChatUserDto>,
+    searchList: LazyPagingItems<GetUserListResponse.ChatUserDto>?,
+    checkedUserList: List<GetUserListResponse.ChatUserDto>,
+    onCheckStateChanged: (user: GetUserListResponse.ChatUserDto) -> Unit,
+    query: String,
+    onQueryInput: (query: String) -> Unit
+) {
     Surface(
         modifier = modifier.fillMaxSize(),
         color = colorResource(id = R.color.gray_25)
     ) {
         Column(modifier = Modifier.fillMaxHeight()) {
-            AddChatSearchItem(viewModel.searchQuery, viewModel::onQueryInput)
-            if (viewModel.showEmptyFollow) {
+            AddChatSearchItem(query, onQueryInput)
+            val isSearch = query.isNotBlank()
+            if (isSearch.not() && followList.itemCount == 0 || isSearch && (searchList == null || searchList.itemCount == 0)) {
                 AddChatNoFollowerItem()
             } else {
-                AddChatList(viewModel)
+                if (query.isBlank()) {
+                    AddChatList(
+                        followList,
+                        checkedUserList,
+                        isSearch,
+                        onCheckStateChanged
+                    )
+                } else {
+                    AddChatList(
+                        list = searchList ?: return@Column,
+                        checkedUserList = checkedUserList,
+                        isSearch = isSearch,
+                        onCheckStateChanged = onCheckStateChanged
+                    )
+                }
             }
         }
     }
 }
 
 @Composable
-fun AddChatList(viewModel: AddChatViewModel) {
-    val followList = viewModel.followList
-    val fantooList = viewModel.fantooList
-    val checkedIds = viewModel.checkedUserList
-
+fun AddChatList(
+    list: LazyPagingItems<GetUserListResponse.ChatUserDto>,
+    checkedUserList: List<GetUserListResponse.ChatUserDto>,
+    isSearch: Boolean,
+    onCheckStateChanged: (user: GetUserListResponse.ChatUserDto) -> Unit
+) {
     LazyColumn(
         modifier = Modifier
             .fillMaxWidth()
             .background(color = colorResource(id = R.color.gray_25))
     ) {
-        if (followList.isNotEmpty()) {
-            itemsIndexed(items = followList, key = {_, user -> user.id}) { index, user ->
+        if (list.itemCount > 0) {
+            items(count = list.itemCount) { index ->
+                val user = list[index] ?: return@items
                 if (index == 0) {
                     AddChatTitleItem(
                         titleResId = R.string.add_chat_follow_list,
-                        count = if (viewModel.searchQuery.value.isEmpty()) followList.size else null
+                        count = if (isSearch.not()) list.itemCount else null
                     )
                 }
                 Box(
                     modifier = Modifier.padding(
                         top = if (index == 0) 8.dp else 6.dp,
                         bottom = when (index) {
-                            followList.lastIndex -> if (fantooList.isEmpty()) 140.dp else 22.dp
+                            list.itemCount -> 140.dp
                             else -> 6.dp
                         }
                     )
                 ) {
                     FollowerItem(
                         userInfo = user,
-                        isChecked = checkedIds.contains(user),
-                        viewModel::onCheckStateChanged
-                    )
-                }
-            }
-        }
-
-        if (fantooList.isNotEmpty()) {
-            itemsIndexed(items = fantooList, key = {_, user -> user.id}) { index, user ->
-                if (index == 0) {
-                    if (followList.isNotEmpty()) {
-                        Spacer(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(10.dp)
-                                .background(
-                                    color = colorResource(id = R.color.bg_bg_light_gray_50)
-                                )
-                        )
-                    }
-                    AddChatTitleItem(titleResId = R.string.add_chat_fantoo_list)
-                }
-
-                Box(
-                    modifier = Modifier.padding(
-                        top = if (index == 0) 8.dp else 6.dp,
-                        bottom = if (index == fantooList.lastIndex) 140.dp else 6.dp
-                    )
-                ) {
-                    FollowerItem(
-                        userInfo = user,
-                        isChecked = checkedIds.contains(user),
-                        onClick = viewModel::onCheckStateChanged
+                        isChecked = checkedUserList.contains(user),
+                        onClick = onCheckStateChanged
                     )
                 }
             }
@@ -215,7 +221,11 @@ fun AddChatList(viewModel: AddChatViewModel) {
 }
 
 @Composable
-fun FollowerItem(userInfo: ChatUserInfo, isChecked: Boolean, onClick: (user: ChatUserInfo) -> Unit) {
+fun FollowerItem(
+    userInfo: GetUserListResponse.ChatUserDto,
+    isChecked: Boolean,
+    onClick: (user: GetUserListResponse.ChatUserDto) -> Unit
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -227,7 +237,7 @@ fun FollowerItem(userInfo: ChatUserInfo, isChecked: Boolean, onClick: (user: Cha
         val defaultImage = painterResource(R.drawable.profile_character11)
         Image(
             painter = rememberAsyncImagePainter(
-                model = userInfo.profile,
+                model = userInfo.userPhoto,
                 error = defaultImage,
                 fallback = defaultImage,
                 placeholder = defaultImage
@@ -241,7 +251,7 @@ fun FollowerItem(userInfo: ChatUserInfo, isChecked: Boolean, onClick: (user: Cha
         )
 
         Text(
-            text = userInfo.name,
+            text = userInfo.userNick,
             modifier = Modifier
                 .align(CenterVertically)
                 .weight(1f)
@@ -274,8 +284,7 @@ fun FollowerItem(userInfo: ChatUserInfo, isChecked: Boolean, onClick: (user: Cha
 }
 
 @Composable
-fun AddChatSearchItem(query: State<String>, updateQuery: (query: String) -> Unit) {
-    val queryText by query
+fun AddChatSearchItem(query: String, updateQuery: (query: String) -> Unit) {
     Surface(
         modifier = Modifier
             .wrapContentHeight()
@@ -284,7 +293,7 @@ fun AddChatSearchItem(query: State<String>, updateQuery: (query: String) -> Unit
             .padding(start = 20.dp, end = 20.dp, top = 20.dp, bottom = 14.dp)
     ) {
         BasicTextField(
-            value = queryText, onValueChange = { updateQuery(it) },
+            value = query, onValueChange = { updateQuery(it) },
             singleLine = true,
             textStyle = TextStyle(
                 fontSize = 14.sp,
@@ -315,7 +324,7 @@ fun AddChatSearchItem(query: State<String>, updateQuery: (query: String) -> Unit
                             .align(CenterVertically)
                     )
                     Box {
-                        if (queryText.isEmpty()) {
+                        if (query.isEmpty()) {
                             Text(
                                 text = stringResource(id = R.string.add_chat_search_hint),
                                 fontSize = 14.sp,
