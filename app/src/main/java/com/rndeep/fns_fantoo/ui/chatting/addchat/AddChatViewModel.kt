@@ -15,9 +15,8 @@ import com.rndeep.fns_fantoo.repositories.DataStoreRepository
 import com.rndeep.fns_fantoo.ui.common.viewmodel.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -31,13 +30,13 @@ class AddChatViewModel @Inject constructor(
     private var myId: String = ""
     private var accessToken: String = ""
 
-    val followList: Flow<PagingData<GetUserListResponse.ChatUserDto>> = requestFollowList()
+    val followList: Flow<PagingData<GetUserListResponse.ChatUserDto>> by lazy { requestFollowList() }
 
     private val _searchQuery = MutableStateFlow("")
 
-    @OptIn(ExperimentalCoroutinesApi::class)
+    @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
     val searchList: Flow<PagingData<GetUserListResponse.ChatUserDto>> =
-        _searchQuery.flatMapLatest { requestSearchList(it) }
+        _searchQuery.filter { it.length >= 2 }.debounce(500).flatMapLatest { requestSearchList(it) }
     val searchQuery: Flow<String> get() = _searchQuery
 
     private val _checkedUserList = mutableStateListOf<GetUserListResponse.ChatUserDto>()
@@ -50,7 +49,7 @@ class AddChatViewModel @Inject constructor(
     val showErrorToast: LiveData<Unit> = _showErrorToast
 
     init {
-       initUser()
+        initUser()
         addChatCallback()
     }
 
@@ -97,7 +96,7 @@ class AddChatViewModel @Inject constructor(
 
 
     private fun requestSearchList(query: String) =
-        chatUserRepository.getSearchList(accessToken = accessToken, query = query)
+        chatUserRepository.getSearchList(accessToken = accessToken, query = query, integUid = myId)
             .cachedIn(viewModelScope)
 
     //todo 서버 연결 완성되면 지울 것

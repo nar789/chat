@@ -9,31 +9,31 @@ interface ChatService {
 
     @POST("/$PATH_CHAT/block")
     suspend fun setUserBlockState(
-        @Header("access_token") accessToken: String,
+        @Header(HEADER_ACCESS_TOKEN) accessToken: String,
         @Body targetIntegUid: TargetIntegUid
     )
 
-    @DELETE("/$PATH_CHAT/block")
+    @HTTP(method="DELETE", hasBody=true, path="/$PATH_CHAT/block")
     suspend fun deleteUserBlockState(
-        @Header("access_token") accessToken: String,
+        @Header(HEADER_ACCESS_TOKEN) accessToken: String,
         @Body targetIntegUid: TargetIntegUid
     )
 
     @POST("/$PATH_CHAT/follow")
     suspend fun setUserFollow(
-        @Header("access_token") accessToken: String,
+        @Header(HEADER_ACCESS_TOKEN) accessToken: String,
         @Body targetIntegUid: TargetIntegUid
     )
 
-    @DELETE("/$PATH_CHAT/follow")
+    @HTTP(method="DELETE", hasBody=true, path="/$PATH_CHAT/follow")
     suspend fun deleteUserFollow(
-        @Header("access_token") accessToken: String,
+        @Header(HEADER_ACCESS_TOKEN) accessToken: String,
         @Body targetIntegUid: TargetIntegUid
     )
 
     @GET("/$PATH_CHAT/my/follow")
     suspend fun getMyFollowList(
-        @Header("access_token") accessToken: String,
+        @Header(HEADER_ACCESS_TOKEN) accessToken: String,
         @Query("integUid") integUid: String,
         @Query("nextId") nextId: Int,
         @Query("size") size: Int,
@@ -41,7 +41,8 @@ interface ChatService {
 
     @GET("/$PATH_CHAT/search")
     suspend fun getSearchList(
-        @Header("access_token") accessToken: String,
+        @Header(HEADER_ACCESS_TOKEN) accessToken: String,
+        @Query("integUid") integUid: String,
         @Query("nextId") nextId: Int,
         @Query("search") search: String,
         @Query("size") size: Int,
@@ -49,11 +50,12 @@ interface ChatService {
 
     @POST("/$PATH_CHAT/user/info")
     suspend fun fetchChatUserInfo(
-        @Header("access_token") accessToken: String,
+        @Header(HEADER_ACCESS_TOKEN) accessToken: String,
         @Body targetIntegUid: TargetIntegUid
     ): ChatUserInfoResponse
 
     private companion object {
         const val PATH_CHAT = "chat"
+        const val HEADER_ACCESS_TOKEN = "access_token"
     }
 }

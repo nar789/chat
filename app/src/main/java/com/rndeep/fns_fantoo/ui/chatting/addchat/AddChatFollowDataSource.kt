@@ -33,7 +33,7 @@ class AddChatFollowDataSource(
             return LoadResult.Page(
                 data = data,
                 prevKey = null,
-                nextKey = if (listSize == 0 || data.isEmpty()) null else nextKey
+                nextKey = if (listSize == 0 || data.isEmpty() || nextKey < 0) null else nextKey
             )
         } catch (e: Exception) {
             Timber.e("add chat exception: ${e.message}", e)
