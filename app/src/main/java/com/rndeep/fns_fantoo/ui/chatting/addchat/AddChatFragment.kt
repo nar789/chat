@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -40,11 +41,15 @@ class AddChatFragment : Fragment() {
 
     private fun initObservers() {
         viewModel.navigateToChat.observe(viewLifecycleOwner) { chatId ->
+            if (chatId == -1) return@observe
             findNavController().navigate(
                 AddChatFragmentDirections.actionAddChatFragmentToChattingFragment(
                     chatId
                 )
             )
+        }
+        viewModel.showErrorToast.observe(viewLifecycleOwner) {
+            Toast.makeText(requireContext(), "채팅방을 만들 수 없습니다.", Toast.LENGTH_SHORT).show()
         }
     }
 }

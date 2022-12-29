@@ -1,78 +1,87 @@
 package com.rndeep.fns_fantoo.ui.chatting.addchat
 
-import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.rndeep.fns_fantoo.data.remote.model.chat.ChatSearchResult
-import com.rndeep.fns_fantoo.data.remote.model.chat.CreateChatUserInfo
-import com.rndeep.fns_fantoo.data.remote.model.chat.TmpUserInfo
+import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import com.rndeep.fns_fantoo.data.remote.dto.GetUserListResponse
+import com.rndeep.fns_fantoo.data.remote.model.chat.ChatUserInfo
 import com.rndeep.fns_fantoo.repositories.ChatRepository
+import com.rndeep.fns_fantoo.repositories.ChatUserRepository
+import com.rndeep.fns_fantoo.repositories.DataStoreKey
+import com.rndeep.fns_fantoo.repositories.DataStoreRepository
 import com.rndeep.fns_fantoo.ui.common.viewmodel.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AddChatViewModel @Inject constructor(private val chatRepository: ChatRepository): ViewModel() {
-    private val followListResult = makeTmpFollowerList(0..30)
-    private val _followList = followListResult.toMutableStateList()
-    val followList: List<TmpUserInfo> get() = _followList
+class AddChatViewModel @Inject constructor(
+    private val dataStoreRepository: DataStoreRepository,
+    private val chatRepository: ChatRepository,
+    private val chatUserRepository: ChatUserRepository
+) : ViewModel() {
 
-    private val _fantooList = mutableStateListOf<TmpUserInfo>()
-    val fantooList: List<TmpUserInfo> get() = _fantooList
+    private var myId: String = ""
+    private var accessToken: String = ""
 
-    private val _searchQuery = mutableStateOf("")
-    val searchQuery: State<String> get() = _searchQuery
+    val followList: Flow<PagingData<GetUserListResponse.ChatUserDto>> = requestFollowList()
 
-    val showEmptyFollow get() = followList.isEmpty()
+    private val _searchQuery = MutableStateFlow("")
 
-    val tmpSearchResult = ChatSearchResult().apply {
-        this.followList = makeTmpFollowerList(100..120)
-        this.fantooList = makeTmpFollowerList(200..220)
-    }
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val searchList: Flow<PagingData<GetUserListResponse.ChatUserDto>> =
+        _searchQuery.flatMapLatest { requestSearchList(it) }
+    val searchQuery: Flow<String> get() = _searchQuery
 
-    private val _checkedUserList = mutableStateListOf<String>()
-    val checkedUserList: List<String> get() = _checkedUserList
+    private val _checkedUserList = mutableStateListOf<GetUserListResponse.ChatUserDto>()
+    val checkedUserList: List<GetUserListResponse.ChatUserDto> get() = _checkedUserList
 
     private val _navigateToChat = SingleLiveEvent<Int>()
     val navigateToChat: LiveData<Int> = _navigateToChat
 
-    private fun makeTmpFollowerList(range: IntRange) = mutableListOf<TmpUserInfo>().apply {
-        range.withIndex().forEach { (index, num) ->
-            add(
-                TmpUserInfo(
-                    userName = if (index == 0) "fajsdfkjasldjfaksdjfaksdjlfkajsdklfalksdkadsfjaslkdjfaklsdjfalksdjflkasd" else num.toString(),
-                    userPhoto = if (index % 5 == 0) "" else "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMjA2MjFfMjYz%2FMDAxNjU1NzgxMTkyMTU5.YO7UnyTXMzeXg02Jz1tPCDba5Nsr7m-vuOMGwT1WXfEg.GfjVMhmbCK2UuWqIcvtpCPfvhX39IvwQ7smctj0-3I8g.JPEG.gydls004%2FInternet%25A3%25DF20220621%25A3%25DF121040%25A3%25DF8.jpeg&type=sc960_832",
-                    loginId = num.toString()
-                )
-            )
+    private val _showErrorToast = SingleLiveEvent<Unit>()
+    val showErrorToast: LiveData<Unit> = _showErrorToast
+
+    init {
+       initUser()
+        addChatCallback()
+    }
+
+    private fun addChatCallback() {
+        chatRepository.setCreateConversationCallback { success, conversationId ->
+            if (success) {
+                _navigateToChat.value = conversationId
+            } else {
+                _showErrorToast.call()
+            }
         }
     }
 
-    fun onQueryInput(query: String) {
+    private fun initUser() {
+        viewModelScope.launch {
+            dataStoreRepository.getString(DataStoreKey.PREF_KEY_UID).toString().let {
+                myId = it
+            }
+            accessToken = dataStoreRepository.getString(DataStoreKey.PREF_KEY_ACCESS_TOKEN) ?: ""
+        }
+    }
+
+    fun updateQuery(query: String) {
         _searchQuery.value = query
-
-        // todo 임시 코드, api호출 들어가야 함
-        if (query.isNotBlank()) {
-            _fantooList.clear()
-            _fantooList.addAll(tmpSearchResult.fantooList ?: emptyList())
-
-            _followList.clear()
-            _followList.addAll(tmpSearchResult.followList ?: emptyList())
-        } else {
-            _fantooList.clear()
-            _followList.clear()
-            _followList.addAll(followListResult)
-        }
     }
 
-    fun onCheckStateChanged(loginId: String) {
-        if (_checkedUserList.contains(loginId)) {
-            _checkedUserList.remove(loginId)
+    fun onCheckStateChanged(user: GetUserListResponse.ChatUserDto) {
+        if (_checkedUserList.contains(user)) {
+            _checkedUserList.remove(user)
         } else {
-            _checkedUserList.add(loginId)
+            _checkedUserList.add(user)
         }
     }
 
@@ -80,10 +89,34 @@ class AddChatViewModel @Inject constructor(private val chatRepository: ChatRepos
         if (checkedUserList.isEmpty()) {
             return
         }
-        chatRepository.requestCreateChat(makeUserList())
+        chatRepository.requestCreateChat(checkedUserList)
     }
 
-   private fun makeUserList(): List<CreateChatUserInfo> = mutableListOf<CreateChatUserInfo>().apply {
+    private fun requestFollowList(): Flow<PagingData<GetUserListResponse.ChatUserDto>> =
+        chatUserRepository.getMyFollowList(myId, accessToken).cachedIn(viewModelScope)
 
-   }
+
+    private fun requestSearchList(query: String) =
+        chatUserRepository.getSearchList(accessToken = accessToken, query = query)
+            .cachedIn(viewModelScope)
+
+    //todo 서버 연결 완성되면 지울 것
+    fun makeTmpChatRoom() {
+        chatRepository.requestTmpCreateChat(
+            listOf(
+                // 수지니
+                ChatUserInfo(
+                    id = "ft_u_a910f6fc7bbd11eda5c1952c36749daf_2022_12_14_14_43_23_385",
+                    name = "오동통이",
+                    profile = "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAxOTA1MzFfMjAw%2FMDAxNTU5MjM0NTExNTgx.G_jRxyJkH-oguxh9WioKPq_UxxPoOuTB9UvFkE-AXHYg.214nLcB6kz0I_pyP6TO14EKjVVBGsb0dIS3SFMZhK0Ig.JPEG.mbc3088%2F5765FFB3-6C4D-43CE-8CB7-22C639380CD4.jpeg&type=sc960_832"
+                ),
+                //이나
+                ChatUserInfo(
+                    id = "ft_u_3f3042ff7b9e11edba62053f4f79e4b9_2022_12_14_10_58_31_353",
+                    name = "이나",
+                    profile = "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMjAxMjVfMjMy%2FMDAxNjQzMTAyOTg1NzI0.bkW6TJVG82Gi8uG643n5SaSTYOyEcNAq0Y7xsEkOBSUg.rU7SY3uYHJGnigm3WzvBk0LkXt_cO6UOyVsfeKxbEPAg.JPEG.minziminzi128%2FIMG_7370.JPG&type=sc960_832"
+                )
+            )
+        )
+    }
 }

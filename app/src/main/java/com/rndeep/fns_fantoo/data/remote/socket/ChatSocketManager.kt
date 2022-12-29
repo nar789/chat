@@ -2,6 +2,7 @@ package com.rndeep.fns_fantoo.data.remote.socket
 
 import io.socket.client.IO
 import io.socket.client.Socket
+import kotlinx.coroutines.*
 import org.json.JSONObject
 import timber.log.Timber
 import java.net.URISyntaxException
@@ -14,6 +15,8 @@ class ChatSocketManager @Inject constructor() {
     }
 
     private lateinit var socket: Socket
+    private var job = SupervisorJob()
+
 
     init {
         try {
@@ -46,14 +49,18 @@ class ChatSocketManager @Inject constructor() {
         socket.on(event) {
             val response = it.getResponse()
             Timber.d("socket on --> event: $event, response: $response")
-            onResponse(response)
+            CoroutineScope(Dispatchers.Main + job).launch {
+                onResponse(response)
+            }
         }
     }
 
     fun on(event: String, onResponse: () -> Unit) {
         socket.on(event) {
             Timber.d("socket on --> evnet: $event")
-            onResponse()
+            CoroutineScope(Dispatchers.Main + job).launch {
+                onResponse()
+            }
         }
     }
 
@@ -62,7 +69,7 @@ class ChatSocketManager @Inject constructor() {
             return
         }
         val parms = JSONObject()
-        args.forEach{
+        args.forEach {
             parms.put(it.key, it.value)
         }
         socket.emit(event, parms)
@@ -81,6 +88,9 @@ class ChatSocketManager @Inject constructor() {
     }
 
     fun finish() {
+        if (job.isActive) {
+            job.cancel()
+        }
         closeSocket(reason = "ChatSocketManager is finished")
     }
 
@@ -89,7 +99,8 @@ class ChatSocketManager @Inject constructor() {
         socket.close()
     }
 
-    private fun Array<Any>.getResponse(): Map<String, String>? = (firstOrNull() as? JSONObject)?.toMap()
+    private fun Array<Any>.getResponse(): Map<String, String>? =
+        (firstOrNull() as? JSONObject)?.toMap()
 
     private fun JSONObject.toMap(): Map<String, String> = mutableMapOf<String, String>().apply {
         keys().forEach {

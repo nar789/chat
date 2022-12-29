@@ -10,6 +10,7 @@ import android.provider.MediaStore
 import androidx.annotation.RequiresApi
 import androidx.paging.*
 import kotlinx.coroutines.flow.Flow
+import timber.log.Timber
 
 class ImagePickerRepository {
     fun loadImages(contentResolver: ContentResolver): Flow<PagingData<Uri>> {
@@ -32,12 +33,19 @@ class ImageDataSource(private val contentResolver: ContentResolver) : PagingSour
         val currentKey = params.key ?: 0
         val loadSize = params.loadSize
 
-        val images = getImages(loadSize, currentKey)
-        return LoadResult.Page(
-            data = images,
-            prevKey = null,
-            nextKey = if (images.isEmpty() || images.size < loadSize) null else currentKey.plus(1)
-        )
+        return try {
+            val images = getImages(loadSize, currentKey)
+            LoadResult.Page(
+                data = images,
+                prevKey = null,
+                nextKey = if (images.isEmpty() || images.size < loadSize) null else currentKey.plus(
+                    1
+                )
+            )
+        } catch (e: Exception) {
+            Timber.e("imagePicker load exception: ${e.message}", e)
+            LoadResult.Error(e)
+        }
     }
 
 
