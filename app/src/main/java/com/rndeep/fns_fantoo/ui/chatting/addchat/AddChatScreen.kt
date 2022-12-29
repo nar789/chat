@@ -15,6 +15,7 @@ import androidx.compose.material.Card
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -34,7 +35,7 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import coil.compose.rememberAsyncImagePainter
 import com.rndeep.fns_fantoo.R
-import com.rndeep.fns_fantoo.data.remote.model.chat.TmpUserInfo
+import com.rndeep.fns_fantoo.data.remote.model.chat.ChatUserInfo
 import com.rndeep.fns_fantoo.ui.chatting.compose.FantooChatTypography
 
 @Composable
@@ -130,7 +131,7 @@ fun AddChatHeader(modifier: Modifier, onBack: () -> Unit) {
 fun AddChatContent(modifier: Modifier, viewModel: AddChatViewModel) {
     Surface(
         modifier = modifier.fillMaxSize(),
-        color = colorResource(id = R.color.bg_bg_light_gray_50)
+        color = colorResource(id = R.color.gray_25)
     ) {
         Column(modifier = Modifier.fillMaxHeight()) {
             AddChatSearchItem(viewModel.searchQuery, viewModel::onQueryInput)
@@ -155,7 +156,7 @@ fun AddChatList(viewModel: AddChatViewModel) {
             .background(color = colorResource(id = R.color.gray_25))
     ) {
         if (followList.isNotEmpty()) {
-            itemsIndexed(items = followList, key = {_, user -> user.loginId}) { index, user ->
+            itemsIndexed(items = followList, key = {_, user -> user.id}) { index, user ->
                 if (index == 0) {
                     AddChatTitleItem(
                         titleResId = R.string.add_chat_follow_list,
@@ -173,7 +174,7 @@ fun AddChatList(viewModel: AddChatViewModel) {
                 ) {
                     FollowerItem(
                         userInfo = user,
-                        isChecked = checkedIds.contains(user.loginId),
+                        isChecked = checkedIds.contains(user),
                         viewModel::onCheckStateChanged
                     )
                 }
@@ -181,7 +182,7 @@ fun AddChatList(viewModel: AddChatViewModel) {
         }
 
         if (fantooList.isNotEmpty()) {
-            itemsIndexed(items = fantooList, key = {_, user -> user.loginId}) { index, user ->
+            itemsIndexed(items = fantooList, key = {_, user -> user.id}) { index, user ->
                 if (index == 0) {
                     if (followList.isNotEmpty()) {
                         Spacer(
@@ -204,7 +205,7 @@ fun AddChatList(viewModel: AddChatViewModel) {
                 ) {
                     FollowerItem(
                         userInfo = user,
-                        isChecked = checkedIds.contains(user.loginId),
+                        isChecked = checkedIds.contains(user),
                         onClick = viewModel::onCheckStateChanged
                     )
                 }
@@ -214,19 +215,19 @@ fun AddChatList(viewModel: AddChatViewModel) {
 }
 
 @Composable
-fun FollowerItem(userInfo: TmpUserInfo, isChecked: Boolean, onClick: (id: String) -> Unit) {
+fun FollowerItem(userInfo: ChatUserInfo, isChecked: Boolean, onClick: (user: ChatUserInfo) -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = 20.dp, end = 18.dp)
             .clickable {
-                onClick(userInfo.loginId)
+                onClick(userInfo)
             }
     ) {
         val defaultImage = painterResource(R.drawable.profile_character11)
         Image(
             painter = rememberAsyncImagePainter(
-                model = userInfo.userPhoto,
+                model = userInfo.profile,
                 error = defaultImage,
                 fallback = defaultImage,
                 placeholder = defaultImage
@@ -240,7 +241,7 @@ fun FollowerItem(userInfo: TmpUserInfo, isChecked: Boolean, onClick: (id: String
         )
 
         Text(
-            text = userInfo.userName,
+            text = userInfo.name,
             modifier = Modifier
                 .align(CenterVertically)
                 .weight(1f)
@@ -279,6 +280,7 @@ fun AddChatSearchItem(query: State<String>, updateQuery: (query: String) -> Unit
         modifier = Modifier
             .wrapContentHeight()
             .fillMaxWidth()
+            .background(color = colorResource(id = R.color.bg_bg_light_gray_50))
             .padding(start = 20.dp, end = 20.dp, top = 20.dp, bottom = 14.dp)
     ) {
         BasicTextField(

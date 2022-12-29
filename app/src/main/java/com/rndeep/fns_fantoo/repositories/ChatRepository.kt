@@ -1,14 +1,22 @@
 package com.rndeep.fns_fantoo.repositories
 
+import android.widget.Toast
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.LiveData
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.rndeep.fns_fantoo.data.remote.model.chat.ChatRoomModel
-import com.rndeep.fns_fantoo.data.remote.model.chat.CreateChatUserInfo
+import com.rndeep.fns_fantoo.data.remote.model.chat.ChatUserInfo
 import com.rndeep.fns_fantoo.data.remote.socket.ChatSocketEvent
 import com.rndeep.fns_fantoo.data.remote.socket.ChatSocketManager
+import com.rndeep.fns_fantoo.ui.common.viewmodel.SingleLiveEvent
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
@@ -27,8 +35,8 @@ class ChatRepository @Inject constructor(private val socketManager: ChatSocketMa
         private const val PARAM_CONVERSATION_ID = "conversationId"
     }
 
-    private val _createConversationResult = mutableStateOf(false)
-    val createConversationResult: State<Boolean> get() = _createConversationResult
+    private val _createConversationResult = SingleLiveEvent<Pair<Boolean, Int>>()
+    val createConversationResult: LiveData<Pair<Boolean, Int>> get() = _createConversationResult
 
     private val _chatList = mutableStateListOf<ChatRoomModel>()
     val chatList: List<ChatRoomModel> get() = _chatList
@@ -44,7 +52,14 @@ class ChatRepository @Inject constructor(private val socketManager: ChatSocketMa
 
     private fun listenCreateConversation() {
         socketManager.on(ChatSocketEvent.CREATE_CONVERSATION) { response ->
-            _createConversationResult.value = response?.get(KEY_RESULT).isSuccess()
+            CoroutineScope(Dispatchers.Main).launch {
+                if (!response?.get(KEY_RESULT).isSuccess()) {
+                    _createConversationResult.value = false to -1
+                    return@launch
+                }
+                _createConversationResult.value =
+                    true to (response?.get("conversationId")?.toIntOrNull() ?: return@launch)
+            }
         }
     }
 
@@ -64,22 +79,7 @@ class ChatRepository @Inject constructor(private val socketManager: ChatSocketMa
         socketManager.emit(ChatSocketEvent.LOAD_CONVERSATION, mapOf(PARAM_USER_ID to userId))
     }
 
-    fun requestCreateChat(users: List<CreateChatUserInfo>) {
-//        val test1 = CreateChatUserInfo(
-//            id = userId,
-//            name = "hi",
-//            profile = "https://search.pstatic.net/sunny/?src=https%3A%2F%2Fi.pinimg.com%2Foriginals%2Fba%2F72%2Fe6%2Fba72e63ac96ccaeb4f128701f9d4cd7d.jpg&type=sc960_832"
-//        )
-//        val test2 = CreateChatUserInfo(
-//            id = "1",
-//            name = "hi",
-//            profile = "https://search.pstatic.net/sunny/?src=https%3A%2F%2Fi.pinimg.com%2Foriginals%2Fba%2F72%2Fe6%2Fba72e63ac96ccaeb4f128701f9d4cd7d.jpg&type=sc960_832"
-//        )
-//        val test3 = CreateChatUserInfo(
-//            id = "2",
-//            name = "hi",
-//            profile = "https://search.pstatic.net/sunny/?src=https%3A%2F%2Fi.pinimg.com%2Foriginals%2Fba%2F72%2Fe6%2Fba72e63ac96ccaeb4f128701f9d4cd7d.jpg&type=sc960_832"
-//        )
+    fun requestCreateChat(users: List<ChatUserInfo>) {
         val body = Gson().toJson(users).toString()
         socketManager.emit(ChatSocketEvent.CREATE_CONVERSATION, mapOf(PARAM_INFO to body))
     }
