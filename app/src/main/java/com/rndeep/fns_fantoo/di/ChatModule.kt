@@ -1,6 +1,6 @@
 package com.rndeep.fns_fantoo.di
 
-import com.rndeep.fns_fantoo.data.remote.api.ChatUserService
+import com.rndeep.fns_fantoo.data.remote.api.ChatService
 import com.rndeep.fns_fantoo.data.remote.socket.ChatSocketManager
 import com.rndeep.fns_fantoo.repositories.ChatRepository
 import com.rndeep.fns_fantoo.repositories.ChatUserRepository
@@ -26,6 +26,6 @@ class ChatModule {
     @Singleton
     @Provides
     fun provideUserRepository(
-        @NetworkModule.ChatUserServer chatUserService: ChatUserService
-    ): ChatUserRepository = ChatUserRepository(chatUserService)
+        @NetworkModule.ApiServer chatService: ChatService
+    ): ChatUserRepository = ChatUserRepository(chatService)
 }

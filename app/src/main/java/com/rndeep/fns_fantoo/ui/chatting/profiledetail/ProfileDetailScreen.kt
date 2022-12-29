@@ -28,9 +28,7 @@ import com.rndeep.fns_fantoo.ui.chatting.compose.FantooChatTypography
 
 @Composable
 fun ProfileDetailScreen(
-    profileImage: String,
-    userBlocked: Boolean = false,
-    userFollowed: Boolean = false,
+    uiState: ProfileUiState,
     onClickCancel: () -> Unit,
     onClickBlock: (Boolean) -> Unit,
     onClickFollow: (Boolean) -> Unit
@@ -41,9 +39,9 @@ fun ProfileDetailScreen(
     ) {
         ProfileDetailContent(
             modifier = Modifier.padding(top = 27.dp),
-            userName = "Dasol",
-            userBlocked = userBlocked,
-            userFollowed = userFollowed,
+            userName = uiState.name,
+            userBlocked = uiState.blocked,
+            userFollowed = uiState.followed,
             onClickCancel = onClickCancel,
             onClickBlock = onClickBlock,
             onClickFollow = onClickFollow
@@ -51,7 +49,7 @@ fun ProfileDetailScreen(
 
         ProfileImage(
             modifier = Modifier,
-            imageUrl = profileImage
+            imageUrl = uiState.photo
         )
     }
 }
@@ -179,7 +177,7 @@ fun IconSelector(
 @Composable
 fun ProfileImage(
     modifier: Modifier = Modifier,
-    imageUrl: String
+    imageUrl: String?
 ) {
     Surface(
         modifier = modifier,
@@ -207,8 +205,7 @@ fun ProfileImage(
 @Composable
 fun ProfileDetailScreenPreview() {
     ProfileDetailScreen(
-        profileImage = "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMjA2MjFfMjYz%2FMDAxNjU1NzgxMTkyMTU5.YO7UnyTXMzeXg02Jz1tPCDba5Nsr7m-vuOMGwT1WXfEg.GfjVMhmbCK2UuWqIcvtpCPfvhX39IvwQ7smctj0-3I8g.JPEG.gydls004%2FInternet%25A3%25DF20220621%25A3%25DF121040%25A3%25DF8.jpeg&type=sc960_832",
-        userBlocked = false,
+        uiState = ProfileUiState(),
         onClickCancel = {},
         onClickBlock = {},
         onClickFollow = {}
