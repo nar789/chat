@@ -90,10 +90,11 @@ class ChatUserRepository @Inject constructor(
 
     fun getSearchList(
         accessToken: String,
+        integUid: String,
         query: String
     ): Flow<PagingData<GetUserListResponse.ChatUserDto>> = Pager(PagingConfig(pageSize = 10)) {
         AddChatSearchDataSource(
-            chatService = chatApi, accessToken = accessToken, query = query
+            chatService = chatApi, uId = integUid, accessToken = accessToken, query = query
         )
     }.flow
 }

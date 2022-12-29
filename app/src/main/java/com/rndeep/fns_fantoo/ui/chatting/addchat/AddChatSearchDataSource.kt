@@ -8,6 +8,7 @@ import timber.log.Timber
 
 class AddChatSearchDataSource(
     private val chatService: ChatService,
+    private val uId: String,
     private val accessToken: String,
     private val query: String
 ) : PagingSource<Int, GetUserListResponse.ChatUserDto>() {
@@ -23,7 +24,7 @@ class AddChatSearchDataSource(
         val loadSize = params.loadSize
 
         try {
-            val response = chatService.getSearchList(accessToken, currentKey, query, loadSize)
+            val response = chatService.getSearchList(accessToken, uId, currentKey, query, loadSize)
             val data = response.chatUserDtoList
             val nextKey = response.nextId
             val listSize = response.listSize
@@ -33,7 +34,7 @@ class AddChatSearchDataSource(
             return LoadResult.Page(
                 data = data,
                 prevKey = null,
-                nextKey = if (listSize == 0 || data.isEmpty()) null else nextKey
+                nextKey = if (listSize == 0 || data.isEmpty() || nextKey < 0) null else nextKey
             )
         } catch (e: Exception) {
             Timber.e("add chat search exception: ${e.message}", e)
