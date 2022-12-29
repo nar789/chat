@@ -1,5 +1,6 @@
 package com.rndeep.fns_fantoo.ui.chatting.chatlist
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -54,7 +55,9 @@ class ChatListViewModel @Inject constructor(
                 _isUser.value = it
             }
             dataStoreRepository.getString(DataStoreKey.PREF_KEY_UID).toString().let {
-                userId = it
+                userId = it.also {
+                    Log.d("sujini", "uid: $it")
+                }
             }
         }
     }
