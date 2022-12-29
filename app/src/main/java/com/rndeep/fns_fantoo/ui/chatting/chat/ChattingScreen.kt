@@ -88,6 +88,8 @@ fun ChattingScreen(
     // True if floating date text is shown.
     var floatingDateShown by remember { mutableStateOf(false) }
 
+    var lastItemIndex by remember { mutableStateOf(-1) }
+
     suspend fun hideFloatingDate() {
         if (floatingDateShown) {
             delay(500L)
@@ -132,18 +134,29 @@ fun ChattingScreen(
                 BottomEditText(
                     onMessageSent,
                     onImageSelectorClicked,
-                    resetScroll = {
-                        coroutineScope.launch {
-                            scrollState.scrollToItem(messageList.lastIndex.coerceAtLeast(0))
-                        }
-                    }
+                    resetScroll = { }
                 )
+            }
+
+            if (lastItemIndex != messageList.lastIndex) {
+                LaunchedEffect(Unit) {
+                    val lastVisibleItemIndex =
+                        scrollState.layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: -1
+                    val isScrolledToEnd = lastVisibleItemIndex > messageList.lastIndex - 1
+                    val lastMessageIsMine =
+                        messageList.lastOrNull()?.isMyMessage(uiState.myId) == true
+                    if (isScrolledToEnd || lastMessageIsMine || lastItemIndex == -1) {
+                        scrollState.scrollToItem(messageList.lastIndex.coerceAtLeast(0))
+                    }
+
+                    lastItemIndex = messageList.lastIndex
+                }
             }
 
             if (scrollState.isScrollInProgress) {
                 DisposableEffect(Unit) {
                     jobState?.cancel()
-                    if (!floatingDateShown) floatingDateShown = true
+                    if (messageList.isNotEmpty() && !floatingDateShown) floatingDateShown = true
                     onDispose {
                         jobState = coroutineScope.launch { hideFloatingDate() }
                     }
