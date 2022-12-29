@@ -2,9 +2,7 @@ package com.rndeep.fns_fantoo.data.remote.socket
 
 import io.socket.client.IO
 import io.socket.client.Socket
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import org.json.JSONObject
 import timber.log.Timber
 import java.net.URISyntaxException
@@ -17,6 +15,8 @@ class ChatSocketManager @Inject constructor() {
     }
 
     private lateinit var socket: Socket
+    private var job = SupervisorJob()
+
 
     init {
         try {
@@ -49,7 +49,7 @@ class ChatSocketManager @Inject constructor() {
         socket.on(event) {
             val response = it.getResponse()
             Timber.d("socket on --> event: $event, response: $response")
-            CoroutineScope(Dispatchers.Main).launch {
+            CoroutineScope(Dispatchers.Main + job).launch {
                 onResponse(response)
             }
         }
@@ -58,7 +58,7 @@ class ChatSocketManager @Inject constructor() {
     fun on(event: String, onResponse: () -> Unit) {
         socket.on(event) {
             Timber.d("socket on --> evnet: $event")
-            CoroutineScope(Dispatchers.Main).launch {
+            CoroutineScope(Dispatchers.Main + job).launch {
                 onResponse()
             }
         }
@@ -88,6 +88,9 @@ class ChatSocketManager @Inject constructor() {
     }
 
     fun finish() {
+        if (job.isActive) {
+            job.cancel()
+        }
         closeSocket(reason = "ChatSocketManager is finished")
     }
 
