@@ -1,9 +1,10 @@
 package com.rndeep.fns_fantoo.data.remote.socket
 
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import io.socket.client.IO
 import io.socket.client.Socket
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.json.JSONObject
 import timber.log.Timber
 import java.net.URISyntaxException
@@ -48,23 +49,27 @@ class ChatSocketManager @Inject constructor() {
         socket.on(event) {
             val response = it.getResponse()
             Timber.d("socket on --> event: $event, response: $response")
-            onResponse(response)
+            CoroutineScope(Dispatchers.Main).launch {
+                onResponse(response)
+            }
         }
     }
 
     fun on(event: String, onResponse: () -> Unit) {
         socket.on(event) {
             Timber.d("socket on --> evnet: $event")
-            onResponse()
+            CoroutineScope(Dispatchers.Main).launch {
+                onResponse()
+            }
         }
     }
 
-    fun emit(event: String, args: Map<String, String> = emptyMap()) {
+    fun emit(event: String, args: Map<String, String?> = emptyMap()) {
         if (args.isEmpty()) {
             return
         }
         val parms = JSONObject()
-        args.forEach{
+        args.forEach {
             parms.put(it.key, it.value)
         }
         socket.emit(event, parms)
@@ -91,7 +96,8 @@ class ChatSocketManager @Inject constructor() {
         socket.close()
     }
 
-    private fun Array<Any>.getResponse(): Map<String, String>? = (firstOrNull() as? JSONObject)?.toMap()
+    private fun Array<Any>.getResponse(): Map<String, String>? =
+        (firstOrNull() as? JSONObject)?.toMap()
 
     private fun JSONObject.toMap(): Map<String, String> = mutableMapOf<String, String>().apply {
         keys().forEach {
