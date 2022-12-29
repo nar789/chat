@@ -49,9 +49,7 @@ class AddChatFragment : Fragment() {
             )
         }
         viewModel.showErrorToast.observe(viewLifecycleOwner) {
-            if (it) {
-                Toast.makeText(requireContext(), "채팅방을 만들 수 없습니다.", Toast.LENGTH_SHORT).show()
-            }
+            Toast.makeText(requireContext(), "채팅방을 만들 수 없습니다.", Toast.LENGTH_SHORT).show()
         }
     }
 }

@@ -3,15 +3,16 @@ package com.rndeep.fns_fantoo.ui.chatting.addchat
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.rndeep.fns_fantoo.data.remote.dto.GetUserListResponse
+import com.rndeep.fns_fantoo.data.remote.model.chat.ChatUserInfo
 import com.rndeep.fns_fantoo.repositories.ChatRepository
 import com.rndeep.fns_fantoo.repositories.ChatUserRepository
 import com.rndeep.fns_fantoo.repositories.DataStoreKey
 import com.rndeep.fns_fantoo.repositories.DataStoreRepository
+import com.rndeep.fns_fantoo.ui.common.viewmodel.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -33,6 +34,7 @@ class AddChatViewModel @Inject constructor(
     val followList: Flow<PagingData<GetUserListResponse.ChatUserDto>> = requestFollowList()
 
     private val _searchQuery = MutableStateFlow("")
+
     @OptIn(ExperimentalCoroutinesApi::class)
     val searchList: Flow<PagingData<GetUserListResponse.ChatUserDto>> =
         _searchQuery.flatMapLatest { requestSearchList(it) }
@@ -41,11 +43,28 @@ class AddChatViewModel @Inject constructor(
     private val _checkedUserList = mutableStateListOf<GetUserListResponse.ChatUserDto>()
     val checkedUserList: List<GetUserListResponse.ChatUserDto> get() = _checkedUserList
 
-    private val onCreateChat = chatRepository.createConversationResult
-    val navigateToChat: LiveData<Int> = onCreateChat.map { if (it.first.not()) -1 else it.second }
-    val showErrorToast: LiveData<Boolean> = onCreateChat.map { it.first.not() }
+    private val _navigateToChat = SingleLiveEvent<Int>()
+    val navigateToChat: LiveData<Int> = _navigateToChat
+
+    private val _showErrorToast = SingleLiveEvent<Unit>()
+    val showErrorToast: LiveData<Unit> = _showErrorToast
 
     init {
+       initUser()
+        addChatCallback()
+    }
+
+    private fun addChatCallback() {
+        chatRepository.setCreateConversationCallback { success, conversationId ->
+            if (success) {
+                _navigateToChat.value = conversationId
+            } else {
+                _showErrorToast.call()
+            }
+        }
+    }
+
+    private fun initUser() {
         viewModelScope.launch {
             dataStoreRepository.getString(DataStoreKey.PREF_KEY_UID).toString().let {
                 myId = it
@@ -78,6 +97,26 @@ class AddChatViewModel @Inject constructor(
 
 
     private fun requestSearchList(query: String) =
-        chatUserRepository.getSearchList(accessToken = accessToken, query = query).cachedIn(viewModelScope)
+        chatUserRepository.getSearchList(accessToken = accessToken, query = query)
+            .cachedIn(viewModelScope)
 
+    //todo 서버 연결 완성되면 지울 것
+    fun makeTmpChatRoom() {
+        chatRepository.requestTmpCreateChat(
+            listOf(
+                // 수지니
+                ChatUserInfo(
+                    id = "ft_u_a910f6fc7bbd11eda5c1952c36749daf_2022_12_14_14_43_23_385",
+                    name = "오동통이",
+                    profile = "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAxOTA1MzFfMjAw%2FMDAxNTU5MjM0NTExNTgx.G_jRxyJkH-oguxh9WioKPq_UxxPoOuTB9UvFkE-AXHYg.214nLcB6kz0I_pyP6TO14EKjVVBGsb0dIS3SFMZhK0Ig.JPEG.mbc3088%2F5765FFB3-6C4D-43CE-8CB7-22C639380CD4.jpeg&type=sc960_832"
+                ),
+                //이나
+                ChatUserInfo(
+                    id = "ft_u_3f3042ff7b9e11edba62053f4f79e4b9_2022_12_14_10_58_31_353",
+                    name = "이나",
+                    profile = "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMjAxMjVfMjMy%2FMDAxNjQzMTAyOTg1NzI0.bkW6TJVG82Gi8uG643n5SaSTYOyEcNAq0Y7xsEkOBSUg.rU7SY3uYHJGnigm3WzvBk0LkXt_cO6UOyVsfeKxbEPAg.JPEG.minziminzi128%2FIMG_7370.JPG&type=sc960_832"
+                )
+            )
+        )
+    }
 }

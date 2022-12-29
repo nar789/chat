@@ -2,16 +2,15 @@ package com.rndeep.fns_fantoo.repositories
 
 import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
-import androidx.lifecycle.LiveData
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.rndeep.fns_fantoo.data.remote.dto.GetUserListResponse
 import com.rndeep.fns_fantoo.data.remote.model.chat.ChatRoomModel
+import com.rndeep.fns_fantoo.data.remote.model.chat.ChatUserInfo
 import com.rndeep.fns_fantoo.data.remote.model.chat.Message
 import com.rndeep.fns_fantoo.data.remote.model.chat.ReadInfo
 import com.rndeep.fns_fantoo.data.remote.socket.ChatSocketEvent
 import com.rndeep.fns_fantoo.data.remote.socket.ChatSocketManager
-import com.rndeep.fns_fantoo.ui.common.viewmodel.SingleLiveEvent
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import timber.log.Timber
@@ -38,8 +37,7 @@ class ChatRepository @Inject constructor(private val socketManager: ChatSocketMa
         private const val PARAM_LAST_MESSAGE_ID = "lastMessageId"
     }
 
-    private val _createConversationResult = SingleLiveEvent<Pair<Boolean, Int>>()
-    val createConversationResult: LiveData<Pair<Boolean, Int>> get() = _createConversationResult
+    private var createConversationCallback: ((Boolean, Int) -> Unit)? = null
 
     private val _chatList = mutableStateListOf<ChatRoomModel>()
     val chatList: List<ChatRoomModel> get() = _chatList
@@ -94,12 +92,22 @@ class ChatRepository @Inject constructor(private val socketManager: ChatSocketMa
     private fun listenCreateConversation() {
         socketManager.on(ChatSocketEvent.CREATE_CONVERSATION) { response ->
             if (!response?.get(KEY_RESULT).isSuccess()) {
-                _createConversationResult.value = false to -1
+                notifyCreateConversation(false, -1)
                 return@on
             }
-            _createConversationResult.value =
-                true to (response?.get("conversationId")?.toIntOrNull() ?: return@on)
+            notifyCreateConversation(
+                true,
+                (response?.get("conversationId")?.toIntOrNull() ?: return@on)
+            )
         }
+    }
+
+    private fun notifyCreateConversation(success: Boolean, conversationId: Int) {
+        createConversationCallback?.invoke(success, conversationId)
+    }
+
+    fun setCreateConversationCallback(callback: ((success: Boolean, conversationId: Int) -> Unit)) {
+        createConversationCallback = callback
     }
 
     private fun listenLoadConversation() {
@@ -142,6 +150,11 @@ class ChatRepository @Inject constructor(private val socketManager: ChatSocketMa
     fun requestChatList(userId: String) {
         Timber.d("requestChatList: $userId")
         socketManager.emit(ChatSocketEvent.LOAD_CONVERSATION, mapOf(PARAM_USER_ID to userId))
+    }
+
+    fun requestTmpCreateChat(users: List<ChatUserInfo>) {
+        val body = Gson().toJson(users).toString()
+        socketManager.emit(ChatSocketEvent.CREATE_CONVERSATION, mapOf(PARAM_INFO to body))
     }
 
     fun requestCreateChat(users: List<GetUserListResponse.ChatUserDto>) {
@@ -239,6 +252,7 @@ class ChatRepository @Inject constructor(private val socketManager: ChatSocketMa
     }
 
     fun finish() {
+        createConversationCallback = null
         socketManager.finish()
     }
 
