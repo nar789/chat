@@ -9,7 +9,7 @@ import androidx.paging.cachedIn
 import com.rndeep.fns_fantoo.data.remote.dto.GetUserListResponse
 import com.rndeep.fns_fantoo.data.remote.model.chat.ChatUserInfo
 import com.rndeep.fns_fantoo.repositories.ChatRepository
-import com.rndeep.fns_fantoo.repositories.ChatUserRepository
+import com.rndeep.fns_fantoo.repositories.ChatInfoRepository
 import com.rndeep.fns_fantoo.repositories.DataStoreKey
 import com.rndeep.fns_fantoo.repositories.DataStoreRepository
 import com.rndeep.fns_fantoo.ui.common.viewmodel.SingleLiveEvent
@@ -24,7 +24,7 @@ import javax.inject.Inject
 class AddChatViewModel @Inject constructor(
     private val dataStoreRepository: DataStoreRepository,
     private val chatRepository: ChatRepository,
-    private val chatUserRepository: ChatUserRepository
+    private val chatInfoRepository: ChatInfoRepository
 ) : ViewModel() {
 
     private var myId: String = ""
@@ -92,11 +92,11 @@ class AddChatViewModel @Inject constructor(
     }
 
     private fun requestFollowList(): Flow<PagingData<GetUserListResponse.ChatUserDto>> =
-        chatUserRepository.getMyFollowList(myId, accessToken).cachedIn(viewModelScope)
+        chatInfoRepository.getMyFollowList(myId, accessToken).cachedIn(viewModelScope)
 
 
     private fun requestSearchList(query: String) =
-        chatUserRepository.getSearchList(accessToken = accessToken, query = query, integUid = myId)
+        chatInfoRepository.getSearchList(accessToken = accessToken, query = query, integUid = myId)
             .cachedIn(viewModelScope)
 
     //todo 서버 연결 완성되면 지울 것

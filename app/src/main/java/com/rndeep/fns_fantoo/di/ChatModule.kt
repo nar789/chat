@@ -3,7 +3,7 @@ package com.rndeep.fns_fantoo.di
 import com.rndeep.fns_fantoo.data.remote.api.ChatService
 import com.rndeep.fns_fantoo.data.remote.socket.ChatSocketManager
 import com.rndeep.fns_fantoo.repositories.ChatRepository
-import com.rndeep.fns_fantoo.repositories.ChatUserRepository
+import com.rndeep.fns_fantoo.repositories.ChatInfoRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -27,5 +27,5 @@ class ChatModule {
     @Provides
     fun provideUserRepository(
         @NetworkModule.ApiServer chatService: ChatService
-    ): ChatUserRepository = ChatUserRepository(chatService)
+    ): ChatInfoRepository = ChatInfoRepository(chatService)
 }
