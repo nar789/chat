@@ -167,8 +167,10 @@ fun AddChatContent(
         Column(modifier = Modifier.fillMaxHeight()) {
             AddChatSearchItem(query, onQueryInput)
             val isSearch = query.isNotBlank()
-            if (isSearch.not() && followList.itemCount == 0 || isSearch && (searchList == null || searchList.itemCount == 0)) {
-                AddChatNoFollowerItem()
+            if (isSearch.not() && followList.itemCount == 0) {
+                AddChatErrorItem(R.string.add_chat_no_follow)
+            } else if (isSearch && (searchList == null || searchList.itemCount == 0)) {
+                AddChatErrorItem(message = R.string.add_chat_no_search_result)
             } else {
                 if (query.isBlank()) {
                     AddChatList(
@@ -202,64 +204,67 @@ fun AddChatList(
             .fillMaxWidth()
             .background(color = colorResource(id = R.color.gray_25))
     ) {
-        if (list.itemCount > 0) {
-            var prevType = GetUserListResponse.ChatUserDto.TYPE_FOLLOW
-            items(count = list.itemCount) { index ->
-                val user = list[index] ?: return@items
-                if ((user.isFollow() || isSearch.not()) && index == 0) {
-                    AddChatTitleItem(
-                        titleResId = R.string.add_chat_follow_list,
-                        count = if (isSearch.not()) list.itemCount else null
-                    )
-                } else if (user.isOther() && prevType == GetUserListResponse.ChatUserDto.TYPE_FOLLOW) {
-                    if (index > 0) {
-                        Spacer(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(16.dp)
-                                .background(
-                                    color = colorResource(
-                                        id = R.color.gray_25
-                                    )
-                                )
-                        )
-                        Spacer(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(10.dp)
-                                .background(
-                                    color = colorResource(
-                                        id = R.color.bg_bg_light_gray_50
-                                    )
-                                )
-                        )
-                    }
-                    AddChatTitleItem(
-                        titleResId = R.string.add_chat_fantoo_list,
-                        count = if (isSearch.not()) list.itemCount else null
-                    )
-                    prevType = GetUserListResponse.ChatUserDto.TYPE_OTHER
+        if (list.itemCount <= 0) {
+            return@LazyColumn
+        }
+        var prevType = GetUserListResponse.ChatUserDto.TYPE_FOLLOW
+        items(count = list.itemCount) { index ->
+            val user = list[index] ?: return@items
+            if ((user.isFollow() || isSearch.not()) && index == 0) {
+                AddChatTitleItem(
+                    titleResId = R.string.add_chat_follow_list,
+                    count = if (isSearch.not()) list.itemCount else null
+                )
+            } else if (user.isOther() && prevType == GetUserListResponse.ChatUserDto.TYPE_FOLLOW) {
+                if (index > 0) {
+                    FantooListSpacer()
                 }
-
-                Box(
-                    modifier = Modifier.padding(
-                        top = if (index == 0) 8.dp else 6.dp,
-                        bottom = when (index) {
-                            list.itemCount -> 140.dp
-                            else -> 6.dp
-                        }
-                    )
-                ) {
-                    FollowerItem(
-                        userInfo = user,
-                        isChecked = checkedUserList.contains(user),
-                        onClick = onCheckStateChanged
-                    )
-                }
+                AddChatTitleItem(titleResId = R.string.add_chat_fantoo_list)
 
             }
+            prevType = user.type
+            Box(
+                modifier = Modifier.padding(
+                    top = if (index == 0) 8.dp else 6.dp,
+                    bottom = when (index) {
+                        list.itemCount -> 140.dp
+                        else -> 6.dp
+                    }
+                )
+            ) {
+                FollowerItem(
+                    userInfo = user,
+                    isChecked = checkedUserList.contains(user),
+                    onClick = onCheckStateChanged
+                )
+            }
+
         }
     }
+}
+
+@Composable
+private fun FantooListSpacer() {
+    Spacer(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(16.dp)
+            .background(
+                color = colorResource(
+                    id = R.color.gray_25
+                )
+            )
+    )
+    Spacer(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(10.dp)
+            .background(
+                color = colorResource(
+                    id = R.color.bg_bg_light_gray_50
+                )
+            )
+    )
 }
 
 @Composable
@@ -401,7 +406,7 @@ fun AddChatTitleItem(@StringRes titleResId: Int, count: Int? = null) {
 }
 
 @Composable
-fun AddChatNoFollowerItem() {
+fun AddChatErrorItem(@StringRes message: Int) {
     Surface(
         modifier = Modifier
             .fillMaxSize()
@@ -416,7 +421,7 @@ fun AddChatNoFollowerItem() {
 
             Text(
                 modifier = Modifier.padding(top = 6.dp),
-                text = stringResource(id = R.string.add_chat_no_follow),
+                text = stringResource(id = message),
                 textAlign = TextAlign.Center,
                 fontSize = 14.sp,
                 lineHeight = 20.sp,

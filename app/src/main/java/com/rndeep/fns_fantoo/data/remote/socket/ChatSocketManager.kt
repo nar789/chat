@@ -15,7 +15,7 @@ class ChatSocketManager @Inject constructor() {
     }
 
     private lateinit var socket: Socket
-    private var job = SupervisorJob()
+    private var job: CompletableJob = SupervisorJob()
 
 
     init {
@@ -32,6 +32,7 @@ class ChatSocketManager @Inject constructor() {
     fun connectSocket() {
         Timber.d("try to connecting socket")
 
+        job = SupervisorJob()
         socket.connect()
         socket.on(Socket.EVENT_CONNECT) {
             //todo 연결 완료 시 서버에 보낼 정보 있는지 확인 필요
