@@ -174,7 +174,7 @@ class ChattingViewModel @Inject constructor(
     }
 
     private suspend fun fetchChatUserProfile(userId: String): UserProfile? {
-        val response = chatUserRepository.fetchChatUserInfo(accessToken, myUid, userId)
+        val response = chatInfoRepository.fetchChatUserInfo(accessToken, myUid, userId)
         Timber.d("fetchChatUserProfile : $response")
         return when (response) {
             is ResultWrapper.Success -> response.data.let { UserProfile(it.userNick, it.userPhoto) }

@@ -200,7 +200,7 @@ class ChatRepository @Inject constructor(private val socketManager: ChatSocketMa
             mapOf(
                 "conversationId" to message.conversationId.toString(),
                 "userId" to message.userId,
-                "name" to message.name,
+                "name" to message.displayName,
                 "message" to message.message,
                 "image" to message.image,
                 "messageType" to message.messageType.toString(),
