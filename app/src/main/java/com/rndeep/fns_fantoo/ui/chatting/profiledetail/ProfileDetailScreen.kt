@@ -25,6 +25,8 @@ import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import com.rndeep.fns_fantoo.R
 import com.rndeep.fns_fantoo.ui.chatting.compose.FantooChatTypography
+import com.rndeep.fns_fantoo.ui.chatting.compose.getImageUrlFromCDN
+import com.rndeep.fns_fantoo.ui.chatting.profiledetail.model.ProfileUiState
 
 @Composable
 fun ProfileDetailScreen(
@@ -49,7 +51,7 @@ fun ProfileDetailScreen(
 
         ProfileImage(
             modifier = Modifier,
-            imageUrl = uiState.photo
+            imageUrl = uiState.photo.getImageUrlFromCDN()
         )
     }
 }
