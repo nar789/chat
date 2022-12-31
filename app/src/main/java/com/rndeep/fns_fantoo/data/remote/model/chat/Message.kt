@@ -12,12 +12,21 @@ data class Message(
     @SerializedName("message") val message: String = "",
     @SerializedName("updated") val updated: Long? = null,
     @SerializedName("image") val image: String? = null,
-    @SerializedName("name") val name: String? = null
+    @SerializedName("name") private val name: String? = null
 ) {
+    var userPhoto: String? = null
+    var displayName: String? = null
+        get() = if (field.isNullOrEmpty()) {
+            name ?: "Unknown name"
+        } else {
+            field
+        }
+
     val dateText get() = updated?.let { dateFormat.format(it * 1000).toString() }.orEmpty()
-    val hourText get() = updated?.let { hourFormat.format(it * 1000).toString() }.orEmpty()
-        .replace("AM", "오전")
-        .replace("PM", "오후")
+    val hourText
+        get() = updated?.let { hourFormat.format(it * 1000).toString() }.orEmpty()
+            .replace("AM", "오전")
+            .replace("PM", "오후")
 
     fun isMyMessage(myId: String) = userId == myId
     fun getUnReadCount(readInfos: List<ReadInfo>): Int {

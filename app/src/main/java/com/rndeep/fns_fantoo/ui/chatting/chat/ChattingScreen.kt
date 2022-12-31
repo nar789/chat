@@ -52,7 +52,9 @@ import coil.compose.rememberAsyncImagePainter
 import com.rndeep.fns_fantoo.R
 import com.rndeep.fns_fantoo.data.remote.model.chat.Message
 import com.rndeep.fns_fantoo.data.remote.model.chat.ReadInfo
+import com.rndeep.fns_fantoo.ui.chatting.chat.model.ChatUiState
 import com.rndeep.fns_fantoo.ui.chatting.compose.FantooChatTypography
+import com.rndeep.fns_fantoo.ui.chatting.compose.getImageUrlFromCDN
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -186,11 +188,11 @@ fun Messages(
         ) {
             itemsIndexed(messages) { index, item ->
                 val isMe = item.isMyMessage(myId)
-                val prevAuthor = messages.getOrNull(index - 1)?.name
-                val nextAuthor = messages.getOrNull(index + 1)?.name
+                val prevAuthor = messages.getOrNull(index - 1)?.userId
+                val nextAuthor = messages.getOrNull(index + 1)?.userId
                 val nextHour = messages.getOrNull(index + 1)?.hourText
-                val isFirstMessageByAuthor = prevAuthor != item.name
-                val isLastMessageByAuthor = nextAuthor != item.name
+                val isFirstMessageByAuthor = prevAuthor != item.userId
+                val isLastMessageByAuthor = nextAuthor != item.userId
 
                 Box(
                     modifier = Modifier
@@ -280,7 +282,7 @@ fun AuthorAndName(
                 .size(22.dp)
                 .clip(RoundedCornerShape(6.dp)),
             painter = rememberAsyncImagePainter(
-                model = message.image,
+                model = message.userPhoto.getImageUrlFromCDN(),
                 fallback = defaultImage,
                 error = defaultImage,
                 placeholder = defaultImage
@@ -289,7 +291,7 @@ fun AuthorAndName(
         )
         Spacer(modifier = Modifier.size(6.dp))
         Text(
-            text = message.name.orEmpty(),
+            text = message.displayName.orEmpty(),
             fontSize = 12.sp,
             color = colorResource(R.color.gray_400),
         )

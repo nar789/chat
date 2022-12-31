@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rndeep.fns_fantoo.data.remote.ResultWrapper
 import com.rndeep.fns_fantoo.data.remote.dto.ChatUserInfoResponse
+import com.rndeep.fns_fantoo.ui.chatting.profiledetail.model.ProfileUiState
 import com.rndeep.fns_fantoo.repositories.ChatInfoRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
