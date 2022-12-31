@@ -4,7 +4,7 @@ import androidx.compose.runtime.mutableStateListOf
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.rndeep.fns_fantoo.data.remote.dto.GetUserListResponse
-import com.rndeep.fns_fantoo.data.remote.model.chat.ChatRoomModel
+import com.rndeep.fns_fantoo.data.remote.model.chat.ChatRoomInfo
 import com.rndeep.fns_fantoo.data.remote.model.chat.ChatUserInfo
 import com.rndeep.fns_fantoo.data.remote.model.chat.Message
 import com.rndeep.fns_fantoo.data.remote.model.chat.ReadInfo
@@ -41,8 +41,8 @@ class ChatRepository @Inject constructor(private val socketManager: ChatSocketMa
 
     private var createConversationCallback: ((Boolean, Int) -> Unit)? = null
 
-    private val _chatList = mutableStateListOf<ChatRoomModel>()
-    val chatList: List<ChatRoomModel> get() = _chatList
+    private val _chatList = mutableStateListOf<ChatRoomInfo>()
+    val chatList: List<ChatRoomInfo> get() = _chatList
 
     private val _messagesFlow = MutableSharedFlow<List<Message>>()
     val messagesFlow: SharedFlow<List<Message>> get() = _messagesFlow

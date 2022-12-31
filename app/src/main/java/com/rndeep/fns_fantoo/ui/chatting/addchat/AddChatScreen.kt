@@ -13,7 +13,9 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.Card
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterVertically
@@ -201,14 +203,44 @@ fun AddChatList(
             .background(color = colorResource(id = R.color.gray_25))
     ) {
         if (list.itemCount > 0) {
+            var prevType = GetUserListResponse.ChatUserDto.TYPE_FOLLOW
             items(count = list.itemCount) { index ->
                 val user = list[index] ?: return@items
-                if (index == 0) {
+                if ((user.isFollow() || isSearch.not()) && index == 0) {
                     AddChatTitleItem(
                         titleResId = R.string.add_chat_follow_list,
                         count = if (isSearch.not()) list.itemCount else null
                     )
+                } else if (user.isOther() && prevType == GetUserListResponse.ChatUserDto.TYPE_FOLLOW) {
+                    if (index > 0) {
+                        Spacer(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(16.dp)
+                                .background(
+                                    color = colorResource(
+                                        id = R.color.gray_25
+                                    )
+                                )
+                        )
+                        Spacer(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(10.dp)
+                                .background(
+                                    color = colorResource(
+                                        id = R.color.bg_bg_light_gray_50
+                                    )
+                                )
+                        )
+                    }
+                    AddChatTitleItem(
+                        titleResId = R.string.add_chat_fantoo_list,
+                        count = if (isSearch.not()) list.itemCount else null
+                    )
+                    prevType = GetUserListResponse.ChatUserDto.TYPE_OTHER
                 }
+
                 Box(
                     modifier = Modifier.padding(
                         top = if (index == 0) 8.dp else 6.dp,
@@ -224,6 +256,7 @@ fun AddChatList(
                         onClick = onCheckStateChanged
                     )
                 }
+
             }
         }
     }
