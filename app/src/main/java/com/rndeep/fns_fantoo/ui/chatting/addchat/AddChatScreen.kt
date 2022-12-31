@@ -222,10 +222,9 @@ fun AddChatList(
                 AddChatTitleItem(titleResId = R.string.add_chat_fantoo_list)
 
             }
-            prevType = user.type
             Box(
                 modifier = Modifier.padding(
-                    top = if (index == 0) 8.dp else 6.dp,
+                    top = if (index == 0 || prevType != user.type) 8.dp else 6.dp,
                     bottom = when (index) {
                         list.itemCount -> 140.dp
                         else -> 6.dp
@@ -239,6 +238,7 @@ fun AddChatList(
                 )
             }
 
+            prevType = user.type
         }
     }
 }
