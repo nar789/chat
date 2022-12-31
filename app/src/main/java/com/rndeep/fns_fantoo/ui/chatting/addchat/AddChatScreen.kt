@@ -13,9 +13,7 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.Card
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterVertically
@@ -37,6 +35,7 @@ import coil.compose.rememberAsyncImagePainter
 import com.rndeep.fns_fantoo.R
 import com.rndeep.fns_fantoo.data.remote.dto.GetUserListResponse
 import com.rndeep.fns_fantoo.ui.chatting.compose.FantooChatTypography
+import com.rndeep.fns_fantoo.ui.chatting.compose.getImageUrlFromCDN
 
 @Composable
 fun AddChatScreen(viewModel: AddChatViewModel, onBack: () -> Unit) {
@@ -247,7 +246,7 @@ fun FollowerItem(
         val defaultImage = painterResource(R.drawable.profile_character11)
         Image(
             painter = rememberAsyncImagePainter(
-                model = userInfo.userPhoto,
+                model = userInfo.userPhoto.getImageUrlFromCDN(),
                 error = defaultImage,
                 fallback = defaultImage,
                 placeholder = defaultImage
