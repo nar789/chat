@@ -180,7 +180,7 @@ class ChattingViewModel @Inject constructor(
 
     private suspend fun collectImageFlow() {
         chatRepository.uploadImageFlow
-            .filter { it.isNotEmpty() }
+            .filterNotNull()
             .onEach {
                 sendImageMessage(it)
             }.collect()

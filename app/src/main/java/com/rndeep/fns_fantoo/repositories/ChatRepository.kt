@@ -53,7 +53,8 @@ class ChatRepository @Inject constructor(
         private const val PARAM_FILE = "file"
     }
 
-    private var createConversationCallback: ((Boolean, Int) -> Unit)? = null
+    private val _createConversationResult = MutableSharedFlow<Pair<Boolean,Int>>()
+    val createConversationResult: SharedFlow<Pair<Boolean, Int>> get() = _createConversationResult
 
     private val _chatList = mutableStateListOf<ChatRoomInfo>()
     val chatList: List<ChatRoomInfo> get() = _chatList
@@ -109,11 +110,9 @@ class ChatRepository @Inject constructor(
     }
 
     private fun notifyCreateConversation(success: Boolean, conversationId: Int) {
-        createConversationCallback?.invoke(success, conversationId)
-    }
-
-    fun setCreateConversationCallback(callback: ((success: Boolean, conversationId: Int) -> Unit)) {
-        createConversationCallback = callback
+        CoroutineScope(Dispatchers.IO).launch {
+            _createConversationResult.emit(success to conversationId)
+        }
     }
 
     private fun listenLoadConversation() {
@@ -294,7 +293,7 @@ class ChatRepository @Inject constructor(
     }
 
     fun finish() {
-        createConversationCallback = null
+//        createConversationCallback = null
         socketManager.finish()
     }
 
