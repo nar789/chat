@@ -12,6 +12,7 @@ import com.rndeep.fns_fantoo.data.remote.model.IntegUid
 import com.rndeep.fns_fantoo.data.remote.model.chat.Message
 import com.rndeep.fns_fantoo.data.remote.model.chat.ReadInfo
 import com.rndeep.fns_fantoo.repositories.*
+import com.rndeep.fns_fantoo.ui.chatting.chat.model.ChatUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filter
@@ -34,6 +35,7 @@ class ChattingViewModel @Inject constructor(
 
     private var chatId: Int = 0
     private var readInfoMap: MutableMap<String, ReadInfo> = mutableMapOf()
+    private var userProfileMap: MutableMap<String, UserProfile> = mutableMapOf()
 
     lateinit var myUid: String
         private set
@@ -153,10 +155,35 @@ class ChattingViewModel @Inject constructor(
             .onEach {
                 val prevMessages = _chatUiState.value.messages
                 _chatUiState.value = _chatUiState.value.copy(
-                    messages = prevMessages + it
+                    messages = prevMessages + findUserProfile(it)
                 )
                 chatRepository.requestReadInfo(chatId, myUid)
             }
             .collect()
     }
+
+    private suspend fun findUserProfile(messages: List<Message>): List<Message> {
+        return messages.onEach { message ->
+            val userId = message.userId ?: return@onEach
+            val userProfile = userProfileMap[userId] ?: fetchChatUserProfile(userId)
+            userProfile?.let {
+                message.displayName = it.name
+                message.userPhoto = it.photo
+            }
+        }
+    }
+
+    private suspend fun fetchChatUserProfile(userId: String): UserProfile? {
+        val response = chatUserRepository.fetchChatUserInfo(accessToken, myUid, userId)
+        Timber.d("fetchChatUserProfile : $response")
+        return when (response) {
+            is ResultWrapper.Success -> response.data.let { UserProfile(it.userNick, it.userPhoto) }
+            else -> null
+        }
+    }
+
+    private data class UserProfile(
+        val name: String?,
+        val photo: String?
+    )
 }

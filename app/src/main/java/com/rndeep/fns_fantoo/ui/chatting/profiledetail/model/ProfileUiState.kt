@@ -1,4 +1,4 @@
-package com.rndeep.fns_fantoo.ui.chatting.profiledetail
+package com.rndeep.fns_fantoo.ui.chatting.profiledetail.model
 
 data class ProfileUiState(
     val blocked: Boolean = false,

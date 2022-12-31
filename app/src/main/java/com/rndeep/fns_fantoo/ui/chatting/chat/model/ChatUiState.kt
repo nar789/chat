@@ -1,4 +1,4 @@
-package com.rndeep.fns_fantoo.ui.chatting.chat
+package com.rndeep.fns_fantoo.ui.chatting.chat.model
 
 import androidx.compose.runtime.mutableStateListOf
 import com.rndeep.fns_fantoo.data.remote.model.chat.Message
