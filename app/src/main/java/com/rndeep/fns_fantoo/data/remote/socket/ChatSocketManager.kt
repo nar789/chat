@@ -35,7 +35,6 @@ class ChatSocketManager @Inject constructor() {
         job = SupervisorJob()
         socket.connect()
         socket.on(Socket.EVENT_CONNECT) {
-            //todo 연결 완료 시 서버에 보낼 정보 있는지 확인 필요
             Timber.d("Socket is connected")
         }
     }
