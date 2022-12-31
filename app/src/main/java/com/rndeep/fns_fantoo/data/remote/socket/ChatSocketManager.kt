@@ -64,7 +64,7 @@ class ChatSocketManager @Inject constructor() {
         }
     }
 
-    fun emit(event: String, args: Map<String, String?> = emptyMap()) {
+    fun emit(event: String, args: Map<String, Any?> = emptyMap()) {
         if (args.isEmpty()) {
             return
         }
@@ -73,10 +73,12 @@ class ChatSocketManager @Inject constructor() {
             parms.put(it.key, it.value)
         }
         socket.emit(event, parms)
+        Timber.d("socket emit --> event: $event")
     }
 
     fun emit(event: String) {
         socket.emit(event)
+        Timber.d("socket emit --> event: $event")
     }
 
     private fun listenSocketError() {

@@ -11,9 +11,10 @@ import androidx.annotation.RequiresApi
 import androidx.paging.*
 import kotlinx.coroutines.flow.Flow
 import timber.log.Timber
+import javax.inject.Inject
 
-class ImagePickerRepository {
-    fun loadImages(contentResolver: ContentResolver): Flow<PagingData<Uri>> {
+class ImagePickerRepository @Inject constructor(private val contentResolver: ContentResolver) {
+    fun loadImages(): Flow<PagingData<Uri>> {
         return Pager(config = PagingConfig(20, 20, true, 30), pagingSourceFactory = {
             ImageDataSource(contentResolver)
         }).flow

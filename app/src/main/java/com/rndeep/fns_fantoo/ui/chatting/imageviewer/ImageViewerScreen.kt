@@ -19,6 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.rndeep.fns_fantoo.R
+import com.rndeep.fns_fantoo.ui.chatting.compose.getChatImageUrl
 
 @Composable
 fun ImageViewerScreen(
@@ -81,8 +82,9 @@ fun ImageContentView(
 
         Image(
             painter = rememberAsyncImagePainter(
-                model = imageUrl,
-                placeholder = painterResource(id = R.drawable.baby_icon)
+                model = imageUrl.getChatImageUrl(),
+                fallback = painterResource(id = R.drawable.baby_icon),
+                error = painterResource(id = R.drawable.baby_icon)
             ),
             contentDescription = null,
             contentScale = ContentScale.Fit,

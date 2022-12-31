@@ -1,5 +1,6 @@
 package com.rndeep.fns_fantoo.di
 
+import android.content.ContentResolver
 import com.rndeep.fns_fantoo.data.remote.api.ChatService
 import com.rndeep.fns_fantoo.data.remote.socket.ChatSocketManager
 import com.rndeep.fns_fantoo.repositories.ChatRepository
@@ -20,8 +21,8 @@ class ChatModule {
 
     @Singleton
     @Provides
-    fun provideChatRepository(chatSocketManager: ChatSocketManager): ChatRepository =
-        ChatRepository(chatSocketManager)
+    fun provideChatRepository(chatSocketManager: ChatSocketManager, contentResolver: ContentResolver): ChatRepository =
+        ChatRepository(chatSocketManager, contentResolver)
 
     @Singleton
     @Provides
