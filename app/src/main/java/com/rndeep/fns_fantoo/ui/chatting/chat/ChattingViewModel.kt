@@ -77,7 +77,7 @@ class ChattingViewModel @Inject constructor(
 
             chatRepository.requestLeave(chatId)
             chatRepository.requestJoin(chatId)
-            chatRepository.requestLoadMessage(chatId, 0, 100)
+            chatRepository.requestLoadMessage(chatId, 0, 10)
             chatRepository.requestReadInfo(chatId, myUid)
             chatRepository.requestLoadReadInfo(chatId)
         }

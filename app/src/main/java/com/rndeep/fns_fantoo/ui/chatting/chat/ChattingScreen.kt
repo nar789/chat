@@ -56,6 +56,7 @@ import com.rndeep.fns_fantoo.ui.chatting.chat.model.ChatUiState
 import com.rndeep.fns_fantoo.ui.chatting.compose.FantooChatTypography
 import com.rndeep.fns_fantoo.ui.chatting.compose.getChatImageUrl
 import com.rndeep.fns_fantoo.ui.chatting.compose.getImageUrlFromCDN
+import com.skydoves.landscapist.rememberDrawablePainter
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -652,7 +653,7 @@ fun FloatingDateText(
             modifier = Modifier
                 .sizeIn(minWidth = 86.dp, minHeight = 24.dp)
                 .paint(
-                    painter = rememberAsyncImagePainter(
+                    painter = rememberDrawablePainter(
                         ContextCompat.getDrawable(LocalContext.current, R.drawable.bg_chatting_date)
                     )
                 )
