@@ -45,7 +45,7 @@ class ImagePickerDialog @Inject constructor() : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.loadImageList(requireActivity().contentResolver)
+        viewModel.loadImageList()
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {

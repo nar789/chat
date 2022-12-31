@@ -1,5 +1,6 @@
 package com.rndeep.fns_fantoo.di
 
+import android.content.ContentResolver
 import android.content.Context
 import com.rndeep.fns_fantoo.data.local.dao.*
 import com.rndeep.fns_fantoo.data.remote.api.*
@@ -259,7 +260,7 @@ class RepositoryModule {
 
     @Singleton
     @Provides
-    fun provideImagePickerRepository() : ImagePickerRepository =
-        ImagePickerRepository()
+    fun provideImagePickerRepository(contentResolver: ContentResolver) : ImagePickerRepository =
+        ImagePickerRepository(contentResolver)
 
 }

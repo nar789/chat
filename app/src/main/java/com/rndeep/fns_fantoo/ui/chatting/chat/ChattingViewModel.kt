@@ -1,6 +1,5 @@
 package com.rndeep.fns_fantoo.ui.chatting.chat
 
-import android.net.Uri
 import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -74,12 +73,29 @@ class ChattingViewModel @Inject constructor(
         viewModelScope.launch {
             launch { collectMessageFlow() }
             launch { collectReadInfoFlow() }
+            launch { collectImageFlow() }
 
             chatRepository.requestLeave(chatId)
             chatRepository.requestJoin(chatId)
             chatRepository.requestLoadMessage(chatId, 0, 100)
             chatRepository.requestReadInfo(chatId, myUid)
             chatRepository.requestLoadReadInfo(chatId)
+        }
+    }
+
+    fun sendImageMessage(fileName: String, message: String = "") {
+        viewModelScope.launch {
+            chatRepository.sendMessage(
+                Message(
+                    userId = myUid,
+                    name = myName,
+                    image = fileName,
+                    message = message,
+                    conversationId = chatId,
+                    messageType = 2,
+                    updated = System.currentTimeMillis()
+                )
+            )
         }
     }
 
@@ -99,10 +115,6 @@ class ChattingViewModel @Inject constructor(
                 )
             )
         }
-    }
-
-    fun sendImageMessage(images: List<Uri>) {
-        // TODO : send images to server
     }
 
     fun setTranslateMode(onOff: Boolean) {
@@ -160,6 +172,14 @@ class ChattingViewModel @Inject constructor(
                 chatRepository.requestReadInfo(chatId, myUid)
             }
             .collect()
+    }
+
+    private suspend fun collectImageFlow() {
+        chatRepository.uploadImageFlow
+            .filter { it.isNotEmpty() }
+            .onEach {
+                sendImageMessage(it)
+            }.collect()
     }
 
     private suspend fun findUserProfile(messages: List<Message>): List<Message> {

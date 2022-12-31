@@ -54,6 +54,7 @@ import com.rndeep.fns_fantoo.data.remote.model.chat.Message
 import com.rndeep.fns_fantoo.data.remote.model.chat.ReadInfo
 import com.rndeep.fns_fantoo.ui.chatting.chat.model.ChatUiState
 import com.rndeep.fns_fantoo.ui.chatting.compose.FantooChatTypography
+import com.rndeep.fns_fantoo.ui.chatting.compose.getChatImageUrl
 import com.rndeep.fns_fantoo.ui.chatting.compose.getImageUrlFromCDN
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -346,7 +347,7 @@ fun ImageMessageItem(
             .widthIn(max = 149.dp)
             .clip(RoundedCornerShape(12.dp)),
         painter = rememberAsyncImagePainter(
-            model = message.image,
+            model = message.image.getChatImageUrl(),
             fallback = defaultImage, error = defaultImage, placeholder = defaultImage
         ),
         contentDescription = null

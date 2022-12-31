@@ -1,6 +1,7 @@
 package com.rndeep.fns_fantoo.di
 
 import android.content.ClipboardManager
+import android.content.ContentResolver
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.wifi.WifiManager
@@ -27,4 +28,7 @@ class AppModule {
     fun provideClipboardManager(@ApplicationContext context: Context): ClipboardManager =
         context.applicationContext.getSystemService(Context.CLIPBOARD_SERVICE)
                 as ClipboardManager
+
+    @Provides
+    fun provideContentResolver(@ApplicationContext context: Context): ContentResolver = context.contentResolver
 }

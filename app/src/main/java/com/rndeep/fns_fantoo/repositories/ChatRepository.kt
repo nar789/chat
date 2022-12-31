@@ -1,5 +1,7 @@
 package com.rndeep.fns_fantoo.repositories
 
+import android.content.ContentResolver
+import android.net.Uri
 import androidx.compose.runtime.mutableStateListOf
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -16,10 +18,16 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.io.ByteArrayOutputStream
+import java.io.FileInputStream
+import java.io.InputStream
 import javax.inject.Inject
 
 
-class ChatRepository @Inject constructor(private val socketManager: ChatSocketManager) {
+class ChatRepository @Inject constructor(
+    private val socketManager: ChatSocketManager,
+    private val contentResolver: ContentResolver
+) {
 
     companion object {
         private const val RESULT_SUCCESS = "success"
@@ -37,6 +45,7 @@ class ChatRepository @Inject constructor(private val socketManager: ChatSocketMa
         private const val PARAM_SIZE = "size"
         private const val PARAM_ROOM = "room"
         private const val PARAM_LAST_MESSAGE_ID = "lastMessageId"
+        private const val PARAM_FILE = "file"
     }
 
     private var createConversationCallback: ((Boolean, Int) -> Unit)? = null
@@ -50,6 +59,9 @@ class ChatRepository @Inject constructor(private val socketManager: ChatSocketMa
     private val _readInfoFlow = MutableSharedFlow<ReadInfo>()
     val readInfoFlow: SharedFlow<ReadInfo?> get() = _readInfoFlow
 
+    private val _uploadImageFlow = MutableSharedFlow<String>()
+    val uploadImageFlow: SharedFlow<String> get() = _uploadImageFlow
+
     init {
         listenAll()
     }
@@ -60,6 +72,7 @@ class ChatRepository @Inject constructor(private val socketManager: ChatSocketMa
         listenLoadMessage()
         listenMessage()
         listenReadInfo()
+        listenUploadImage()
     }
 
     private fun listenReadInfo() {
@@ -135,6 +148,15 @@ class ChatRepository @Inject constructor(private val socketManager: ChatSocketMa
             )
             CoroutineScope(Dispatchers.IO).launch {
                 _messagesFlow.emit(listOf(message))
+            }
+        }
+    }
+
+    private fun listenUploadImage() {
+        socketManager.on(ChatSocketEvent.UPLOAD_IMAGE) { response ->
+            val fileName = response?.get("filename") ?: return@on
+            CoroutineScope(Dispatchers.IO).launch {
+                _uploadImageFlow.emit(fileName)
             }
         }
     }
@@ -224,6 +246,36 @@ class ChatRepository @Inject constructor(private val socketManager: ChatSocketMa
                 PARAM_USER_ID to userId,
             )
         )
+    }
+
+    fun uploadImage(uri: Uri) {
+        val fileName = uri.lastPathSegment
+        val data = getBase64Data(uri)
+        socketManager.emit(ChatSocketEvent.UPLOAD_IMAGE, mapOf(PARAM_FILE to data, PARAM_NAME to fileName))
+    }
+
+    private fun getBase64Data(uri: Uri): ByteArray? {
+        try {
+            val descriptor = contentResolver.openFileDescriptor(uri, "r")
+            val inputStream: InputStream =
+                FileInputStream(descriptor?.fileDescriptor)
+
+            val bytes: ByteArray
+            val buffer = ByteArray(8192)
+            var bytesRead: Int
+            val output = ByteArrayOutputStream()
+            while (inputStream.read(buffer).also { bytesRead = it } != -1) {
+                output.write(buffer, 0, bytesRead)
+            }
+            bytes = output.toByteArray()
+            descriptor?.close()
+            inputStream.close()
+            return bytes
+        } catch (e: Exception) {
+            Timber.e("convertBase64Data error: ${e.message}", e)
+            e.printStackTrace()
+        }
+        return null
     }
 
     fun startSocket() {
