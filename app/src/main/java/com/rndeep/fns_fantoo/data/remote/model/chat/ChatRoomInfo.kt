@@ -2,12 +2,7 @@ package com.rndeep.fns_fantoo.data.remote.model.chat
 
 import com.google.gson.annotations.SerializedName
 
-data class ChatListResult(
-    @SerializedName("result") val result: String? = "fail",
-    @SerializedName("data") val data: List<ChatRoomModel>? = null
-)
-
-data class ChatRoomModel(
+data class ChatRoomInfo(
     @SerializedName("id") val id: Int,
     @SerializedName("thumbnail") val thumbnail: String? = null,
     @SerializedName("title") val title: String? = null,

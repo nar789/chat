@@ -17,7 +17,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 // TODO: implement below method
-class ChatUserRepository @Inject constructor(
+class ChatInfoRepository @Inject constructor(
     private val chatApi: ChatService
 ) : BaseNetRepo() {
 

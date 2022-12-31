@@ -22,9 +22,6 @@ import android.widget.TextView
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.core.app.ShareCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.*

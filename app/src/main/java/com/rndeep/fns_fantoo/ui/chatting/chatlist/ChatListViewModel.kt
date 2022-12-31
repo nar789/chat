@@ -4,9 +4,9 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.*
-import com.rndeep.fns_fantoo.data.remote.model.chat.ChatRoomModel
+import com.rndeep.fns_fantoo.data.remote.model.chat.ChatRoomInfo
 import com.rndeep.fns_fantoo.repositories.ChatRepository
-import com.rndeep.fns_fantoo.repositories.ChatUserRepository
+import com.rndeep.fns_fantoo.repositories.ChatInfoRepository
 import com.rndeep.fns_fantoo.repositories.DataStoreKey
 import com.rndeep.fns_fantoo.repositories.DataStoreRepository
 import com.rndeep.fns_fantoo.ui.common.viewmodel.SingleLiveEvent
@@ -21,7 +21,7 @@ import javax.inject.Inject
 class ChatListViewModel @Inject constructor(
     private val dataStoreRepository: DataStoreRepository,
     private val chatRepository: ChatRepository,
-    private val chatUserRepository: ChatUserRepository
+    private val chatInfoRepository: ChatInfoRepository
 ) : ViewModel(), DefaultLifecycleObserver {
     val chatList get() = chatRepository.chatList
 
@@ -63,7 +63,7 @@ class ChatListViewModel @Inject constructor(
         chatRepository.requestChatList(userId)
     }
 
-    fun exitChat(chat: ChatRoomModel) {
+    fun exitChat(chat: ChatRoomInfo) {
         closeOptions(chat.id)
         // TODO : change name chat.title to userName
         chatRepository.requestExitChatRoom(chat.userId?: return, chat.title?: return, chat.id)
@@ -75,7 +75,7 @@ class ChatListViewModel @Inject constructor(
             launch(Dispatchers.Main) {
                 closeOptions(chatId)
             }
-            chatUserRepository.setConversationBlocked(userId, chatId, true)
+            chatInfoRepository.setConversationBlocked(userId, chatId, true)
         }
     }
 

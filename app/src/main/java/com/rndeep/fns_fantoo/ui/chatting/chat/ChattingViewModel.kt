@@ -25,7 +25,7 @@ import javax.inject.Inject
 class ChattingViewModel @Inject constructor(
     private val chatRepository: ChatRepository,
     private val dataStoreRepository: DataStoreRepository,
-    private val chatUserRepository: ChatUserRepository,
+    private val chatInfoRepository: ChatInfoRepository,
     private val userInfoRepository: UserInfoRepository,
 ) : ViewModel() {
 
@@ -110,14 +110,14 @@ class ChattingViewModel @Inject constructor(
 
     fun setConversationUnBlock() {
         viewModelScope.launch {
-            chatUserRepository.setConversationBlocked(myUid, chatId, true)
+            chatInfoRepository.setConversationBlocked(myUid, chatId, true)
         }
     }
 
     private fun checkChatBlockedState() {
         viewModelScope.launch {
             val convBlocked =
-                chatUserRepository.isConversationBlocked(myUid, chatId)
+                chatInfoRepository.isConversationBlocked(myUid, chatId)
 
             // TODO: check user blocked state
             val anyUserBlocked = false

@@ -33,7 +33,7 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import coil.compose.rememberAsyncImagePainter
 import com.rndeep.fns_fantoo.R
-import com.rndeep.fns_fantoo.data.remote.model.chat.ChatRoomModel
+import com.rndeep.fns_fantoo.data.remote.model.chat.ChatRoomInfo
 import com.rndeep.fns_fantoo.ui.chatting.compose.FantooChatTypography
 import com.rndeep.fns_fantoo.utils.TimeUtils.convertDiffTime
 import com.rndeep.fns_fantoo.utils.toDp
@@ -145,10 +145,10 @@ fun ChatList(
 
 @Composable
 fun ChatListItem(
-    chat: ChatRoomModel,
+    chat: ChatRoomInfo,
     isMute: Boolean,
     onClickChat: (chatId: Int, roomName: String) -> Unit,
-    exitChat: (chat: ChatRoomModel) -> Unit,
+    exitChat: (chat: ChatRoomInfo) -> Unit,
     alarmChat: (chatId: Int, isMute: Boolean) -> Unit,
     blockChat: (chatId: Int) -> Unit,
     isOptionOpened: Boolean,
@@ -180,7 +180,7 @@ fun ChatListItem(
 @SuppressLint("UnusedTransitionTargetStateParameter")
 @Composable
 fun ChatListContent(
-    chat: ChatRoomModel,
+    chat: ChatRoomInfo,
     onClickChat: (chatId: Int, roomName: String) -> Unit,
     isOpened: Boolean,
     isMute: Boolean,
@@ -319,11 +319,11 @@ fun ChatListContent(
 
 @Composable
 fun ChatListEditContent(
-    chat: ChatRoomModel,
+    chat: ChatRoomInfo,
     isMute: Boolean,
     onClickAlarm: (chatId: Int, isMute: Boolean) -> Unit,
     onClickBlock: (chatId: Int) -> Unit,
-    onClickExit: (chat: ChatRoomModel) -> Unit
+    onClickExit: (chat: ChatRoomInfo) -> Unit
 ) {
     val modifier = Modifier
         .width(54.dp)
@@ -393,7 +393,7 @@ fun ChatListItemPreview() {
     MaterialTheme {
         Surface {
             ChatListItem(
-                chat = ChatRoomModel(
+                chat = ChatRoomInfo(
                     id = 1,
                     thumbnail = "https://search.pstatic.net/sunny/?src=https%3A%2F%2Fi.pinimg.com%2Foriginals%2Fba%2F72%2Fe6%2Fba72e63ac96ccaeb4f128701f9d4cd7d.jpg&type=sc960_832",
                     title = "채팅방 이름",

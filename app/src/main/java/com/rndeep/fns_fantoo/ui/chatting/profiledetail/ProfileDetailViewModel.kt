@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rndeep.fns_fantoo.data.remote.ResultWrapper
 import com.rndeep.fns_fantoo.data.remote.dto.ChatUserInfoResponse
-import com.rndeep.fns_fantoo.repositories.ChatUserRepository
+import com.rndeep.fns_fantoo.repositories.ChatInfoRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProfileDetailViewModel @Inject constructor(
-    private val chatUserRepository: ChatUserRepository,
+    private val chatInfoRepository: ChatInfoRepository,
 ) : ViewModel() {
 
     private val _profileUiState = mutableStateOf(ProfileUiState())
@@ -45,19 +45,19 @@ class ProfileDetailViewModel @Inject constructor(
     fun setUserBlock(blocked: Boolean) {
         viewModelScope.launch {
             _profileUiState.value = _profileUiState.value.copy(blocked = blocked)
-            chatUserRepository.setUserBlock(accessToken, myUid, targetUserId, blocked)
+            chatInfoRepository.setUserBlock(accessToken, myUid, targetUserId, blocked)
         }
     }
 
     fun followUser(follow: Boolean) {
         viewModelScope.launch {
             _profileUiState.value = _profileUiState.value.copy(followed = follow)
-            chatUserRepository.setUserFollow(accessToken, myUid, targetUserId, follow)
+            chatInfoRepository.setUserFollow(accessToken, myUid, targetUserId, follow)
         }
     }
 
     private suspend fun fetchChatUserInfo(userId: String): ChatUserInfoResponse? {
-        val response = chatUserRepository.fetchChatUserInfo(accessToken, myUid, userId)
+        val response = chatInfoRepository.fetchChatUserInfo(accessToken, myUid, userId)
         Timber.d("fetchChatUserInfo : $response")
         return when (response) {
             is ResultWrapper.Success -> response.data
