@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 class ImagePickerRepository @Inject constructor(private val contentResolver: ContentResolver) {
     fun loadImages(): Flow<PagingData<Uri>> {
-        return Pager(config = PagingConfig(20, 20, true, 30), pagingSourceFactory = {
+        return Pager(config = PagingConfig(20, 20, true, 20), pagingSourceFactory = {
             ImageDataSource(contentResolver)
         }).flow
     }
@@ -33,15 +33,14 @@ class ImageDataSource(private val contentResolver: ContentResolver) : PagingSour
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Uri> {
         val currentKey = params.key ?: 0
         val loadSize = params.loadSize
+        val offset = currentKey * loadSize
 
         return try {
-            val images = getImages(loadSize, currentKey)
+            val images = getImages(loadSize, offset)
             LoadResult.Page(
                 data = images,
                 prevKey = null,
-                nextKey = if (images.isEmpty() || images.size < loadSize) null else currentKey.plus(
-                    1
-                )
+                nextKey = if (images.isEmpty()) null else currentKey.plus(1)
             )
         } catch (e: Exception) {
             Timber.e("imagePicker load exception: ${e.message}", e)
@@ -50,10 +49,7 @@ class ImageDataSource(private val contentResolver: ContentResolver) : PagingSour
     }
 
 
-    private fun getImages(
-        limit: Int = 20,
-        offset: Int = 0
-    ): List<Uri> {
+    private fun getImages(limit: Int, offset: Int): List<Uri> {
         val galleryImageUrls = mutableListOf<Uri>()
         val collection = MediaStore.Files.getContentUri("external")
         val projection = arrayOf(
@@ -70,7 +66,7 @@ class ImageDataSource(private val contentResolver: ContentResolver) : PagingSour
             offset = offset
         )?.use { cursor ->
             while (cursor.moveToNext()) {
-                val idIndex = cursor.getColumnIndex(MediaStore.Audio.Media._ID)
+                val idIndex = cursor.getColumnIndex(MediaStore.Images.Media._ID)
                 if (idIndex < 0) continue
                 val id = cursor.getLong(idIndex)
                 galleryImageUrls.add(
@@ -85,8 +81,8 @@ class ImageDataSource(private val contentResolver: ContentResolver) : PagingSour
         contentResolver: ContentResolver,
         collection: Uri,
         projection: Array<String>,
-        limit: Int = 20,
-        offset: Int = 0
+        limit: Int,
+        offset: Int
     ): Cursor? = when {
         Build.VERSION.SDK_INT >= Build.VERSION_CODES.O -> {
             val selection = createSelectionBundle(limit, offset)
@@ -97,15 +93,14 @@ class ImageDataSource(private val contentResolver: ContentResolver) : PagingSour
             val selectionArgs =
                 "(${MediaStore.Files.FileColumns.MEDIA_TYPE} IN ${MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE})"
             val order =
-                "${MediaStore.Audio.Media.DATE_TAKEN} $orderDirection limit $limit offset $offset"
+                "${MediaStore.Images.Media.DATE_TAKEN} $orderDirection limit $limit offset $offset"
             contentResolver.query(collection, projection, selectionArgs, null, order)
         }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun createSelectionBundle(
-        limit: Int = 20,
-        offset: Int = 0
+        limit: Int, offset: Int
     ) = Bundle().apply {
         putInt(ContentResolver.QUERY_ARG_LIMIT, limit)
         putInt(ContentResolver.QUERY_ARG_OFFSET, offset)

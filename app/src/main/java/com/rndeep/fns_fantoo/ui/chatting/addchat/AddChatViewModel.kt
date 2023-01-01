@@ -55,11 +55,11 @@ class AddChatViewModel @Inject constructor(
 
     private fun addChatCallback() {
         viewModelScope.launch {
-            chatRepository.createConversationResult.filterNotNull().collect { (success, chatId) ->
-                if (success) {
-                    _navigateToChat.value = chatId
-                    return@collect
-                }
+            chatRepository.createConversationResult.filterNotNull().collect { chatId ->
+                _navigateToChat.value = chatId
+            }
+
+            chatRepository.showErrorToast.filterNotNull().collect {
                 _showErrorToast.call()
             }
         }
