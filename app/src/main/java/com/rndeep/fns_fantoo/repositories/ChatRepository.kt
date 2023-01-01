@@ -2,6 +2,7 @@ package com.rndeep.fns_fantoo.repositories
 
 import android.content.ContentResolver
 import android.net.Uri
+import androidx.compose.animation.core.snap
 import androidx.compose.runtime.mutableStateListOf
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -55,8 +56,11 @@ class ChatRepository @Inject constructor(
     private val _chatList = mutableStateListOf<ChatRoomInfo>()
     val chatList: List<ChatRoomInfo> get() = _chatList
 
-    private val _messagesFlow = MutableSharedFlow<List<Message>>()
-    val messagesFlow: SharedFlow<List<Message>> get() = _messagesFlow
+    private val _messagesListFlow = MutableSharedFlow<List<Message>>()
+    val messagesListFlow: SharedFlow<List<Message>> get() = _messagesListFlow
+
+    private val _messagesFlow = MutableSharedFlow<Message>()
+    val messagesFlow: SharedFlow<Message> get() = _messagesFlow
 
     private val _readInfoFlow = MutableSharedFlow<ReadInfo>()
     val readInfoFlow: SharedFlow<ReadInfo?> get() = _readInfoFlow
@@ -143,7 +147,7 @@ class ChatRepository @Inject constructor(
             val rows: String = response?.get(KEY_ROWS) ?: return@on
             val messageList: List<Message> = rows.toObjectList<Message>().reversed()
             CoroutineScope(Dispatchers.IO).launch {
-                _messagesFlow.emit(messageList)
+                _messagesListFlow.emit(messageList)
             }
         }
     }
@@ -162,7 +166,7 @@ class ChatRepository @Inject constructor(
                 name = response["name"]
             )
             CoroutineScope(Dispatchers.IO).launch {
-                _messagesFlow.emit(listOf(message))
+                _messagesFlow.emit(message)
             }
         }
     }
@@ -276,9 +280,20 @@ class ChatRepository @Inject constructor(
         )
     }
 
+    private var messageDataStore: MessageDataSource? = null
+    private val snapshots = mutableListOf<Message>()
+    private var useSnapshot = false
     fun getMessageList(
         conversationId: Int
     ): Flow<PagingData<Message>> = Pager(PagingConfig(pageSize = 10)) {
-        MessageDataSource(socketManager, conversationId, messagesFlow)
+        MessageDataSource(socketManager, conversationId, messagesListFlow, snapshots, useSnapshot).also {
+            messageDataStore = it
+        }
     }.flow
+
+    fun invalidateMessageList(message: Message) {
+        snapshots.add(message)
+        useSnapshot = true
+        messageDataStore?.invalidate()
+    }
 }

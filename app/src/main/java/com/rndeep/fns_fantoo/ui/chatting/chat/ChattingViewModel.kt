@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.rndeep.fns_fantoo.data.remote.ResultWrapper
 import com.rndeep.fns_fantoo.data.remote.dto.UserInfoResponse
 import com.rndeep.fns_fantoo.data.remote.model.IntegUid
@@ -71,6 +72,13 @@ class ChattingViewModel @Inject constructor(
         _chatUiState.value = _chatUiState.value.copy(
             messages = chatRepository.getMessageList(chatId).cachedIn(viewModelScope)
         )
+
+        viewModelScope.launch {
+            chatRepository.messagesFlow.filterNotNull().onEach {
+                val messages = chatUiState.value.messages
+                chatRepository.invalidateMessageList(it)
+            }.collect()
+        }
     }
 
     private fun initMessageState() {

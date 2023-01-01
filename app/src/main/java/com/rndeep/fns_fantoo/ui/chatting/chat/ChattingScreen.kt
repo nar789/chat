@@ -60,7 +60,9 @@ import com.rndeep.fns_fantoo.ui.chatting.compose.getImageUrlFromCDN
 import com.skydoves.landscapist.rememberDrawablePainter
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 @Composable
@@ -126,7 +128,7 @@ fun ChattingScreen(
                     readInfos = uiState.readInfos
                 )
 
-                val firstVisibleMessage = if (messageList.itemCount == 0) {
+                val firstVisibleMessage = if (messageList.itemCount == 0 || firstVisibleItemIndex !in 0 .. messageList.itemCount) {
                     null
                 } else {
                     messageList[firstVisibleItemIndex]
@@ -159,7 +161,7 @@ fun ChattingScreen(
                     val lastMessageIsMine =
                         snapshotMessages.lastOrNull()?.isMyMessage(uiState.myId) == true
                     if (isScrolledToEnd || lastMessageIsMine || lastItemIndex == -1) {
-                        scrollState.scrollToItem(snapshotMessages.lastIndex.coerceAtLeast(0))
+//                        scrollState.scrollToItem(snapshotMessages.lastIndex.coerceAtLeast(0))
                     }
 
                     lastItemIndex = snapshotMessages.lastIndex

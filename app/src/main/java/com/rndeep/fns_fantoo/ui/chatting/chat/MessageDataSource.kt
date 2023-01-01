@@ -1,6 +1,8 @@
 package com.rndeep.fns_fantoo.ui.chatting.chat
 
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
+import androidx.paging.ItemSnapshotList
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.rndeep.fns_fantoo.data.remote.model.chat.Message
@@ -17,7 +19,9 @@ import timber.log.Timber
 class MessageDataSource(
     private val socketManager: ChatSocketManager,
     private val conversationId: Int,
-    private val loadMessageFlow: Flow<List<Message>>
+    private val loadMessageFlow: Flow<List<Message>>,
+    private val snapshots: MutableList<Message>,
+    private var useSnapshot: Boolean
 ) : PagingSource<Int, Message>() {
 
     override fun getRefreshKey(state: PagingState<Int, Message>): Int? {
@@ -29,6 +33,15 @@ class MessageDataSource(
     }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Message> {
+        if (useSnapshot) {
+            Log.d("inwha", "useSnapshot: ${snapshots.size}")
+            useSnapshot = false
+            return LoadResult.Page(
+                data = snapshots,
+                prevKey = snapshots.size,
+                nextKey = null
+            )
+        }
         val offset = params.key ?: 0
         val loadSize = params.loadSize
         Log.d("sujini", "load: $offset, $loadSize")
@@ -41,7 +54,12 @@ class MessageDataSource(
                     .onEach { Log.d("sujini", "flow onEach ${it.size}") }
                     .first()
             }
-
+            if (offset == 0) {
+                snapshots.clear()
+                Log.d("inwha", "offset is 0")
+            }
+            Log.d("inwha", "addSnapshot: ${messages.size}, $offset")
+            snapshots.addAll(0, messages)
             Log.d("sujini", "---------------------------offset: $offset")
             messages.forEach {
                 Log.d("sujini", "$it")
@@ -67,6 +85,12 @@ class MessageDataSource(
                 PARAM_SIZE to loadSize.toString()
             ).also { Log.d("sujini", "requestLoadMessage: $it") }
         )
+    }
+
+    fun updateNewMessage(message: Message) {
+        snapshots.add(message)
+        useSnapshot = true
+        invalidate()
     }
 
     private companion object {
