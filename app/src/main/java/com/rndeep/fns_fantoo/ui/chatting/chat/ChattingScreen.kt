@@ -142,8 +142,7 @@ fun ChattingScreen(
             } else {
                 BottomEditText(
                     onMessageSent,
-                    onImageSelectorClicked,
-                    resetScroll = { }
+                    onImageSelectorClicked
                 )
             }
 
@@ -403,8 +402,7 @@ var SemanticsPropertyReceiver.keyboardShownProperty by KeyboardShownKey
 @Composable
 fun BottomEditText(
     onMessageSent: (String) -> Unit,
-    onImageSelectorClicked: () -> Unit,
-    resetScroll: () -> Unit
+    onImageSelectorClicked: () -> Unit
 ) {
     var textState by rememberSaveable(stateSaver = TextFieldValue.Saver) {
         mutableStateOf(TextFieldValue())
@@ -440,14 +438,13 @@ fun BottomEditText(
             }
             UserInputSelector(
                 userInputActivated = userInputActivated,
+                sendBtnEnabled = textState.text.isNotEmpty(),
                 onMessageSent = {
                     onMessageSent(textState.text)
                     textState = TextFieldValue()
                 },
                 onUserInputActivate = { inputActivateMode = true },
-                onImageSelectorClicked = onImageSelectorClicked,
-                sendBtnEnabled = textState.text.isNotEmpty(),
-                resetScroll = resetScroll
+                onImageSelectorClicked = onImageSelectorClicked
             )
         }
     }
@@ -497,8 +494,7 @@ fun UserInputSelector(
     sendBtnEnabled: Boolean,
     onMessageSent: () -> Unit,
     onUserInputActivate: () -> Unit,
-    onImageSelectorClicked: () -> Unit,
-    resetScroll: () -> Unit
+    onImageSelectorClicked: () -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -518,11 +514,11 @@ fun UserInputSelector(
         )
 
         if (userInputActivated) {
-            SendButton(sendBtnEnabled, onMessageSent, resetScroll)
+            SendButton(sendBtnEnabled, onMessageSent)
         } else {
             Text(
                 modifier = Modifier
-                    .clickable { onUserInputActivate(); resetScroll() }
+                    .clickable { onUserInputActivate() }
                     .padding(start = 8.dp, top = 8.dp, bottom = 8.dp)
                     .weight(1f),
                 text = stringResource(R.string.chatting_edit_text_hint),
@@ -538,7 +534,6 @@ fun UserInputSelector(
 fun SendButton(
     enabled: Boolean,
     onSendClicked: () -> Unit,
-    resetScroll: () -> Unit
 ) {
     val bgColor =
         colorResource(if (enabled) R.color.primary_300 else R.color.state_disabled_gray_200)
@@ -547,7 +542,7 @@ fun SendButton(
         modifier = Modifier
             .background(bgColor, shape = CircleShape)
             .size(32.dp),
-        onClick = { onSendClicked(); resetScroll() },
+        onClick = { onSendClicked() },
         enabled = enabled
     ) {
         Icon(
@@ -761,7 +756,7 @@ fun ChatScreenPreview() {
 @Composable
 fun BottomEditTextPreview() {
     MaterialTheme {
-        BottomEditText({}, {}, {})
+        BottomEditText({}) {}
     }
 }
 
@@ -771,11 +766,11 @@ fun UserInputSelector() {
     MaterialTheme {
         Column {
             Surface {
-                UserInputSelector(userInputActivated = true, true, {}, {}, {}, {})
+                UserInputSelector(userInputActivated = true, true, {}, {}) {}
             }
             Spacer(Modifier.size(15.dp))
             Surface {
-                UserInputSelector(userInputActivated = false, true, {}, {}, {}, {})
+                UserInputSelector(userInputActivated = false, true, {}, {}) {}
             }
         }
     }
