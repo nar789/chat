@@ -1,11 +1,13 @@
 package com.rndeep.fns_fantoo.ui.chatting.chat.model
 
-import androidx.compose.runtime.mutableStateListOf
+import androidx.paging.PagingData
 import com.rndeep.fns_fantoo.data.remote.model.chat.Message
 import com.rndeep.fns_fantoo.data.remote.model.chat.ReadInfo
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 
 data class ChatUiState(
-    val messages: List<Message> = mutableStateListOf(),
+    val messages: Flow<PagingData<Message>> = flowOf(),
     val myId: String = "",
     val translateMode: Boolean = false,
     val blocked: Boolean = false,

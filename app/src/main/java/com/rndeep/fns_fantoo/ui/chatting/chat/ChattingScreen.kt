@@ -12,7 +12,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -48,6 +47,8 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.core.content.ContextCompat
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.rememberAsyncImagePainter
 import com.rndeep.fns_fantoo.R
 import com.rndeep.fns_fantoo.data.remote.model.chat.Message
@@ -59,6 +60,7 @@ import com.rndeep.fns_fantoo.ui.chatting.compose.getImageUrlFromCDN
 import com.skydoves.landscapist.rememberDrawablePainter
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.launch
 
 @Composable
@@ -75,7 +77,7 @@ fun ChattingScreen(
     onClickMore: () -> Unit,
     onBack: () -> Unit
 ) {
-    val messageList = uiState.messages
+    val messageList = uiState.messages.collectAsLazyPagingItems()
 
     // LazyColumn scroll state
     val scrollState = rememberLazyListState()
@@ -123,12 +125,18 @@ fun ChattingScreen(
                     scrollState = scrollState,
                     readInfos = uiState.readInfos
                 )
+
+                val firstVisibleMessage = if (messageList.itemCount == 0) {
+                    null
+                } else {
+                    messageList[firstVisibleItemIndex]
+                }
                 FloatingDateText(
                     modifier = Modifier
                         .align(Alignment.TopCenter)
                         .offset(0.dp, 14.dp),
                     shown = floatingDateShown,
-                    date = messageList.getOrNull(firstVisibleItemIndex)?.dateText.orEmpty()
+                    date = firstVisibleMessage?.dateText.orEmpty()
                 )
             }
 
@@ -142,25 +150,27 @@ fun ChattingScreen(
                 )
             }
 
-            if (lastItemIndex != messageList.lastIndex) {
+            val snapshotMessages = messageList.itemSnapshotList
+            if (lastItemIndex != snapshotMessages.lastIndex) {
                 LaunchedEffect(Unit) {
                     val lastVisibleItemIndex =
                         scrollState.layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: -1
-                    val isScrolledToEnd = lastVisibleItemIndex > messageList.lastIndex - 1
+                    val isScrolledToEnd = lastVisibleItemIndex > snapshotMessages.lastIndex - 1
                     val lastMessageIsMine =
-                        messageList.lastOrNull()?.isMyMessage(uiState.myId) == true
+                        snapshotMessages.lastOrNull()?.isMyMessage(uiState.myId) == true
                     if (isScrolledToEnd || lastMessageIsMine || lastItemIndex == -1) {
-                        scrollState.scrollToItem(messageList.lastIndex.coerceAtLeast(0))
+                        scrollState.scrollToItem(snapshotMessages.lastIndex.coerceAtLeast(0))
                     }
 
-                    lastItemIndex = messageList.lastIndex
+                    lastItemIndex = snapshotMessages.lastIndex
                 }
             }
 
             if (scrollState.isScrollInProgress) {
                 DisposableEffect(Unit) {
                     jobState?.cancel()
-                    if (messageList.isNotEmpty() && !floatingDateShown) floatingDateShown = true
+                    if (snapshotMessages.isNotEmpty() && !floatingDateShown) floatingDateShown =
+                        true
                     onDispose {
                         jobState = coroutineScope.launch { hideFloatingDate() }
                     }
@@ -170,9 +180,13 @@ fun ChattingScreen(
     }
 }
 
+private fun <T : Any> LazyPagingItems<T>.getOrNull(index: Int): T? {
+    return if (index >= 0 && index <= itemCount - 1) get(index) else null
+}
+
 @Composable
 fun Messages(
-    messages: List<Message>,
+    messages: LazyPagingItems<Message>,
     modifier: Modifier,
     scrollState: LazyListState,
     myId: String,
@@ -188,7 +202,8 @@ fun Messages(
             modifier = Modifier.fillMaxSize(),
             state = scrollState
         ) {
-            itemsIndexed(messages) { index, item ->
+            items(messages.itemCount) { index ->
+                val item = messages[index] ?: return@items
                 val isMe = item.isMyMessage(myId)
                 val prevAuthor = messages.getOrNull(index - 1)?.userId
                 val nextAuthor = messages.getOrNull(index + 1)?.userId
@@ -731,7 +746,7 @@ fun UserBlockView(
 fun ChatScreenPreview() {
     MaterialTheme {
         ChattingScreen(
-            ChatUiState(),
+            ChatUiState(messages = emptyFlow()),
             Modifier,
             "Dasol",
             onMessageSent = {},
