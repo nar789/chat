@@ -217,9 +217,9 @@ fun Messages(
                     val nextAuthor = nextItem?.userId
                     val nextHour = nextItem?.hourText
                     val isFirstMessageByAuthor =
-                        prevAuthor != item.userId || prevItem?.isNormalType != true
+                        prevAuthor != item.userId || prevItem?.isNormalType == false
                     val isLastMessageByAuthor =
-                        nextAuthor != item.userId || nextItem?.isNormalType != true
+                        nextAuthor != item.userId || nextItem?.isNormalType == false
                     MessageItem(
                         message = item,
                         isMe = isMe,
