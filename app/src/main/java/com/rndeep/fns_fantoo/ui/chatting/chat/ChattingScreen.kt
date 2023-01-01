@@ -200,28 +200,37 @@ fun Messages(
         items(messages.itemCount) { index ->
             val item = messages[index] ?: return@items
             val isMe = item.isMyMessage(myId)
-            val prevAuthor = messages.getOrNull(index + 1)?.userId
-            val nextAuthor = messages.getOrNull(index - 1)?.userId
-            val nextHour = messages.getOrNull(index - 1)?.hourText
-            val isFirstMessageByAuthor = prevAuthor != item.userId
-            val isLastMessageByAuthor = nextAuthor != item.userId
+            val lastItem = index == lastIndex
 
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 20.dp, end = 20.dp, top = if (index == lastIndex) 18.dp else 0.dp),
+                    .padding(start = 20.dp, end = 20.dp, top = if (lastItem) 18.dp else 0.dp),
                 contentAlignment = if (isMe) Alignment.CenterEnd else Alignment.CenterStart
             ) {
-                MessageItem(
-                    message = item,
-                    isMe = isMe,
-                    isFirstMessageByAuthor = isFirstMessageByAuthor,
-                    isLastMessageByAuthor = isLastMessageByAuthor,
-                    timestampVisible = nextHour != item.hourText || isLastMessageByAuthor,
-                    onImageClicked = onImageClicked,
-                    onClickAuthor = onClickAuthor,
-                    readInfos = readInfos
-                )
+                if (item.messageType == 3) {
+                    ExitMessageItem(message = item)
+                } else {
+                    val prevItem = messages.getOrNull(index + 1)
+                    val nextItem = messages.getOrNull(index - 1)
+                    val prevAuthor = prevItem?.userId
+                    val nextAuthor = nextItem?.userId
+                    val nextHour = nextItem?.hourText
+                    val isFirstMessageByAuthor =
+                        prevAuthor != item.userId || prevItem?.isNormalType != true
+                    val isLastMessageByAuthor =
+                        nextAuthor != item.userId || nextItem?.isNormalType != true
+                    MessageItem(
+                        message = item,
+                        isMe = isMe,
+                        isFirstMessageByAuthor = isFirstMessageByAuthor,
+                        isLastMessageByAuthor = isLastMessageByAuthor,
+                        timestampVisible = nextHour != item.hourText || isLastMessageByAuthor,
+                        onImageClicked = onImageClicked,
+                        onClickAuthor = onClickAuthor,
+                        readInfos = readInfos
+                    )
+                }
             }
         }
     }
@@ -362,6 +371,22 @@ fun ImageMessageItem(
             fallback = defaultImage, error = defaultImage, placeholder = defaultImage
         ),
         contentDescription = null
+    )
+}
+
+@Composable
+fun ExitMessageItem(
+    message: Message
+) {
+    Text(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 14.dp),
+        text = message.message,
+        color = colorResource(R.color.state_enable_gray_400),
+        fontSize = 14.sp,
+        lineHeight = 20.sp,
+        textAlign = TextAlign.Center
     )
 }
 
