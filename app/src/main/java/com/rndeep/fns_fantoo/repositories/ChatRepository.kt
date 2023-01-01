@@ -3,6 +3,9 @@ package com.rndeep.fns_fantoo.repositories
 import android.content.ContentResolver
 import android.net.Uri
 import androidx.compose.runtime.mutableStateListOf
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.rndeep.fns_fantoo.data.remote.dto.GetUserListResponse
@@ -12,8 +15,10 @@ import com.rndeep.fns_fantoo.data.remote.model.chat.Message
 import com.rndeep.fns_fantoo.data.remote.model.chat.ReadInfo
 import com.rndeep.fns_fantoo.data.remote.socket.ChatSocketEvent
 import com.rndeep.fns_fantoo.data.remote.socket.ChatSocketManager
+import com.rndeep.fns_fantoo.ui.chatting.chat.MessageDataSource
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
@@ -277,6 +282,12 @@ class ChatRepository @Inject constructor(
         }
         return null
     }
+
+    fun getMessageList(
+        conversationId: Int
+    ): Flow<PagingData<Message>> = Pager(PagingConfig(pageSize = 10)) {
+        MessageDataSource(socketManager, conversationId, messagesFlow)
+    }.flow
 
     fun startSocket() {
         socketManager.connectSocket()
