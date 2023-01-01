@@ -7,7 +7,6 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import com.rndeep.fns_fantoo.data.remote.dto.GetUserListResponse
 import com.rndeep.fns_fantoo.data.remote.model.chat.ChatRoomInfo
 import com.rndeep.fns_fantoo.data.remote.model.chat.ChatUserInfo
@@ -16,6 +15,9 @@ import com.rndeep.fns_fantoo.data.remote.model.chat.ReadInfo
 import com.rndeep.fns_fantoo.data.remote.socket.ChatSocketEvent
 import com.rndeep.fns_fantoo.data.remote.socket.ChatSocketManager
 import com.rndeep.fns_fantoo.ui.chatting.chat.MessageDataSource
+import com.rndeep.fns_fantoo.utils.convertFileToByteArray
+import com.rndeep.fns_fantoo.utils.isSuccess
+import com.rndeep.fns_fantoo.utils.toObjectList
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -23,9 +25,6 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import java.io.ByteArrayOutputStream
-import java.io.FileInputStream
-import java.io.InputStream
 import javax.inject.Inject
 
 
@@ -35,9 +34,6 @@ class ChatRepository @Inject constructor(
 ) {
 
     companion object {
-        private const val RESULT_SUCCESS = "success"
-        private const val RESULT_FAIL = "fail"
-
         private const val KEY_RESULT = "result"
         private const val KEY_DATA = "data"
         private const val KEY_ROWS = "rows"
@@ -53,7 +49,8 @@ class ChatRepository @Inject constructor(
         private const val PARAM_FILE = "file"
     }
 
-    private var createConversationCallback: ((Boolean, Int) -> Unit)? = null
+    private val _createConversationResult = MutableSharedFlow<Int>()
+    val createConversationResult: SharedFlow<Int> get() = _createConversationResult
 
     private val _chatList = mutableStateListOf<ChatRoomInfo>()
     val chatList: List<ChatRoomInfo> get() = _chatList
@@ -67,8 +64,19 @@ class ChatRepository @Inject constructor(
     private val _uploadImageFlow = MutableSharedFlow<String>()
     val uploadImageFlow: SharedFlow<String> get() = _uploadImageFlow
 
+    private val _showErrorToast = MutableSharedFlow<String>()
+    val showErrorToast: SharedFlow<String> get() = _showErrorToast
+
     init {
         listenAll()
+    }
+
+    fun startSocket() {
+        socketManager.connectSocket()
+    }
+
+    fun finish() {
+        socketManager.finish()
     }
 
     private fun listenAll() {
@@ -97,23 +105,25 @@ class ChatRepository @Inject constructor(
 
     private fun listenCreateConversation() {
         socketManager.on(ChatSocketEvent.CREATE_CONVERSATION) { response ->
-            if (!response?.get(KEY_RESULT).isSuccess()) {
-                notifyCreateConversation(false, -1)
+            val chatId: Int? = response?.get(PARAM_CONVERSATION_ID)?.toIntOrNull()
+            if (!response?.get(KEY_RESULT).isSuccess() || chatId == null || chatId < 0) {
+                showErrorToast("채팅방을 생성할 수 없습니다.")
                 return@on
             }
-            notifyCreateConversation(
-                true,
-                (response?.get("conversationId")?.toIntOrNull() ?: return@on)
-            )
+            notifyCreateConversation(chatId)
         }
     }
 
-    private fun notifyCreateConversation(success: Boolean, conversationId: Int) {
-        createConversationCallback?.invoke(success, conversationId)
+    private fun showErrorToast(message: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            _showErrorToast.emit(message)
+        }
     }
 
-    fun setCreateConversationCallback(callback: ((success: Boolean, conversationId: Int) -> Unit)) {
-        createConversationCallback = callback
+    private fun notifyCreateConversation(conversationId: Int) {
+        CoroutineScope(Dispatchers.IO).launch {
+            _createConversationResult.emit(conversationId)
+        }
     }
 
     private fun listenLoadConversation() {
@@ -255,32 +265,15 @@ class ChatRepository @Inject constructor(
 
     fun uploadImage(uri: Uri) {
         val fileName = uri.lastPathSegment
-        val data = getBase64Data(uri)
-        socketManager.emit(ChatSocketEvent.UPLOAD_IMAGE, mapOf(PARAM_FILE to data, PARAM_NAME to fileName))
-    }
-
-    private fun getBase64Data(uri: Uri): ByteArray? {
-        try {
-            val descriptor = contentResolver.openFileDescriptor(uri, "r")
-            val inputStream: InputStream =
-                FileInputStream(descriptor?.fileDescriptor)
-
-            val bytes: ByteArray
-            val buffer = ByteArray(8192)
-            var bytesRead: Int
-            val output = ByteArrayOutputStream()
-            while (inputStream.read(buffer).also { bytesRead = it } != -1) {
-                output.write(buffer, 0, bytesRead)
-            }
-            bytes = output.toByteArray()
-            descriptor?.close()
-            inputStream.close()
-            return bytes
-        } catch (e: Exception) {
-            Timber.e("convertBase64Data error: ${e.message}", e)
-            e.printStackTrace()
+        val data = uri.convertFileToByteArray(contentResolver)
+        if (data == null) {
+            showErrorToast("업로드 할 수 없는 이미지 입니다.")
+            return
         }
-        return null
+        socketManager.emit(
+            ChatSocketEvent.UPLOAD_IMAGE,
+            mapOf(PARAM_FILE to data, PARAM_NAME to fileName)
+        )
     }
 
     fun getMessageList(
@@ -288,51 +281,4 @@ class ChatRepository @Inject constructor(
     ): Flow<PagingData<Message>> = Pager(PagingConfig(pageSize = 10)) {
         MessageDataSource(socketManager, conversationId, messagesFlow)
     }.flow
-
-    fun startSocket() {
-        socketManager.connectSocket()
-    }
-
-    fun finish() {
-        createConversationCallback = null
-        socketManager.finish()
-    }
-
-    private fun String?.isSuccess(): Boolean = this == RESULT_SUCCESS
-
-    private fun <T> String.toObject(): T = Gson().fromJson(this, object : TypeToken<T>() {}.type)
-
-    private inline fun <reified T> String.toObjectList(): List<T> {
-        val list: ArrayList<Map<String, Any?>>? = this.toObject()
-        return mutableListOf<T>().apply {
-            list?.forEach {
-                add(mapToObject(it, T::class.java) ?: return@forEach)
-            }
-        }
-    }
-
-    private fun <T> mapToObject(map: Map<String, Any?>?, type: Class<T>): T? {
-        if (map == null) return null
-
-        val gson = Gson()
-        val json = gson.toJson(map)
-        return gson.fromJson(json, type)
-    }
-
-    //convert a data class to a map
-    private fun <T> T.serializeToMap(): Map<String, String> {
-        return convert()
-    }
-
-    //convert a map to a data class
-    private inline fun <reified T> Map<String, Any>.toDataClass(): T {
-        return convert()
-    }
-
-    //convert an object of type I to type O
-    private inline fun <I, reified O> I.convert(): O {
-        val gson = Gson()
-        val json = gson.toJson(this)
-        return gson.fromJson(json, object : TypeToken<O>() {}.type)
-    }
 }

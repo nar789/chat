@@ -8,8 +8,8 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.rndeep.fns_fantoo.data.remote.dto.GetUserListResponse
 import com.rndeep.fns_fantoo.data.remote.model.chat.ChatUserInfo
-import com.rndeep.fns_fantoo.repositories.ChatRepository
 import com.rndeep.fns_fantoo.repositories.ChatInfoRepository
+import com.rndeep.fns_fantoo.repositories.ChatRepository
 import com.rndeep.fns_fantoo.repositories.DataStoreKey
 import com.rndeep.fns_fantoo.repositories.DataStoreRepository
 import com.rndeep.fns_fantoo.ui.common.viewmodel.SingleLiveEvent
@@ -54,10 +54,12 @@ class AddChatViewModel @Inject constructor(
     }
 
     private fun addChatCallback() {
-        chatRepository.setCreateConversationCallback { success, conversationId ->
-            if (success) {
-                _navigateToChat.value = conversationId
-            } else {
+        viewModelScope.launch {
+            chatRepository.createConversationResult.filterNotNull().collect { chatId ->
+                _navigateToChat.value = chatId
+            }
+
+            chatRepository.showErrorToast.filterNotNull().collect {
                 _showErrorToast.call()
             }
         }
