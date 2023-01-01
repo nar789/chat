@@ -82,9 +82,9 @@ fun ChattingScreen(
     // LazyColumn scroll state
     val scrollState = rememberLazyListState()
 
-    // First visible item state
-    val firstVisibleItemIndex: Int by remember {
-        derivedStateOf { scrollState.firstVisibleItemIndex }
+    // last visible item state
+    val lastVisibleItemIndex by remember {
+        derivedStateOf { scrollState.layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0 }
     }
 
     // The coroutine scope for event handlers calling suspend functions.
@@ -93,8 +93,6 @@ fun ChattingScreen(
 
     // True if floating date text is shown.
     var floatingDateShown by remember { mutableStateOf(false) }
-
-    var lastItemIndex by remember { mutableStateOf(-1) }
 
     suspend fun hideFloatingDate() {
         if (floatingDateShown) {
@@ -115,10 +113,14 @@ fun ChattingScreen(
                 onClickMore = onClickMore,
                 onBack = onBack
             )
-            Box(modifier = Modifier.weight(1f)) {
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .background(colorResource(R.color.gray_50))
+            ) {
                 Messages(
                     messages = messageList,
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier.fillMaxWidth(),
                     myId = uiState.myId,
                     onImageClicked = onImageClicked,
                     onClickAuthor = onClickAuthor,
@@ -131,7 +133,7 @@ fun ChattingScreen(
                         .align(Alignment.TopCenter)
                         .offset(0.dp, 14.dp),
                     shown = floatingDateShown,
-                    date = messageList.getOrNull(firstVisibleItemIndex)?.dateText.orEmpty()
+                    date = messageList.getOrNull(lastVisibleItemIndex)?.dateText.orEmpty()
                 )
             }
 
@@ -147,18 +149,12 @@ fun ChattingScreen(
 
             val snapshotMessages = messageList.itemSnapshotList
             // scroll to bottom
-            if (lastItemIndex != snapshotMessages.lastIndex) {
-                LaunchedEffect(Unit) {
-                    val lastVisibleItemIndex =
-                        scrollState.layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: -1
-                    val isScrolledToEnd = lastVisibleItemIndex > snapshotMessages.lastIndex - 1
-                    val lastMessageIsMine =
-                        snapshotMessages.lastOrNull()?.isMyMessage(uiState.myId) == true
-                    if (isScrolledToEnd || lastMessageIsMine || lastItemIndex == -1) {
-                        scrollState.scrollToItem(snapshotMessages.lastIndex.coerceAtLeast(0))
-                    }
-
-                    lastItemIndex = snapshotMessages.lastIndex
+            LaunchedEffect(Unit) {
+                val isScrolledToEnd = scrollState.firstVisibleItemIndex <= 1
+                val lastMessageIsMine =
+                    snapshotMessages.firstOrNull()?.isMyMessage(uiState.myId) == true
+                if (isScrolledToEnd || lastMessageIsMine) {
+                    scrollState.scrollToItem(0)
                 }
             }
 
@@ -195,40 +191,37 @@ fun Messages(
     onImageClicked: (String) -> Unit,
     onClickAuthor: (String) -> Unit
 ) {
-    Surface(
-        modifier = modifier,
-        color = colorResource(R.color.gray_50)
+    LazyColumn(
+        modifier = modifier.fillMaxWidth(),
+        state = scrollState,
+        reverseLayout = true
     ) {
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            state = scrollState
-        ) {
-            items(messages.itemCount) { index ->
-                val item = messages[index] ?: return@items
-                val isMe = item.isMyMessage(myId)
-                val prevAuthor = messages.getOrNull(index - 1)?.userId
-                val nextAuthor = messages.getOrNull(index + 1)?.userId
-                val nextHour = messages.getOrNull(index + 1)?.hourText
-                val isFirstMessageByAuthor = prevAuthor != item.userId
-                val isLastMessageByAuthor = nextAuthor != item.userId
+        val lastIndex = messages.itemCount - 1
+        items(messages.itemCount) { index ->
+            val item = messages[index] ?: return@items
+            val isMe = item.isMyMessage(myId)
+            val prevAuthor = messages.getOrNull(index + 1)?.userId
+            val nextAuthor = messages.getOrNull(index - 1)?.userId
+            val nextHour = messages.getOrNull(index - 1)?.hourText
+            val isFirstMessageByAuthor = prevAuthor != item.userId
+            val isLastMessageByAuthor = nextAuthor != item.userId
 
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = 20.dp, end = 20.dp, top = if (index == 0) 18.dp else 0.dp),
-                    contentAlignment = if (isMe) Alignment.CenterEnd else Alignment.CenterStart
-                ) {
-                    MessageItem(
-                        message = item,
-                        isMe = isMe,
-                        isFirstMessageByAuthor = isFirstMessageByAuthor,
-                        isLastMessageByAuthor = isLastMessageByAuthor,
-                        timestampVisible = nextHour != item.hourText || isLastMessageByAuthor,
-                        onImageClicked = onImageClicked,
-                        onClickAuthor = onClickAuthor,
-                        readInfos = readInfos
-                    )
-                }
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 20.dp, end = 20.dp, top = if (index == lastIndex) 18.dp else 0.dp),
+                contentAlignment = if (isMe) Alignment.CenterEnd else Alignment.CenterStart
+            ) {
+                MessageItem(
+                    message = item,
+                    isMe = isMe,
+                    isFirstMessageByAuthor = isFirstMessageByAuthor,
+                    isLastMessageByAuthor = isLastMessageByAuthor,
+                    timestampVisible = nextHour != item.hourText || isLastMessageByAuthor,
+                    onImageClicked = onImageClicked,
+                    onClickAuthor = onClickAuthor,
+                    readInfos = readInfos
+                )
             }
         }
     }
@@ -711,7 +704,9 @@ fun UserBlockView(
             verticalArrangement = Arrangement.Bottom
         ) {
             Text(
-                modifier = Modifier.padding(horizontal = 49.dp),
+                modifier = Modifier
+                    .padding(horizontal = 49.dp)
+                    .align(Alignment.CenterHorizontally),
                 text = stringResource(R.string.chatting_block_description),
                 fontSize = 12.sp,
                 lineHeight = 18.sp,
@@ -791,46 +786,3 @@ fun UserInputSelector() {
 fun UserBlockViewPreview() {
     UserBlockView(Modifier, {})
 }
-//
-//val testUiState = ChatUiState(
-//    messages = listOf(
-//        Message(
-//            content = "상암 경기장에서 공연한다는데 맞아? 장소 바뀐거 아니지?",
-//            authorId = "testId",
-//            authorName = "Dasol",
-//            authorImage = "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMjA2MjFfMjYz%2FMDAxNjU1NzgxMTkyMTU5.YO7UnyTXMzeXg02Jz1tPCDba5Nsr7m-vuOMGwT1WXfEg.GfjVMhmbCK2UuWqIcvtpCPfvhX39IvwQ7smctj0-3I8g.JPEG.gydls004%2FInternet%25A3%25DF20220621%25A3%25DF121040%25A3%25DF8.jpeg&type=sc960_832",
-//            timestamp = 1667283734000
-//        ),
-//        Message(
-//            content = "같이 갈꺼지? 공연 끝나고...",
-//            authorId = "testId",
-//            authorName = "Dasol",
-//            authorImage = "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMjA2MjFfMjYz%2FMDAxNjU1NzgxMTkyMTU5.YO7UnyTXMzeXg02Jz1tPCDba5Nsr7m-vuOMGwT1WXfEg.GfjVMhmbCK2UuWqIcvtpCPfvhX39IvwQ7smctj0-3I8g.JPEG.gydls004%2FInternet%25A3%25DF20220621%25A3%25DF121040%25A3%25DF8.jpeg&type=sc960_832",
-//            timestamp = 1667283734000
-//        ),
-//        Message(
-//            content = "당연히 같이 가야지~ 스탠딩 공연이잖아 너무 재밌을것 같어~",
-//            authorName = "Me",
-//            authorImage = null,
-//            timestamp = 1667290934000,
-//            unreadCount = 1
-//        ),
-//        Message(
-//            content = "하 빨리 다음주 됐으면...",
-//            authorName = "Me",
-//            authorImage = null,
-//            timestamp = 1667290934000,
-//            unreadCount = 1
-//        ),
-//        Message(
-//            authorName = "Me",
-//            authorImage = null,
-//            timestamp = 1667290994000,
-//            image = "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMjA2MjFfMjYz%2FMDAxNjU1NzgxMTkyMTU5.YO7UnyTXMzeXg02Jz1tPCDba5Nsr7m-vuOMGwT1WXfEg.GfjVMhmbCK2UuWqIcvtpCPfvhX39IvwQ7smctj0-3I8g.JPEG.gydls004%2FInternet%25A3%25DF20220621%25A3%25DF121040%25A3%25DF8.jpeg&type=sc960_832",
-//            unreadCount = 1
-//        ),
-//    ),
-//    readInfos = listOf(
-//        ReadInfo("1", 1667283734001)
-//    )
-//)

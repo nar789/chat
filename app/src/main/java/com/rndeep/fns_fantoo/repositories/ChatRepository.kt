@@ -143,7 +143,7 @@ class ChatRepository @Inject constructor(
     private fun listenLoadMessage() {
         socketManager.on(ChatSocketEvent.LOAD_MESSAGE) { response ->
             val rows: String = response?.get(KEY_ROWS) ?: return@on
-            val messageList: List<Message> = rows.toObjectList<Message>().reversed()
+            val messageList: List<Message> = rows.toObjectList()
             CoroutineScope(Dispatchers.IO).launch {
                 _loadMessagesFlow.emit(messageList)
             }
@@ -300,7 +300,7 @@ class ChatRepository @Inject constructor(
                 messageFlow
                     .onEach {
                         useCache = true
-                        cachedMessages.add(it)
+                        cachedMessages.add(0, it)
                         dataSource?.invalidate()
                     }
                     .collect()
