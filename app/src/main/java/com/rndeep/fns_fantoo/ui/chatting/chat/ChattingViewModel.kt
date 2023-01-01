@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
+import androidx.paging.map
 import com.rndeep.fns_fantoo.data.remote.ResultWrapper
 import com.rndeep.fns_fantoo.data.remote.dto.UserInfoResponse
 import com.rndeep.fns_fantoo.data.remote.model.IntegUid
@@ -16,6 +17,7 @@ import com.rndeep.fns_fantoo.ui.chatting.chat.model.ChatUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -69,21 +71,21 @@ class ChattingViewModel @Inject constructor(
         initMessageState()
 
         _chatUiState.value = _chatUiState.value.copy(
-            messages = chatRepository.getMessageList(chatId).cachedIn(viewModelScope)
+            messages = chatRepository.getMessageFlow(chatId, myUid).map { pagingData ->
+                pagingData.map { findUserProfile(it) }
+            }.cachedIn(viewModelScope)
         )
     }
 
     private fun initMessageState() {
         viewModelScope.launch {
-//            launch { collectMessageFlow() }
             launch { collectReadInfoFlow() }
             launch { collectImageFlow() }
 
             chatRepository.requestLeave(chatId)
             chatRepository.requestJoin(chatId)
-//            chatRepository.requestLoadMessage(chatId, 0, 10)
-            chatRepository.requestReadInfo(chatId, myUid)
             chatRepository.requestLoadReadInfo(chatId)
+            chatRepository.requestReadInfo(chatId, myUid)
         }
     }
 
@@ -103,10 +105,7 @@ class ChattingViewModel @Inject constructor(
         }
     }
 
-    fun sendMessage(message: String) {
-        // TODO : upload message to server
-
-        // TODO : temp code remove this
+    fun sendTextMessage(message: String) {
         viewModelScope.launch {
             chatRepository.sendMessage(
                 Message(
@@ -165,19 +164,6 @@ class ChattingViewModel @Inject constructor(
             .collect()
     }
 
-    private suspend fun collectMessageFlow() {
-//        chatRepository.messagesFlow
-//            .filter { it.isNotEmpty() }
-//            .onEach {
-//                val prevMessages = _chatUiState.value.messages
-//                _chatUiState.value = _chatUiState.value.copy(
-//                    messages = prevMessages + findUserProfile(it)
-//                )
-//                chatRepository.requestReadInfo(chatId, myUid)
-//            }
-//            .collect()
-    }
-
     private suspend fun collectImageFlow() {
         chatRepository.uploadImageFlow
             .filterNotNull()
@@ -186,13 +172,14 @@ class ChattingViewModel @Inject constructor(
             }.collect()
     }
 
-    private suspend fun findUserProfile(messages: List<Message>): List<Message> {
-        return messages.onEach { message ->
-            val userId = message.userId ?: return@onEach
+    private suspend fun findUserProfile(message: Message): Message {
+        return message.apply {
+            val userId = userId ?: return@apply
+            if (userId == myUid) return@apply
             val userProfile = userProfileMap[userId] ?: fetchChatUserProfile(userId)
             userProfile?.let {
-                message.displayName = it.name
-                message.userPhoto = it.photo
+                displayName = it.name
+                userPhoto = it.photo
             }
         }
     }
@@ -203,7 +190,7 @@ class ChattingViewModel @Inject constructor(
         return when (response) {
             is ResultWrapper.Success -> response.data.let { UserProfile(it.userNick, it.userPhoto) }
             else -> null
-        }
+        }?.also { userProfileMap[userId] = it }
     }
 
     private data class UserProfile(

@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import androidx.paging.PagingSource
 import com.google.gson.Gson
 import com.rndeep.fns_fantoo.data.remote.dto.GetUserListResponse
 import com.rndeep.fns_fantoo.data.remote.model.chat.ChatRoomInfo
@@ -20,9 +21,7 @@ import com.rndeep.fns_fantoo.utils.isSuccess
 import com.rndeep.fns_fantoo.utils.toObjectList
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -55,8 +54,11 @@ class ChatRepository @Inject constructor(
     private val _chatList = mutableStateListOf<ChatRoomInfo>()
     val chatList: List<ChatRoomInfo> get() = _chatList
 
-    private val _messagesFlow = MutableSharedFlow<List<Message>>()
-    val messagesFlow: SharedFlow<List<Message>> get() = _messagesFlow
+    private val _loadMessagesFlow = MutableSharedFlow<List<Message>>()
+    private val loadMessagesFlow: SharedFlow<List<Message>> get() = _loadMessagesFlow
+
+    private val _messageFlow = MutableSharedFlow<Message>()
+    private val messageFlow: SharedFlow<Message> get() = _messageFlow
 
     private val _readInfoFlow = MutableSharedFlow<ReadInfo>()
     val readInfoFlow: SharedFlow<ReadInfo?> get() = _readInfoFlow
@@ -141,9 +143,9 @@ class ChatRepository @Inject constructor(
     private fun listenLoadMessage() {
         socketManager.on(ChatSocketEvent.LOAD_MESSAGE) { response ->
             val rows: String = response?.get(KEY_ROWS) ?: return@on
-            val messageList: List<Message> = rows.toObjectList<Message>().reversed()
+            val messageList: List<Message> = rows.toObjectList()
             CoroutineScope(Dispatchers.IO).launch {
-                _messagesFlow.emit(messageList)
+                _loadMessagesFlow.emit(messageList)
             }
         }
     }
@@ -162,7 +164,7 @@ class ChatRepository @Inject constructor(
                 name = response["name"]
             )
             CoroutineScope(Dispatchers.IO).launch {
-                _messagesFlow.emit(listOf(message))
+                _messageFlow.emit(message)
             }
         }
     }
@@ -276,9 +278,48 @@ class ChatRepository @Inject constructor(
         )
     }
 
-    fun getMessageList(
-        conversationId: Int
-    ): Flow<PagingData<Message>> = Pager(PagingConfig(pageSize = 10)) {
-        MessageDataSource(socketManager, conversationId, messagesFlow)
-    }.flow
+    fun getMessageFlow(
+        conversationId: Int,
+        userId: String
+    ): Flow<PagingData<Message>> = Pager(
+        config = PagingConfig(pageSize = 10),
+        pagingSourceFactory = MessageDataSourceFactory(conversationId, userId)
+    ).flow
+
+
+    private inner class MessageDataSourceFactory(
+        private val conversationId: Int,
+        private val userId: String
+    ) : () -> PagingSource<Int, Message> {
+        private val cachedMessages = mutableListOf<Message>()
+        private var dataSource: MessageDataSource? = null
+        private var useCache: Boolean = false
+
+        init {
+            CoroutineScope(Dispatchers.Default).launch {
+                messageFlow
+                    .onEach {
+                        useCache = true
+                        cachedMessages.add(0, it)
+                        dataSource?.invalidate()
+                    }
+                    .collect()
+            }
+        }
+
+        override fun invoke(): PagingSource<Int, Message> {
+            return MessageDataSource(
+                loadMessagesFlow,
+                cachedMessages,
+                useCache,
+                requestLoadMessage = { offset, size ->
+                    requestLoadMessage(conversationId, offset, size)
+                },
+                requestReadInfo = { requestReadInfo(conversationId, userId) }
+            ).also {
+                dataSource = it
+                useCache = false
+            }
+        }
+    }
 }
