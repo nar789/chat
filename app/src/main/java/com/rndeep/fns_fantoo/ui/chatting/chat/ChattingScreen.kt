@@ -30,6 +30,7 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -297,7 +298,8 @@ fun AuthorAndName(
                 error = defaultImage,
                 placeholder = defaultImage
             ),
-            contentDescription = null
+            contentDescription = null,
+            contentScale = ContentScale.Crop
         )
         Spacer(modifier = Modifier.size(6.dp))
         Text(
