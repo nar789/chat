@@ -126,17 +126,12 @@ fun ChattingScreen(
                     readInfos = uiState.readInfos
                 )
 
-                val firstVisibleMessage = if (messageList.itemCount == 0) {
-                    null
-                } else {
-                    messageList[firstVisibleItemIndex]
-                }
                 FloatingDateText(
                     modifier = Modifier
                         .align(Alignment.TopCenter)
                         .offset(0.dp, 14.dp),
                     shown = floatingDateShown,
-                    date = firstVisibleMessage?.dateText.orEmpty()
+                    date = messageList.getOrNull(firstVisibleItemIndex)?.dateText.orEmpty()
                 )
             }
 
@@ -151,6 +146,7 @@ fun ChattingScreen(
             }
 
             val snapshotMessages = messageList.itemSnapshotList
+            // scroll to bottom
             if (lastItemIndex != snapshotMessages.lastIndex) {
                 LaunchedEffect(Unit) {
                     val lastVisibleItemIndex =
@@ -166,6 +162,7 @@ fun ChattingScreen(
                 }
             }
 
+            // floating date text visibility animation
             if (scrollState.isScrollInProgress) {
                 DisposableEffect(Unit) {
                     jobState?.cancel()
@@ -181,7 +178,11 @@ fun ChattingScreen(
 }
 
 private fun <T : Any> LazyPagingItems<T>.getOrNull(index: Int): T? {
-    return if (index >= 0 && index <= itemCount - 1) get(index) else null
+    return if ((itemCount == 0) || (index !in (0 until itemCount))) {
+        null
+    } else {
+        get(index)
+    }
 }
 
 @Composable

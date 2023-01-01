@@ -69,21 +69,19 @@ class ChattingViewModel @Inject constructor(
         initMessageState()
 
         _chatUiState.value = _chatUiState.value.copy(
-            messages = chatRepository.getMessageList(chatId).cachedIn(viewModelScope)
+            messages = chatRepository.getMessageList(chatId, myUid).cachedIn(viewModelScope)
         )
     }
 
     private fun initMessageState() {
         viewModelScope.launch {
-//            launch { collectMessageFlow() }
             launch { collectReadInfoFlow() }
             launch { collectImageFlow() }
 
             chatRepository.requestLeave(chatId)
             chatRepository.requestJoin(chatId)
-//            chatRepository.requestLoadMessage(chatId, 0, 10)
-            chatRepository.requestReadInfo(chatId, myUid)
             chatRepository.requestLoadReadInfo(chatId)
+            chatRepository.requestReadInfo(chatId, myUid)
         }
     }
 
@@ -103,10 +101,7 @@ class ChattingViewModel @Inject constructor(
         }
     }
 
-    fun sendMessage(message: String) {
-        // TODO : upload message to server
-
-        // TODO : temp code remove this
+    fun sendTextMessage(message: String) {
         viewModelScope.launch {
             chatRepository.sendMessage(
                 Message(
@@ -163,19 +158,6 @@ class ChattingViewModel @Inject constructor(
                 )
             }
             .collect()
-    }
-
-    private suspend fun collectMessageFlow() {
-//        chatRepository.messagesFlow
-//            .filter { it.isNotEmpty() }
-//            .onEach {
-//                val prevMessages = _chatUiState.value.messages
-//                _chatUiState.value = _chatUiState.value.copy(
-//                    messages = prevMessages + findUserProfile(it)
-//                )
-//                chatRepository.requestReadInfo(chatId, myUid)
-//            }
-//            .collect()
     }
 
     private suspend fun collectImageFlow() {
