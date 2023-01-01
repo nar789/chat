@@ -278,7 +278,7 @@ class ChatRepository @Inject constructor(
         )
     }
 
-    fun getMessageList(
+    fun getMessageFlow(
         conversationId: Int,
         userId: String
     ): Flow<PagingData<Message>> = Pager(
