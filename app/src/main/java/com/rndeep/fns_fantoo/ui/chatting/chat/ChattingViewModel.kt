@@ -5,6 +5,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.cachedIn
 import com.rndeep.fns_fantoo.data.remote.ResultWrapper
 import com.rndeep.fns_fantoo.data.remote.dto.UserInfoResponse
 import com.rndeep.fns_fantoo.data.remote.model.IntegUid
@@ -14,7 +15,6 @@ import com.rndeep.fns_fantoo.repositories.*
 import com.rndeep.fns_fantoo.ui.chatting.chat.model.ChatUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -69,7 +69,7 @@ class ChattingViewModel @Inject constructor(
         initMessageState()
 
         _chatUiState.value = _chatUiState.value.copy(
-            messages = chatRepository.getMessageList(chatId)
+            messages = chatRepository.getMessageList(chatId).cachedIn(viewModelScope)
         )
     }
 

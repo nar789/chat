@@ -48,8 +48,8 @@ class MessageDataSource(
             }
             return LoadResult.Page(
                 data = messages,
-                prevKey = null,
-                nextKey = if (messages.isEmpty()) null else offset + messages.size
+                prevKey = if (messages.isEmpty()) null else offset + messages.size,
+                nextKey = null
             )
         } catch (e: Exception) {
             Log.e("sujini", "$e")
