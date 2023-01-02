@@ -1,6 +1,7 @@
 package com.rndeep.fns_fantoo.ui.chatting.chatlist
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -266,7 +267,7 @@ fun ChatListContent(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 2.dp),
-                    text = chat.message ?: "",
+                    text = if (chat.isImageMessage() && chat.message.isNullOrEmpty()) stringResource(id = R.string.chat_list_image_message) else chat.message ?: "",
                     style = FantooChatTypography.h4.copy(color = colorResource(id = R.color.gray_400)),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis

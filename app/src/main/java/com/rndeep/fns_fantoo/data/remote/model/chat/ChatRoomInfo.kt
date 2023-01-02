@@ -11,11 +11,13 @@ data class ChatRoomInfo(
     @SerializedName("unreads") val unreads: Int? = 0,
     @SerializedName("userId") val userId: String? = "",
     @SerializedName("message") val message: String? = "",
-    @SerializedName("message_type") val messageType: Int? = MESSAGE_TYPE_TEXT,
+    @SerializedName("messageType") val messageType: Int? = MESSAGE_TYPE_TEXT,
     @SerializedName("updated") val updated: Long? = 0
 ) {
     companion object {
         const val MESSAGE_TYPE_TEXT = 1
         const val MESSAGE_TYPE_IMAGE = 2
     }
+
+    fun isImageMessage() = messageType == MESSAGE_TYPE_IMAGE
 }
