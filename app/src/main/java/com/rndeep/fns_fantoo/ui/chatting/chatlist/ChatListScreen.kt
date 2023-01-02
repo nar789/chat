@@ -267,7 +267,7 @@ fun ChatListContent(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 2.dp),
-                    text = if (chat.isImageMessage()) stringResource(id = R.string.chat_list_image_message) else chat.message ?: "",
+                    text = if (chat.isImageMessage() && chat.message.isNullOrEmpty()) stringResource(id = R.string.chat_list_image_message) else chat.message ?: "",
                     style = FantooChatTypography.h4.copy(color = colorResource(id = R.color.gray_400)),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
