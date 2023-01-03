@@ -74,8 +74,8 @@ class ChattingViewModel @Inject constructor(
         _chatUiState.value = _chatUiState.value.copy(
             messages = chatRepository.getMessageFlow(chatId, myUid)
                 .map { pagingData ->
-                pagingData.map { findUserProfile(it) }
-            }.cachedIn(viewModelScope)
+                    pagingData.map { findUserProfile(it) }
+                }.cachedIn(viewModelScope)
         )
     }
 
@@ -93,7 +93,7 @@ class ChattingViewModel @Inject constructor(
         viewModelScope.launch {
             launch { collectReadInfoFlow() }
             launch { collectImageFlow() }
-            launch { collectRefreshChatFlow()}
+            launch { collectRefreshChatFlow() }
 
             chatRepository.requestLeave(chatId)
             chatRepository.requestJoin(chatId)
@@ -189,7 +189,8 @@ class ChattingViewModel @Inject constructor(
         chatRepository.exitUserEvent
             .onEach {
                 readInfoMap.remove(it)
-                initChatState()
+                val oldUserCount = _chatUiState.value.userCount
+                _chatUiState.value = _chatUiState.copy(userCount = oldUserCount - 1)
             }
             .collect()
     }
