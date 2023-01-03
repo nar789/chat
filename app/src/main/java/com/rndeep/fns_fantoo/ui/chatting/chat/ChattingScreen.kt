@@ -30,6 +30,7 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -82,9 +83,9 @@ fun ChattingScreen(
     // LazyColumn scroll state
     val scrollState = rememberLazyListState()
 
-    // First visible item state
-    val firstVisibleItemIndex: Int by remember {
-        derivedStateOf { scrollState.firstVisibleItemIndex }
+    // last visible item state
+    val lastVisibleItemIndex by remember {
+        derivedStateOf { scrollState.layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0 }
     }
 
     // The coroutine scope for event handlers calling suspend functions.
@@ -93,8 +94,6 @@ fun ChattingScreen(
 
     // True if floating date text is shown.
     var floatingDateShown by remember { mutableStateOf(false) }
-
-    var lastItemIndex by remember { mutableStateOf(-1) }
 
     suspend fun hideFloatingDate() {
         if (floatingDateShown) {
@@ -115,10 +114,14 @@ fun ChattingScreen(
                 onClickMore = onClickMore,
                 onBack = onBack
             )
-            Box(modifier = Modifier.weight(1f)) {
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .background(colorResource(R.color.gray_50))
+            ) {
                 Messages(
                     messages = messageList,
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier.fillMaxWidth(),
                     myId = uiState.myId,
                     onImageClicked = onImageClicked,
                     onClickAuthor = onClickAuthor,
@@ -126,17 +129,12 @@ fun ChattingScreen(
                     readInfos = uiState.readInfos
                 )
 
-                val firstVisibleMessage = if (messageList.itemCount == 0) {
-                    null
-                } else {
-                    messageList[firstVisibleItemIndex]
-                }
                 FloatingDateText(
                     modifier = Modifier
                         .align(Alignment.TopCenter)
                         .offset(0.dp, 14.dp),
                     shown = floatingDateShown,
-                    date = firstVisibleMessage?.dateText.orEmpty()
+                    date = messageList.getOrNull(lastVisibleItemIndex)?.dateText.orEmpty()
                 )
             }
 
@@ -145,27 +143,22 @@ fun ChattingScreen(
             } else {
                 BottomEditText(
                     onMessageSent,
-                    onImageSelectorClicked,
-                    resetScroll = { }
+                    onImageSelectorClicked
                 )
             }
 
             val snapshotMessages = messageList.itemSnapshotList
-            if (lastItemIndex != snapshotMessages.lastIndex) {
-                LaunchedEffect(Unit) {
-                    val lastVisibleItemIndex =
-                        scrollState.layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: -1
-                    val isScrolledToEnd = lastVisibleItemIndex > snapshotMessages.lastIndex - 1
-                    val lastMessageIsMine =
-                        snapshotMessages.lastOrNull()?.isMyMessage(uiState.myId) == true
-                    if (isScrolledToEnd || lastMessageIsMine || lastItemIndex == -1) {
-                        scrollState.scrollToItem(snapshotMessages.lastIndex.coerceAtLeast(0))
-                    }
-
-                    lastItemIndex = snapshotMessages.lastIndex
+            // scroll to bottom
+            LaunchedEffect(Unit) {
+                val isScrolledToEnd = scrollState.firstVisibleItemIndex <= 1
+                val lastMessageIsMine =
+                    snapshotMessages.firstOrNull()?.isMyMessage(uiState.myId) == true
+                if (isScrolledToEnd || lastMessageIsMine) {
+                    scrollState.scrollToItem(0)
                 }
             }
 
+            // floating date text visibility animation
             if (scrollState.isScrollInProgress) {
                 DisposableEffect(Unit) {
                     jobState?.cancel()
@@ -181,7 +174,11 @@ fun ChattingScreen(
 }
 
 private fun <T : Any> LazyPagingItems<T>.getOrNull(index: Int): T? {
-    return if (index >= 0 && index <= itemCount - 1) get(index) else null
+    return if ((itemCount == 0) || (index !in (0 until itemCount))) {
+        null
+    } else {
+        get(index)
+    }
 }
 
 @Composable
@@ -194,29 +191,35 @@ fun Messages(
     onImageClicked: (String) -> Unit,
     onClickAuthor: (String) -> Unit
 ) {
-    Surface(
-        modifier = modifier,
-        color = colorResource(R.color.gray_50)
+    LazyColumn(
+        modifier = modifier.fillMaxWidth(),
+        state = scrollState,
+        reverseLayout = true
     ) {
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            state = scrollState
-        ) {
-            items(messages.itemCount) { index ->
-                val item = messages[index] ?: return@items
-                val isMe = item.isMyMessage(myId)
-                val prevAuthor = messages.getOrNull(index - 1)?.userId
-                val nextAuthor = messages.getOrNull(index + 1)?.userId
-                val nextHour = messages.getOrNull(index + 1)?.hourText
-                val isFirstMessageByAuthor = prevAuthor != item.userId
-                val isLastMessageByAuthor = nextAuthor != item.userId
+        val lastIndex = messages.itemCount - 1
+        items(messages.itemCount) { index ->
+            val item = messages[index] ?: return@items
+            val isMe = item.isMyMessage(myId)
+            val lastItem = index == lastIndex
 
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = 20.dp, end = 20.dp, top = if (index == 0) 18.dp else 0.dp),
-                    contentAlignment = if (isMe) Alignment.CenterEnd else Alignment.CenterStart
-                ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 20.dp, end = 20.dp, top = if (lastItem) 18.dp else 0.dp),
+                contentAlignment = if (isMe) Alignment.CenterEnd else Alignment.CenterStart
+            ) {
+                if (item.messageType == 3) {
+                    ExitMessageItem(message = item)
+                } else {
+                    val prevItem = messages.getOrNull(index + 1)
+                    val nextItem = messages.getOrNull(index - 1)
+                    val prevAuthor = prevItem?.userId
+                    val nextAuthor = nextItem?.userId
+                    val nextHour = nextItem?.hourText
+                    val isFirstMessageByAuthor =
+                        prevAuthor != item.userId || prevItem?.isNormalType == false
+                    val isLastMessageByAuthor =
+                        nextAuthor != item.userId || nextItem?.isNormalType == false
                     MessageItem(
                         message = item,
                         isMe = isMe,
@@ -304,7 +307,8 @@ fun AuthorAndName(
                 error = defaultImage,
                 placeholder = defaultImage
             ),
-            contentDescription = null
+            contentDescription = null,
+            contentScale = ContentScale.Crop
         )
         Spacer(modifier = Modifier.size(6.dp))
         Text(
@@ -371,6 +375,22 @@ fun ImageMessageItem(
 }
 
 @Composable
+fun ExitMessageItem(
+    message: Message
+) {
+    Text(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 14.dp),
+        text = stringResource(R.string.chatting_exit_message, message.displayName.orEmpty()),
+        color = colorResource(R.color.state_enable_gray_400),
+        fontSize = 14.sp,
+        lineHeight = 20.sp,
+        textAlign = TextAlign.Center
+    )
+}
+
+@Composable
 fun TimestampAndUnreadCount(
     message: Message,
     isMe: Boolean,
@@ -409,8 +429,7 @@ var SemanticsPropertyReceiver.keyboardShownProperty by KeyboardShownKey
 @Composable
 fun BottomEditText(
     onMessageSent: (String) -> Unit,
-    onImageSelectorClicked: () -> Unit,
-    resetScroll: () -> Unit
+    onImageSelectorClicked: () -> Unit
 ) {
     var textState by rememberSaveable(stateSaver = TextFieldValue.Saver) {
         mutableStateOf(TextFieldValue())
@@ -446,14 +465,13 @@ fun BottomEditText(
             }
             UserInputSelector(
                 userInputActivated = userInputActivated,
+                sendBtnEnabled = textState.text.isNotEmpty(),
                 onMessageSent = {
                     onMessageSent(textState.text)
                     textState = TextFieldValue()
                 },
                 onUserInputActivate = { inputActivateMode = true },
-                onImageSelectorClicked = onImageSelectorClicked,
-                sendBtnEnabled = textState.text.isNotEmpty(),
-                resetScroll = resetScroll
+                onImageSelectorClicked = onImageSelectorClicked
             )
         }
     }
@@ -503,8 +521,7 @@ fun UserInputSelector(
     sendBtnEnabled: Boolean,
     onMessageSent: () -> Unit,
     onUserInputActivate: () -> Unit,
-    onImageSelectorClicked: () -> Unit,
-    resetScroll: () -> Unit
+    onImageSelectorClicked: () -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -524,11 +541,11 @@ fun UserInputSelector(
         )
 
         if (userInputActivated) {
-            SendButton(sendBtnEnabled, onMessageSent, resetScroll)
+            SendButton(sendBtnEnabled, onMessageSent)
         } else {
             Text(
                 modifier = Modifier
-                    .clickable { onUserInputActivate(); resetScroll() }
+                    .clickable { onUserInputActivate() }
                     .padding(start = 8.dp, top = 8.dp, bottom = 8.dp)
                     .weight(1f),
                 text = stringResource(R.string.chatting_edit_text_hint),
@@ -544,7 +561,6 @@ fun UserInputSelector(
 fun SendButton(
     enabled: Boolean,
     onSendClicked: () -> Unit,
-    resetScroll: () -> Unit
 ) {
     val bgColor =
         colorResource(if (enabled) R.color.primary_300 else R.color.state_disabled_gray_200)
@@ -553,7 +569,7 @@ fun SendButton(
         modifier = Modifier
             .background(bgColor, shape = CircleShape)
             .size(32.dp),
-        onClick = { onSendClicked(); resetScroll() },
+        onClick = { onSendClicked() },
         enabled = enabled
     ) {
         Icon(
@@ -710,7 +726,9 @@ fun UserBlockView(
             verticalArrangement = Arrangement.Bottom
         ) {
             Text(
-                modifier = Modifier.padding(horizontal = 49.dp),
+                modifier = Modifier
+                    .padding(horizontal = 49.dp)
+                    .align(Alignment.CenterHorizontally),
                 text = stringResource(R.string.chatting_block_description),
                 fontSize = 12.sp,
                 lineHeight = 18.sp,
@@ -765,7 +783,7 @@ fun ChatScreenPreview() {
 @Composable
 fun BottomEditTextPreview() {
     MaterialTheme {
-        BottomEditText({}, {}, {})
+        BottomEditText({}) {}
     }
 }
 
@@ -775,11 +793,11 @@ fun UserInputSelector() {
     MaterialTheme {
         Column {
             Surface {
-                UserInputSelector(userInputActivated = true, true, {}, {}, {}, {})
+                UserInputSelector(userInputActivated = true, true, {}, {}) {}
             }
             Spacer(Modifier.size(15.dp))
             Surface {
-                UserInputSelector(userInputActivated = false, true, {}, {}, {}, {})
+                UserInputSelector(userInputActivated = false, true, {}, {}) {}
             }
         }
     }
@@ -790,46 +808,3 @@ fun UserInputSelector() {
 fun UserBlockViewPreview() {
     UserBlockView(Modifier, {})
 }
-//
-//val testUiState = ChatUiState(
-//    messages = listOf(
-//        Message(
-//            content = "상암 경기장에서 공연한다는데 맞아? 장소 바뀐거 아니지?",
-//            authorId = "testId",
-//            authorName = "Dasol",
-//            authorImage = "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMjA2MjFfMjYz%2FMDAxNjU1NzgxMTkyMTU5.YO7UnyTXMzeXg02Jz1tPCDba5Nsr7m-vuOMGwT1WXfEg.GfjVMhmbCK2UuWqIcvtpCPfvhX39IvwQ7smctj0-3I8g.JPEG.gydls004%2FInternet%25A3%25DF20220621%25A3%25DF121040%25A3%25DF8.jpeg&type=sc960_832",
-//            timestamp = 1667283734000
-//        ),
-//        Message(
-//            content = "같이 갈꺼지? 공연 끝나고...",
-//            authorId = "testId",
-//            authorName = "Dasol",
-//            authorImage = "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMjA2MjFfMjYz%2FMDAxNjU1NzgxMTkyMTU5.YO7UnyTXMzeXg02Jz1tPCDba5Nsr7m-vuOMGwT1WXfEg.GfjVMhmbCK2UuWqIcvtpCPfvhX39IvwQ7smctj0-3I8g.JPEG.gydls004%2FInternet%25A3%25DF20220621%25A3%25DF121040%25A3%25DF8.jpeg&type=sc960_832",
-//            timestamp = 1667283734000
-//        ),
-//        Message(
-//            content = "당연히 같이 가야지~ 스탠딩 공연이잖아 너무 재밌을것 같어~",
-//            authorName = "Me",
-//            authorImage = null,
-//            timestamp = 1667290934000,
-//            unreadCount = 1
-//        ),
-//        Message(
-//            content = "하 빨리 다음주 됐으면...",
-//            authorName = "Me",
-//            authorImage = null,
-//            timestamp = 1667290934000,
-//            unreadCount = 1
-//        ),
-//        Message(
-//            authorName = "Me",
-//            authorImage = null,
-//            timestamp = 1667290994000,
-//            image = "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMjA2MjFfMjYz%2FMDAxNjU1NzgxMTkyMTU5.YO7UnyTXMzeXg02Jz1tPCDba5Nsr7m-vuOMGwT1WXfEg.GfjVMhmbCK2UuWqIcvtpCPfvhX39IvwQ7smctj0-3I8g.JPEG.gydls004%2FInternet%25A3%25DF20220621%25A3%25DF121040%25A3%25DF8.jpeg&type=sc960_832",
-//            unreadCount = 1
-//        ),
-//    ),
-//    readInfos = listOf(
-//        ReadInfo("1", 1667283734001)
-//    )
-//)

@@ -27,6 +27,7 @@ data class Message(
         get() = updated?.let { hourFormat.format(it * 1000).toString() }.orEmpty()
             .replace("AM", "오전")
             .replace("PM", "오후")
+    val isNormalType: Boolean get() = messageType in 0..2
 
     fun isMyMessage(myId: String) = userId == myId
     fun getUnReadCount(readInfos: List<ReadInfo>): Int {
