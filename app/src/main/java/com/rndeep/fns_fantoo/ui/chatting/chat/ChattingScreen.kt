@@ -382,7 +382,7 @@ fun ExitMessageItem(
         modifier = Modifier
             .fillMaxWidth()
             .padding(bottom = 14.dp),
-        text = message.message,
+        text = stringResource(R.string.chatting_exit_message, message.displayName.orEmpty()),
         color = colorResource(R.color.state_enable_gray_400),
         fontSize = 14.sp,
         lineHeight = 20.sp,
