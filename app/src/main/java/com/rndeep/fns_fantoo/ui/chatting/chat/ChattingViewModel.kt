@@ -190,7 +190,7 @@ class ChattingViewModel @Inject constructor(
             .onEach {
                 readInfoMap.remove(it)
                 val oldUserCount = _chatUiState.value.userCount
-                _chatUiState.value = _chatUiState.copy(userCount = oldUserCount - 1)
+                _chatUiState.value = _chatUiState.value.copy(userCount = oldUserCount - 1)
             }
             .collect()
     }
