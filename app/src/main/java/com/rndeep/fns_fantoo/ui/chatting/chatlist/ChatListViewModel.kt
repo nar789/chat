@@ -50,12 +50,8 @@ class ChatListViewModel @Inject constructor(
 
     private fun loadUser() {
         viewModelScope.launch {
-            dataStoreRepository.getBoolean(DataStoreKey.PREF_KEY_IS_LOGINED)?.let {
-                _isUser.value = it
-            }
-            dataStoreRepository.getString(DataStoreKey.PREF_KEY_UID).toString().let {
-                userId = it
-            }
+            _isUser.value = dataStoreRepository.getBoolean(DataStoreKey.PREF_KEY_IS_LOGINED)?: false
+            userId = dataStoreRepository.getString(DataStoreKey.PREF_KEY_UID)?: ""
         }
     }
 

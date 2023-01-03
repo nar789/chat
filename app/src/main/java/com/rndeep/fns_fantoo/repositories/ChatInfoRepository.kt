@@ -1,8 +1,11 @@
 package com.rndeep.fns_fantoo.repositories
 
+import android.util.Log
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import com.rndeep.fns_fantoo.data.local.dao.MyProfileDao
+import com.rndeep.fns_fantoo.data.local.model.MyProfile
 import com.rndeep.fns_fantoo.data.remote.BaseNetRepo
 import com.rndeep.fns_fantoo.data.remote.ResultWrapper
 import com.rndeep.fns_fantoo.data.remote.api.ChatService
@@ -18,7 +21,8 @@ import javax.inject.Inject
 
 // TODO: implement below method
 class ChatInfoRepository @Inject constructor(
-    private val chatApi: ChatService
+    private val chatApi: ChatService,
+    private val myProfileDao: MyProfileDao
 ) : BaseNetRepo() {
 
     suspend fun isConversationBlocked(myUserId: String, conversationId: Int): Boolean {
@@ -97,4 +101,6 @@ class ChatInfoRepository @Inject constructor(
             chatService = chatApi, uId = integUid, accessToken = accessToken, query = query
         )
     }.flow
+
+    fun getMyProfile(): Flow<MyProfile> = myProfileDao.getMyProfile()
 }

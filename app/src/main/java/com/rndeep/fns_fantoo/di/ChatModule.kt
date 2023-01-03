@@ -1,6 +1,7 @@
 package com.rndeep.fns_fantoo.di
 
 import android.content.ContentResolver
+import com.rndeep.fns_fantoo.data.local.dao.MyProfileDao
 import com.rndeep.fns_fantoo.data.remote.api.ChatService
 import com.rndeep.fns_fantoo.data.remote.socket.ChatSocketManager
 import com.rndeep.fns_fantoo.repositories.ChatRepository
@@ -27,6 +28,7 @@ class ChatModule {
     @Singleton
     @Provides
     fun provideUserRepository(
-        @NetworkModule.ApiServer chatService: ChatService
-    ): ChatInfoRepository = ChatInfoRepository(chatService)
+        @NetworkModule.ApiServer chatService: ChatService,
+        myProfileDao: MyProfileDao
+    ): ChatInfoRepository = ChatInfoRepository(chatService, myProfileDao)
 }

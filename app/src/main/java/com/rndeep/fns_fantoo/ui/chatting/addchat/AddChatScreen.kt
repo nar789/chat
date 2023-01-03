@@ -48,7 +48,7 @@ fun AddChatScreen(viewModel: AddChatViewModel, onBack: () -> Unit) {
             val (header, content) = createRefs()
             AddChatHeader(modifier = Modifier.constrainAs(header) {
                 top.linkTo(parent.top)
-            }, onBack, viewModel::makeTmpChatRoom)
+            }, onBack)
 
             val query by viewModel.searchQuery.collectAsState("")
             AddChatContent(
@@ -107,7 +107,7 @@ fun AddChatStartBtn(modifier: Modifier, active: Boolean, onClick: () -> Unit) {
 }
 
 @Composable
-fun AddChatHeader(modifier: Modifier, onBack: () -> Unit, makeTmpChatRoom: () -> Unit) {
+fun AddChatHeader(modifier: Modifier, onBack: () -> Unit) {
     Surface(
         modifier
             .fillMaxWidth()
@@ -134,16 +134,6 @@ fun AddChatHeader(modifier: Modifier, onBack: () -> Unit, makeTmpChatRoom: () ->
                     .padding(start = 15.dp)
                     .align(CenterVertically),
                 text = stringResource(id = R.string.add_chat_title),
-                style = FantooChatTypography.subtitle2.copy(color = colorResource(id = R.color.gray_900))
-            )
-
-            //todo 서버 연결 완셩되면 지울 것
-            Text(
-                modifier = Modifier
-                    .padding(start = 30.dp)
-                    .align(CenterVertically)
-                    .clickable { makeTmpChatRoom() },
-                text = "임시 채팅방",
                 style = FantooChatTypography.subtitle2.copy(color = colorResource(id = R.color.gray_900))
             )
         }
@@ -233,7 +223,7 @@ fun AddChatList(
             ) {
                 FollowerItem(
                     userInfo = user,
-                    isChecked = checkedUserList.contains(user),
+                    isChecked = checkedUserList.find { it.integUid == user.integUid } != null,
                     onClick = onCheckStateChanged
                 )
             }

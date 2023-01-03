@@ -11,6 +11,7 @@ data class GetUserListResponse(
         @field:SerializedName("type") val type: String,
         @field:SerializedName("userNick") val userNick: String,
         @field:SerializedName("userPhoto") val userPhoto: String?,
+        @field:SerializedName("integUid") val integUid: String
     ) {
         companion object {
             const val TYPE_FOLLOW = "follow"
