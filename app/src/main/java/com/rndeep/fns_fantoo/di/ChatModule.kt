@@ -3,8 +3,8 @@ package com.rndeep.fns_fantoo.di
 import android.content.ContentResolver
 import com.rndeep.fns_fantoo.data.remote.api.ChatService
 import com.rndeep.fns_fantoo.data.remote.socket.ChatSocketManager
-import com.rndeep.fns_fantoo.repositories.ChatRepository
 import com.rndeep.fns_fantoo.repositories.ChatInfoRepository
+import com.rndeep.fns_fantoo.repositories.ChatRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

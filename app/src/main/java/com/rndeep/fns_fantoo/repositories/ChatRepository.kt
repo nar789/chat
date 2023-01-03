@@ -2,6 +2,7 @@ package com.rndeep.fns_fantoo.repositories
 
 import android.content.ContentResolver
 import android.net.Uri
+import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -10,7 +11,7 @@ import androidx.paging.PagingSource
 import com.google.gson.Gson
 import com.rndeep.fns_fantoo.data.remote.dto.GetUserListResponse
 import com.rndeep.fns_fantoo.data.remote.model.chat.ChatRoomInfo
-import com.rndeep.fns_fantoo.data.remote.model.chat.ChatUserInfo
+import com.rndeep.fns_fantoo.data.remote.model.chat.CreateChatUserInfo
 import com.rndeep.fns_fantoo.data.remote.model.chat.Message
 import com.rndeep.fns_fantoo.data.remote.model.chat.ReadInfo
 import com.rndeep.fns_fantoo.data.remote.socket.ChatSocketEvent
@@ -183,12 +184,7 @@ class ChatRepository @Inject constructor(
         socketManager.emit(ChatSocketEvent.LOAD_CONVERSATION, mapOf(PARAM_USER_ID to userId))
     }
 
-    fun requestTmpCreateChat(users: List<ChatUserInfo>) {
-        val body = Gson().toJson(users).toString()
-        socketManager.emit(ChatSocketEvent.CREATE_CONVERSATION, mapOf(PARAM_INFO to body))
-    }
-
-    fun requestCreateChat(users: List<GetUserListResponse.ChatUserDto>) {
+    fun requestCreateChat(users: List<CreateChatUserInfo>) {
         val body = Gson().toJson(users).toString()
         socketManager.emit(ChatSocketEvent.CREATE_CONVERSATION, mapOf(PARAM_INFO to body))
     }

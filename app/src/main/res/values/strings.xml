@@ -801,6 +801,7 @@
     <string name="add_chat_no_search_result">검색 결과가 없습니다.</string>
     <string name="add_chat_follow_list">팔로우 목록</string>
     <string name="add_chat_fantoo_list">팬투 검색</string>
+    <string name="add_chat_error_toast">채팅방을 만들 수 없습니다.</string>
 
     <string name="chatting_edit_text_hint">댓글을 입력해 주세요.</string>
     <string name="chatting_block_description">채팅방 차단 해제 후 메시지를 보낼 수 있습니다.</string>
