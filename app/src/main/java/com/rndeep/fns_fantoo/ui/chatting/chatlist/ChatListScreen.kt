@@ -289,7 +289,7 @@ fun ChatListContent(
                         )
                     )
                 )
-                if (chat.unreads != null && chat.unreads > 1) {
+                if (chat.unreads != null && chat.unreads > 0) {
                     Card(
                         elevation = 0.dp,
                         modifier = Modifier
@@ -303,7 +303,7 @@ fun ChatListContent(
                             text = chat.unreads.toString(),
                             modifier = Modifier
                                 .wrapContentSize(align = Alignment.Center)
-                                .padding(horizontal = 3.dp, vertical = 2.dp),
+                                .padding(horizontal = 8.dp, vertical = 2.dp),
                             lineHeight = 18.sp,
                             style = TextStyle(
                                 fontSize = 12.sp,
