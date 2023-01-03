@@ -31,7 +31,7 @@ data class Message(
 
     fun isMyMessage(myId: String) = userId == myId
     fun getUnReadCount(readInfos: List<ReadInfo>, userCount: Int): Int {
-        return userCount - readInfos.filter { (it.lastMessageId ?: 0) > id }.size
+        return userCount - readInfos.filter { (it.lastMessageId ?: 0) >= id }.size
     }
 }
 

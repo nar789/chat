@@ -15,6 +15,7 @@ import com.rndeep.fns_fantoo.data.remote.model.chat.ReadInfo
 import com.rndeep.fns_fantoo.repositories.*
 import com.rndeep.fns_fantoo.ui.chatting.chat.model.ChatUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
@@ -80,13 +81,18 @@ class ChattingViewModel @Inject constructor(
     }
 
     private fun initChatState() {
-        chatRepository.chatList
-            .find { it.id == chatId }?.let { chatInfo ->
-                _chatUiState.value = _chatUiState.value.copy(
-                    chatTitle = chatInfo.title,
-                    userCount = chatInfo.userCount ?: 0
-                )
-            }
+        viewModelScope.launch {
+            chatRepository.requestChatList(myUid)
+            delay(300)
+            chatRepository.chatList
+                .find { it.id == chatId }?.let { chatInfo ->
+                    Log.d("sujini", "$chatInfo")
+                    _chatUiState.value = _chatUiState.value.copy(
+                        chatTitle = chatInfo.title,
+                        userCount = chatInfo.userCount ?: 0
+                    )
+                }
+        }
     }
 
     private fun initMessageState() {
@@ -190,7 +196,7 @@ class ChattingViewModel @Inject constructor(
             .onEach {
                 readInfoMap.remove(it)
                 val oldUserCount = _chatUiState.value.userCount
-                _chatUiState.value = _chatUiState.copy(userCount = oldUserCount - 1)
+                _chatUiState.value = _chatUiState.value.copy(userCount = oldUserCount - 1)
             }
             .collect()
     }
