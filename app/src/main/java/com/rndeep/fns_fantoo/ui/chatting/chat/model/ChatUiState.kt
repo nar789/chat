@@ -11,5 +11,7 @@ data class ChatUiState(
     val myId: String = "",
     val translateMode: Boolean = false,
     val blocked: Boolean = false,
-    val readInfos: List<ReadInfo> = listOf()
+    val readInfos: List<ReadInfo> = listOf(),
+    val chatTitle: String? = null,
+    val userCount: Int = 0
 )
