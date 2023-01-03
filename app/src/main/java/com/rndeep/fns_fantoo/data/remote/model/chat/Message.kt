@@ -30,8 +30,8 @@ data class Message(
     val isNormalType: Boolean get() = messageType in 0..2
 
     fun isMyMessage(myId: String) = userId == myId
-    fun getUnReadCount(readInfos: List<ReadInfo>): Int {
-        return readInfos.filter { (it.lastMessageId ?: 0) < id }.size
+    fun getUnReadCount(readInfos: List<ReadInfo>, userCount: Int): Int {
+        return userCount - readInfos.filter { (it.lastMessageId ?: 0) > id }.size
     }
 }
 

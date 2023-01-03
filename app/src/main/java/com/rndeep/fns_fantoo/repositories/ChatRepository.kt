@@ -2,14 +2,12 @@ package com.rndeep.fns_fantoo.repositories
 
 import android.content.ContentResolver
 import android.net.Uri
-import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.PagingSource
 import com.google.gson.Gson
-import com.rndeep.fns_fantoo.data.remote.dto.GetUserListResponse
 import com.rndeep.fns_fantoo.data.remote.model.chat.ChatRoomInfo
 import com.rndeep.fns_fantoo.data.remote.model.chat.CreateChatUserInfo
 import com.rndeep.fns_fantoo.data.remote.model.chat.Message
@@ -54,6 +52,9 @@ class ChatRepository @Inject constructor(
 
     private val _chatList = mutableStateListOf<ChatRoomInfo>()
     val chatList: List<ChatRoomInfo> get() = _chatList
+
+    private val _exitUserEvent = MutableSharedFlow<String>()
+    val exitUserEvent: SharedFlow<String> get() = _exitUserEvent
 
     private val _loadMessagesFlow = MutableSharedFlow<List<Message>>()
     private val loadMessagesFlow: SharedFlow<List<Message>> get() = _loadMessagesFlow
@@ -295,6 +296,7 @@ class ChatRepository @Inject constructor(
             CoroutineScope(Dispatchers.Default).launch {
                 messageFlow
                     .onEach {
+                        if (it.messageType == 3) _exitUserEvent.emit(it.userId.orEmpty())
                         useCache = true
                         cachedMessages.add(0, it)
                         dataSource?.invalidate()

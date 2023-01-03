@@ -69,18 +69,31 @@ class ChattingViewModel @Inject constructor(
         this.chatId = chatId
         checkChatBlockedState()
         initMessageState()
+        initChatState()
 
         _chatUiState.value = _chatUiState.value.copy(
-            messages = chatRepository.getMessageFlow(chatId, myUid).map { pagingData ->
+            messages = chatRepository.getMessageFlow(chatId, myUid)
+                .map { pagingData ->
                 pagingData.map { findUserProfile(it) }
             }.cachedIn(viewModelScope)
         )
+    }
+
+    private fun initChatState() {
+        chatRepository.chatList
+            .find { it.id == chatId }?.let { chatInfo ->
+                _chatUiState.value = _chatUiState.value.copy(
+                    chatTitle = chatInfo.title,
+                    userCount = chatInfo.userCount ?: 0
+                )
+            }
     }
 
     private fun initMessageState() {
         viewModelScope.launch {
             launch { collectReadInfoFlow() }
             launch { collectImageFlow() }
+            launch { collectRefreshChatFlow()}
 
             chatRepository.requestLeave(chatId)
             chatRepository.requestJoin(chatId)
@@ -170,6 +183,15 @@ class ChattingViewModel @Inject constructor(
             .onEach {
                 sendImageMessage(it)
             }.collect()
+    }
+
+    private suspend fun collectRefreshChatFlow() {
+        chatRepository.exitUserEvent
+            .onEach {
+                readInfoMap.remove(it)
+                initChatState()
+            }
+            .collect()
     }
 
     private suspend fun findUserProfile(message: Message): Message {

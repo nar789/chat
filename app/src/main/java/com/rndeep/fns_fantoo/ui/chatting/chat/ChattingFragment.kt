@@ -37,7 +37,7 @@ class ChattingFragment : Fragment() {
                 MaterialTheme {
                     ChattingScreen(
                         uiState = uiState,
-                        titleText = args.chatTitle.orEmpty(),
+                        titleText = uiState.chatTitle ?: args.chatTitle.orEmpty(),
                         onMessageSent = { viewModel.sendTextMessage(it) },
                         onTranslateClicked = { viewModel.setTranslateMode(!uiState.translateMode) },
                         onImageClicked = { imageUrl ->
