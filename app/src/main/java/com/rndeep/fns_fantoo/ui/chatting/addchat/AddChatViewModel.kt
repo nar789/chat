@@ -6,14 +6,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.rndeep.fns_fantoo.data.remote.ResultWrapper
 import com.rndeep.fns_fantoo.data.remote.dto.GetUserListResponse
+import com.rndeep.fns_fantoo.data.remote.model.IntegUid
 import com.rndeep.fns_fantoo.data.remote.model.chat.CreateChatUserInfo
-import com.rndeep.fns_fantoo.repositories.ChatInfoRepository
-import com.rndeep.fns_fantoo.repositories.ChatRepository
-import com.rndeep.fns_fantoo.repositories.DataStoreKey
-import com.rndeep.fns_fantoo.repositories.DataStoreRepository
+import com.rndeep.fns_fantoo.repositories.*
 import com.rndeep.fns_fantoo.ui.common.viewmodel.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
@@ -25,7 +25,8 @@ import javax.inject.Inject
 class AddChatViewModel @Inject constructor(
     private val dataStoreRepository: DataStoreRepository,
     private val chatRepository: ChatRepository,
-    private val chatInfoRepository: ChatInfoRepository
+    private val chatInfoRepository: ChatInfoRepository,
+    private val userInfoRepository: UserInfoRepository,
 ) : ViewModel() {
 
     private var myId: String = ""
@@ -72,19 +73,31 @@ class AddChatViewModel @Inject constructor(
             try {
                 accessToken =
                     dataStoreRepository.getString(DataStoreKey.PREF_KEY_ACCESS_TOKEN) ?: ""
-
                 myId = dataStoreRepository.getString(DataStoreKey.PREF_KEY_UID) ?: ""
-
-                chatInfoRepository.getMyProfile().onEach {
-                    myUserInfo = CreateChatUserInfo(
-                        userNick = it.nickname ?: "",
-                        userPhoto = it.imageUrl ?: "",
-                        id = myId
-                    )
-                }.collect()
+                loadMyProfile()
             } catch (e: Exception) {
                 showErrorToast(true)
                 Timber.e("initUser error: ${e.message}", e)
+            }
+        }
+    }
+
+    private suspend fun loadMyProfile() {
+        val response = userInfoRepository.fetchUserInfo(accessToken, IntegUid(myId))
+        Timber.d("fetchUserInfo : $response")
+
+        when (response) {
+            is ResultWrapper.Success -> {
+                myUserInfo = CreateChatUserInfo(
+                    userNick = response.data.userNick ?: "",
+                    userPhoto = response.data.userPhoto ?: "",
+                    id = response.data.integUid
+                )
+            }
+            else -> {
+                viewModelScope.launch(Dispatchers.Main) {
+                    showErrorToast(true)
+                }
             }
         }
     }
