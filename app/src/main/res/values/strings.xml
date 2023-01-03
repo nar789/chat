@@ -817,6 +817,7 @@
     <string name="chatting_setting_noti_off">알림 OFF</string>
     <string name="chatting_setting_leave">채팅방 나가기</string>
     <string name="chatting_image_prefix">http://nar005.cafe24.com:3000/img/%s</string>
+    <string name="chatting_exit_message">%s님이 퇴장했습니다.</string>
 <!--    -->
 
 </resources>
