@@ -6,8 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rndeep.fns_fantoo.data.remote.ResultWrapper
 import com.rndeep.fns_fantoo.data.remote.dto.ChatUserInfoResponse
-import com.rndeep.fns_fantoo.ui.chatting.profiledetail.model.ProfileUiState
 import com.rndeep.fns_fantoo.repositories.ChatInfoRepository
+import com.rndeep.fns_fantoo.ui.chatting.profiledetail.model.ProfileUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -45,14 +45,22 @@ class ProfileDetailViewModel @Inject constructor(
 
     fun setUserBlock(blocked: Boolean) {
         viewModelScope.launch {
-            _profileUiState.value = _profileUiState.value.copy(blocked = blocked)
+            val followed = if (blocked) false else _profileUiState.value.followed
+            _profileUiState.value = _profileUiState.value.copy(
+                blocked = blocked,
+                followed = followed
+            )
             chatInfoRepository.setUserBlock(accessToken, myUid, targetUserId, blocked)
         }
     }
 
     fun followUser(follow: Boolean) {
         viewModelScope.launch {
-            _profileUiState.value = _profileUiState.value.copy(followed = follow)
+            val blocked = if (follow) false else _profileUiState.value.blocked
+            _profileUiState.value = _profileUiState.value.copy(
+                followed = follow,
+                blocked = blocked
+            )
             chatInfoRepository.setUserFollow(accessToken, myUid, targetUserId, follow)
         }
     }
