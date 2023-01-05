@@ -55,7 +55,7 @@ interface ChatService {
     @GET("/$PATH_CHAT/conversation/block")
     suspend fun getConversationBlock(
         @Header(HEADER_ACCESS_TOKEN) accessToken: String,
-        @Query("conversationId ") conversationId: String,
+        @Query("conversationId") conversationId: String,
         @Query("integUid") integUid: String
     ): ConversationBlockResponse
 
