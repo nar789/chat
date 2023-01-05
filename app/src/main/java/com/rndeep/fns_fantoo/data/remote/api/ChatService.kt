@@ -1,8 +1,6 @@
 package com.rndeep.fns_fantoo.data.remote.api
 
-import com.rndeep.fns_fantoo.data.remote.dto.ChatUserInfoResponse
-import com.rndeep.fns_fantoo.data.remote.dto.GetUserListResponse
-import com.rndeep.fns_fantoo.data.remote.dto.TargetIntegUid
+import com.rndeep.fns_fantoo.data.remote.dto.*
 import retrofit2.http.*
 
 interface ChatService {
@@ -53,6 +51,25 @@ interface ChatService {
         @Header(HEADER_ACCESS_TOKEN) accessToken: String,
         @Body targetIntegUid: TargetIntegUid
     ): ChatUserInfoResponse
+
+    @GET("/$PATH_CHAT/conversation/block")
+    suspend fun getConversationBlock(
+        @Header(HEADER_ACCESS_TOKEN) accessToken: String,
+        @Query("conversationId") conversationId: String,
+        @Query("integUid") integUid: String
+    ): ConversationBlockResponse
+
+    @POST("/$PATH_CHAT/conversation/block")
+    suspend fun blockConversation(
+        @Header(HEADER_ACCESS_TOKEN) accessToken: String,
+        @Body chatConversationDto: ChatConversationDto
+    ): ConversationBlockResponse
+
+    @HTTP(method="DELETE", hasBody=true, path="/$PATH_CHAT/conversation/block")
+    suspend fun deleteConversationBlock(
+        @Header(HEADER_ACCESS_TOKEN) accessToken: String,
+        @Body chatConversationDto: ChatConversationDto
+    ): ConversationBlockResponse
 
     private companion object {
         const val PATH_CHAT = "chat"

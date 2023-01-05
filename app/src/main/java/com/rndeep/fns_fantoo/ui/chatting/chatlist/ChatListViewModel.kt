@@ -5,8 +5,8 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.*
 import com.rndeep.fns_fantoo.data.remote.model.chat.ChatRoomInfo
-import com.rndeep.fns_fantoo.repositories.ChatRepository
 import com.rndeep.fns_fantoo.repositories.ChatInfoRepository
+import com.rndeep.fns_fantoo.repositories.ChatRepository
 import com.rndeep.fns_fantoo.repositories.DataStoreKey
 import com.rndeep.fns_fantoo.repositories.DataStoreRepository
 import com.rndeep.fns_fantoo.ui.common.viewmodel.SingleLiveEvent
@@ -40,7 +40,7 @@ class ChatListViewModel @Inject constructor(
 
     private var userId: String = ""
     private val _navigateToLogin = SingleLiveEvent<Unit>()
-
+    private var accessToken: String = ""
 
     val navigateToLogin: LiveData<Unit> = _navigateToLogin
 
@@ -52,6 +52,7 @@ class ChatListViewModel @Inject constructor(
         viewModelScope.launch {
             _isUser.value = dataStoreRepository.getBoolean(DataStoreKey.PREF_KEY_IS_LOGINED)?: false
             userId = dataStoreRepository.getString(DataStoreKey.PREF_KEY_UID)?: ""
+            accessToken = dataStoreRepository.getString(DataStoreKey.PREF_KEY_ACCESS_TOKEN).toString()
         }
     }
 
@@ -71,7 +72,7 @@ class ChatListViewModel @Inject constructor(
             launch(Dispatchers.Main) {
                 closeOptions(chatId)
             }
-            chatInfoRepository.setConversationBlocked(userId, chatId, true)
+            chatInfoRepository.setConversationBlocked(accessToken, userId, chatId, true)
         }
     }
 

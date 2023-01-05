@@ -6,9 +6,7 @@ import androidx.paging.PagingData
 import com.rndeep.fns_fantoo.data.remote.BaseNetRepo
 import com.rndeep.fns_fantoo.data.remote.ResultWrapper
 import com.rndeep.fns_fantoo.data.remote.api.ChatService
-import com.rndeep.fns_fantoo.data.remote.dto.ChatUserInfoResponse
-import com.rndeep.fns_fantoo.data.remote.dto.GetUserListResponse
-import com.rndeep.fns_fantoo.data.remote.dto.TargetIntegUid
+import com.rndeep.fns_fantoo.data.remote.dto.*
 import com.rndeep.fns_fantoo.ui.chatting.addchat.AddChatFollowDataSource
 import com.rndeep.fns_fantoo.ui.chatting.addchat.AddChatSearchDataSource
 import kotlinx.coroutines.Dispatchers
@@ -21,13 +19,27 @@ class ChatInfoRepository @Inject constructor(
     private val chatApi: ChatService
 ) : BaseNetRepo() {
 
-    suspend fun isConversationBlocked(myUserId: String, conversationId: Int): Boolean {
-        return false
-    }
+    suspend fun isConversationBlocked(
+        accessToken: String,
+        myUid: String,
+        conversationId: Int
+    ): ResultWrapper<ConversationBlockResponse> = safeApiCall(Dispatchers.IO) {
+        chatApi.getConversationBlock(accessToken, conversationId.toString(), myUid)
+    }.also { logCallResult("isConversationBlocked", it) }
 
-    suspend fun setConversationBlocked(myUserId: String, conversationId: Int, block: Boolean) {
-
-    }
+    suspend fun setConversationBlocked(
+        accessToken: String,
+        myUid: String,
+        conversationId: Int,
+        block: Boolean
+    ): ResultWrapper<ConversationBlockResponse> = safeApiCall(Dispatchers.IO) {
+        val dto = ChatConversationDto(conversationId.toString(), myUid)
+        if (block) {
+            chatApi.blockConversation(accessToken, dto)
+        } else {
+            chatApi.deleteConversationBlock(accessToken, dto)
+        }
+    }.also { logCallResult("setConversationBlocked", it) }
 
     suspend fun setUserBlock(
         accessToken: String,

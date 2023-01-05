@@ -146,14 +146,24 @@ class ChattingViewModel @Inject constructor(
 
     fun setConversationUnBlock() {
         viewModelScope.launch {
-            chatInfoRepository.setConversationBlocked(myUid, chatId, true)
+            chatInfoRepository.setConversationBlocked(accessToken, myUid, chatId, false)
+                .also { response ->
+                    val convBlocked = when (response) {
+                        is ResultWrapper.Success -> response.data.blockYn
+                        else -> false
+                    }
+                    _chatUiState.value = _chatUiState.value.copy(blocked = convBlocked)
+                }
         }
     }
 
     private fun checkChatBlockedState() {
         viewModelScope.launch {
-            val convBlocked =
-                chatInfoRepository.isConversationBlocked(myUid, chatId)
+            val convBlocked = when (val response =
+                chatInfoRepository.isConversationBlocked(accessToken, myUid, chatId)) {
+                is ResultWrapper.Success -> response.data.blockYn
+                else -> false
+            }
 
             // TODO: check user blocked state
             val anyUserBlocked = false
