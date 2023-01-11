@@ -376,7 +376,9 @@ class ChatRepository @Inject constructor(
                     translateModeEvent.onEach { mode ->
                         translateMode = mode
 
-                        cachedMessages.filter { it.isNotTranslated }.chunked(30).forEach { messages ->
+                        val otherUserMessages =
+                            cachedMessages.filter { it.userId != userId && it.isNotTranslated }
+                        otherUserMessages.chunked(30).forEach { messages ->
                             val translateMap = getTranslateMap(messages) ?: return@forEach
                             cachedMessages = cachedMessages.map { message ->
                                 val key = message.id.toString()
@@ -412,7 +414,8 @@ class ChatRepository @Inject constructor(
 
         private suspend fun mapToTranslatedMessages(messages: List<Message>): List<Message> {
             return if (translateMode) {
-                val translateMap = getTranslateMap(messages) ?: return messages
+                val otherUserMessages = messages.filter { it.userId != userId }
+                val translateMap = getTranslateMap(otherUserMessages) ?: return messages
                 messages.map { message ->
                     val key = message.id.toString()
                     if (translateMap.containsKey(key)) {
@@ -427,7 +430,7 @@ class ChatRepository @Inject constructor(
         }
 
         private suspend fun mapToTranslatedMessage(message: Message): Message {
-            return if (translateMode) {
+            return if (translateMode && message.userId != userId) {
                 val translateMap = getTranslateMap(listOf(message)) ?: return message
                 val key = message.id.toString()
                 message.copy(_translatedMessage = translateMap[key]?.text)
