@@ -187,7 +187,7 @@ class ChatRepository @Inject constructor(
 
     private fun convertType3Message(message: Message) {
         if (message.messageType == 3) {
-            message.message = context.getString(R.string.chatting_exit_message)
+            message.message = context.getString(R.string.chatting_exit_message, message.displayName)
         }
     }
 
@@ -305,7 +305,7 @@ class ChatRepository @Inject constructor(
     ).flow
 
     fun setTranslateMode(translateMode: Boolean) {
-        CoroutineScope(Dispatchers.IO).launch {
+        CoroutineScope(Dispatchers.Default).launch {
             translateModeEvent.emit(translateMode)
         }
     }
@@ -316,7 +316,7 @@ class ChatRepository @Inject constructor(
         messages: List<Message>
     ): ResultWrapper<TranslateChatDto> = safeApiCall(Dispatchers.IO) {
         val request = TranslationRequest(
-            language = listOf("ja"),
+            language = listOf("en"),
             messages = messages.map {
                 TranslationRequest.MessageDto(
                     id = it.id.toString(),

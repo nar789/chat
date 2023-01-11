@@ -1,12 +1,16 @@
 package com.rndeep.fns_fantoo.ui.chatting.chat
 
-import android.util.Log
+import android.app.Application
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import androidx.paging.map
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.rndeep.fns_fantoo.data.remote.ResultWrapper
 import com.rndeep.fns_fantoo.data.remote.dto.UserInfoResponse
 import com.rndeep.fns_fantoo.data.remote.model.IntegUid
@@ -26,6 +30,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ChattingViewModel @Inject constructor(
+    private val application: Application,
     private val chatRepository: ChatRepository,
     private val dataStoreRepository: DataStoreRepository,
     private val chatInfoRepository: ChatInfoRepository,
@@ -71,18 +76,20 @@ class ChattingViewModel @Inject constructor(
         checkChatBlockedState()
         initMessageState()
         initChatState()
+        initMessageFlow()
+        viewModelScope.launch {
+            delay(500)
+            initTranslateMode()
+        }
+    }
 
+    private fun initMessageFlow() {
         _chatUiState.value = _chatUiState.value.copy(
             messages = chatRepository.getMessageFlow(chatId, myUid, accessToken)
                 .map { pagingData ->
                     pagingData.map { findUserProfile(it) }
                 }.cachedIn(viewModelScope)
         )
-
-        viewModelScope.launch {
-            delay(2000)
-            setTranslateMode(true)
-        }
     }
 
     private fun initChatState() {
@@ -91,7 +98,6 @@ class ChattingViewModel @Inject constructor(
             delay(300)
             chatRepository.chatList
                 .find { it.id == chatId }?.let { chatInfo ->
-                    Log.d("sujini", "$chatInfo")
                     _chatUiState.value = _chatUiState.value.copy(
                         chatTitle = chatInfo.title,
                         userCount = chatInfo.userCount ?: 0
@@ -146,9 +152,15 @@ class ChattingViewModel @Inject constructor(
 
     fun setTranslateMode(onOff: Boolean) {
         viewModelScope.launch {
-            _chatUiState.value = _chatUiState.value.copy(translateMode = onOff)
-            chatRepository.setTranslateMode(onOff)
+            changeTranslate(onOff)
+            initTranslateMode()
         }
+    }
+
+    private fun initTranslateMode() {
+        val translateMode = getTranslateState()
+        _chatUiState.value = _chatUiState.value.copy(translateMode = translateMode)
+        chatRepository.setTranslateMode(translateMode)
     }
 
     fun setConversationUnBlock() {
@@ -239,8 +251,44 @@ class ChattingViewModel @Inject constructor(
         }?.also { userProfileMap[userId] = it }
     }
 
+    private fun changeTranslate(isTranslateMode: Boolean) {
+        val pref: SharedPreferences =
+            application.getSharedPreferences(PREF_TRANSLATE, Context.MODE_PRIVATE) ?: return
+
+        val editor = pref.edit()
+        val gson = Gson()
+        val chatList = getTranslateList().toMutableList()
+        if (isTranslateMode) {
+            chatList.add(chatId)
+        } else {
+            chatList.remove(chatId)
+        }
+        val json = gson.toJson(chatList.distinct())
+
+        editor.putString(KEY_TRANSLATE_STATE, json)
+        editor.apply()
+    }
+
+    private fun getTranslateState(): Boolean {
+        return getTranslateList().contains(chatId)
+    }
+
+    private fun getTranslateList(): List<Int> {
+        val pref: SharedPreferences =
+            application.getSharedPreferences(PREF_TRANSLATE, Context.MODE_PRIVATE)
+                ?: return listOf()
+
+        val json: String = pref.getString(KEY_TRANSLATE_STATE, "") ?: ""
+        return Gson().fromJson(json, object : TypeToken<List<Int>?>() {}.type) ?: listOf()
+    }
+
     private data class UserProfile(
         val name: String?,
         val photo: String?
     )
+
+    private companion object {
+        const val PREF_TRANSLATE = "prefTranslate"
+        const val KEY_TRANSLATE_STATE = "chatTranslateState"
+    }
 }
