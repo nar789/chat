@@ -10,7 +10,7 @@ data class Message(
     @SerializedName("conversation_id") val conversationId: Int? = null,
     @SerializedName("user_id") val userId: String? = null,
     @SerializedName("message_type") val messageType: Int? = null,
-    @SerializedName("message") val message: String = "",
+    @SerializedName("message") var message: String = "",
     @SerializedName("updated") val updated: Long? = null,
     @SerializedName("image") val image: String? = null,
     @SerializedName("name") private val name: String? = null,

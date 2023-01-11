@@ -358,7 +358,7 @@ fun TextMessageItem(
         border = border
     ) {
         Text(
-            text = if(translateMode) message.translatedMessage.orEmpty() else message.message,
+            text = if (translateMode) message.translatedMessage.orEmpty() else message.message,
             color = textColor,
             modifier = Modifier.padding(horizontal = 14.dp, vertical = 8.dp)
         )
@@ -390,11 +390,18 @@ fun ExitMessageItem(
     message: Message,
     translateMode: Boolean
 ) {
+    val text = if (translateMode) {
+        message.translatedMessage
+    } else {
+        message.message
+    }.let {
+        String.format(it.replace("％s", "%s"), message.displayName)
+    }
     Text(
         modifier = Modifier
             .fillMaxWidth()
             .padding(bottom = 14.dp),
-        text = stringResource(R.string.chatting_exit_message, message.displayName.orEmpty()),
+        text = text,
         color = colorResource(R.color.state_enable_gray_400),
         fontSize = 14.sp,
         lineHeight = 20.sp,

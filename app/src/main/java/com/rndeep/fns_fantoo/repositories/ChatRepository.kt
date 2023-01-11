@@ -1,6 +1,7 @@
 package com.rndeep.fns_fantoo.repositories
 
 import android.content.ContentResolver
+import android.content.Context
 import android.net.Uri
 import androidx.compose.runtime.mutableStateListOf
 import androidx.paging.Pager
@@ -8,6 +9,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.PagingSource
 import com.google.gson.Gson
+import com.rndeep.fns_fantoo.R
 import com.rndeep.fns_fantoo.data.remote.BaseNetRepo
 import com.rndeep.fns_fantoo.data.remote.ResultWrapper
 import com.rndeep.fns_fantoo.data.remote.api.TranslateService
@@ -33,6 +35,7 @@ import javax.inject.Inject
 
 
 class ChatRepository @Inject constructor(
+    private val context: Context,
     private val socketManager: ChatSocketManager,
     private val contentResolver: ContentResolver,
     private val translateApi: TranslateService
@@ -155,6 +158,7 @@ class ChatRepository @Inject constructor(
         socketManager.on(ChatSocketEvent.LOAD_MESSAGE) { response ->
             val rows: String = response?.get(KEY_ROWS) ?: return@on
             val messageList: List<Message> = rows.toObjectList()
+            messageList.forEach(::convertType3Message)
             CoroutineScope(Dispatchers.IO).launch {
                 _loadMessagesFlow.emit(messageList)
             }
@@ -173,10 +177,17 @@ class ChatRepository @Inject constructor(
                 updated = response["updated"]?.toLong() ?: 0L,
                 image = response["image"],
                 name = response["name"]
-            )
+            ).also(::convertType3Message)
+
             CoroutineScope(Dispatchers.IO).launch {
                 _messageFlow.emit(message)
             }
+        }
+    }
+
+    private fun convertType3Message(message: Message) {
+        if (message.messageType == 3) {
+            message.message = context.getString(R.string.chatting_exit_message)
         }
     }
 
