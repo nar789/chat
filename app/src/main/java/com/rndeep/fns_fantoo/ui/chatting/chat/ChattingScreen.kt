@@ -126,6 +126,7 @@ fun ChattingScreen(
                     onImageClicked = onImageClicked,
                     onClickAuthor = onClickAuthor,
                     scrollState = scrollState,
+                    translateMode = uiState.translateMode,
                     readInfos = uiState.readInfos,
                     userCount = uiState.userCount
                 )
@@ -190,6 +191,7 @@ fun Messages(
     myId: String,
     readInfos: List<ReadInfo>,
     userCount: Int,
+    translateMode: Boolean,
     onImageClicked: (String) -> Unit,
     onClickAuthor: (String) -> Unit
 ) {
@@ -211,7 +213,7 @@ fun Messages(
                 contentAlignment = if (isMe) Alignment.CenterEnd else Alignment.CenterStart
             ) {
                 if (item.messageType == 3) {
-                    ExitMessageItem(message = item)
+                    ExitMessageItem(message = item, translateMode = translateMode)
                 } else {
                     val prevItem = messages.getOrNull(index + 1)
                     val nextItem = messages.getOrNull(index - 1)
@@ -231,7 +233,8 @@ fun Messages(
                         onImageClicked = onImageClicked,
                         onClickAuthor = onClickAuthor,
                         readInfos = readInfos,
-                        userCount = userCount
+                        userCount = userCount,
+                        translateMode = translateMode
                     )
                 }
             }
@@ -247,6 +250,7 @@ fun MessageItem(
     isLastMessageByAuthor: Boolean,
     timestampVisible: Boolean,
     readInfos: List<ReadInfo>,
+    translateMode: Boolean,
     onImageClicked: (String) -> Unit,
     onClickAuthor: (String) -> Unit,
     userCount: Int
@@ -271,7 +275,7 @@ fun MessageItem(
             }
 
             if (message.image.isNullOrEmpty()) {
-                TextMessageItem(message = message, isMe = isMe)
+                TextMessageItem(message = message, isMe = isMe, translateMode = translateMode)
             } else {
                 ImageMessageItem(message = message, onImageClicked = onImageClicked)
             }
@@ -328,7 +332,8 @@ fun AuthorAndName(
 @Composable
 fun TextMessageItem(
     message: Message,
-    isMe: Boolean
+    isMe: Boolean,
+    translateMode: Boolean
 ) {
     val (bgColor, textColor) = if (isMe) {
         colorResource(R.color.gray_700) to colorResource(R.color.gray_25)
@@ -353,7 +358,7 @@ fun TextMessageItem(
         border = border
     ) {
         Text(
-            text = message.message,
+            text = if(translateMode) message.translatedMessage.orEmpty() else message.message,
             color = textColor,
             modifier = Modifier.padding(horizontal = 14.dp, vertical = 8.dp)
         )
@@ -382,7 +387,8 @@ fun ImageMessageItem(
 
 @Composable
 fun ExitMessageItem(
-    message: Message
+    message: Message,
+    translateMode: Boolean
 ) {
     Text(
         modifier = Modifier

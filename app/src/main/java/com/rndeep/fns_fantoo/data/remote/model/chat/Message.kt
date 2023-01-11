@@ -1,5 +1,6 @@
 package com.rndeep.fns_fantoo.data.remote.model.chat
 
+import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import java.text.SimpleDateFormat
 import java.util.*
@@ -12,7 +13,8 @@ data class Message(
     @SerializedName("message") val message: String = "",
     @SerializedName("updated") val updated: Long? = null,
     @SerializedName("image") val image: String? = null,
-    @SerializedName("name") private val name: String? = null
+    @SerializedName("name") private val name: String? = null,
+    @Expose(serialize = false, deserialize = false) private val _translatedMessage: String? = null
 ) {
     var userPhoto: String? = null
     var displayName: String? = null
@@ -21,6 +23,7 @@ data class Message(
         } else {
             field
         }
+    val translatedMessage get() = _translatedMessage ?: message
 
     val dateText get() = updated?.let { dateFormat.format(it * 1000).toString() }.orEmpty()
     val hourText

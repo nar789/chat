@@ -73,11 +73,16 @@ class ChattingViewModel @Inject constructor(
         initChatState()
 
         _chatUiState.value = _chatUiState.value.copy(
-            messages = chatRepository.getMessageFlow(chatId, myUid)
+            messages = chatRepository.getMessageFlow(chatId, myUid, accessToken)
                 .map { pagingData ->
                     pagingData.map { findUserProfile(it) }
                 }.cachedIn(viewModelScope)
         )
+
+        viewModelScope.launch {
+            delay(2000)
+            setTranslateMode(true)
+        }
     }
 
     private fun initChatState() {
@@ -140,8 +145,10 @@ class ChattingViewModel @Inject constructor(
     }
 
     fun setTranslateMode(onOff: Boolean) {
-        Log.d("sujini", "setTranslateMode: $onOff")
-        _chatUiState.value = _chatUiState.value.copy(translateMode = onOff)
+        viewModelScope.launch {
+            _chatUiState.value = _chatUiState.value.copy(translateMode = onOff)
+            chatRepository.setTranslateMode(onOff)
+        }
     }
 
     fun setConversationUnBlock() {

@@ -8,10 +8,16 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.PagingSource
 import com.google.gson.Gson
+import com.rndeep.fns_fantoo.data.remote.BaseNetRepo
+import com.rndeep.fns_fantoo.data.remote.ResultWrapper
+import com.rndeep.fns_fantoo.data.remote.api.TranslateService
+import com.rndeep.fns_fantoo.data.remote.dto.TranslateChatDto
+import com.rndeep.fns_fantoo.data.remote.dto.TranslationRequest
 import com.rndeep.fns_fantoo.data.remote.model.chat.ChatRoomInfo
 import com.rndeep.fns_fantoo.data.remote.model.chat.CreateChatUserInfo
 import com.rndeep.fns_fantoo.data.remote.model.chat.Message
 import com.rndeep.fns_fantoo.data.remote.model.chat.ReadInfo
+import com.rndeep.fns_fantoo.data.remote.model.trans.TransChatMessage
 import com.rndeep.fns_fantoo.data.remote.socket.ChatSocketEvent
 import com.rndeep.fns_fantoo.data.remote.socket.ChatSocketManager
 import com.rndeep.fns_fantoo.ui.chatting.chat.MessageDataSource
@@ -28,8 +34,9 @@ import javax.inject.Inject
 
 class ChatRepository @Inject constructor(
     private val socketManager: ChatSocketManager,
-    private val contentResolver: ContentResolver
-) {
+    private val contentResolver: ContentResolver,
+    private val translateApi: TranslateService
+) : BaseNetRepo() {
 
     companion object {
         private const val KEY_RESULT = "result"
@@ -70,6 +77,8 @@ class ChatRepository @Inject constructor(
 
     private val _showErrorToast = MutableSharedFlow<String>()
     val showErrorToast: SharedFlow<String> get() = _showErrorToast
+
+    private var translateModeEvent = MutableSharedFlow<Boolean>()
 
     init {
         listenAll()
@@ -277,37 +286,107 @@ class ChatRepository @Inject constructor(
 
     fun getMessageFlow(
         conversationId: Int,
-        userId: String
+        userId: String,
+        accessToken: String
     ): Flow<PagingData<Message>> = Pager(
-        config = PagingConfig(pageSize = 10),
-        pagingSourceFactory = MessageDataSourceFactory(conversationId, userId)
+        config = PagingConfig(pageSize = 30),
+        pagingSourceFactory = MessageDataSourceFactory(conversationId, userId, accessToken)
     ).flow
 
+    fun setTranslateMode(translateMode: Boolean) {
+        CoroutineScope(Dispatchers.IO).launch {
+            translateModeEvent.emit(translateMode)
+        }
+    }
+
+    private suspend fun requestTranslate(
+        accessToken: String,
+        userId: String,
+        messages: List<Message>
+    ): ResultWrapper<TranslateChatDto> = safeApiCall(Dispatchers.IO) {
+        val request = TranslationRequest(
+            language = listOf("ja"),
+            messages = messages.map {
+                TranslationRequest.MessageDto(
+                    id = it.id.toString(),
+                    text = it.message,
+                    user = userId
+                )
+            }
+        )
+        translateApi.getTranslateWord(
+            authToken = accessToken,
+            deviceId = "",
+            translationRequest = request
+        )
+    }.also { logCallResult("requestTranslate", it) }
+
+    private fun <T> logCallResult(callName: String, result: ResultWrapper<T>) {
+        when (result) {
+            is ResultWrapper.Success -> Timber.d("$callName: ${result.data}")
+            is ResultWrapper.GenericError -> Timber.e("$callName response error code : ${result.code} , server msg : ${result.message} , message : ${result.errorData?.message}")
+            is ResultWrapper.NetworkError -> Timber.e("$callName NetworkError")
+        }
+    }
 
     private inner class MessageDataSourceFactory(
         private val conversationId: Int,
-        private val userId: String
+        private val userId: String,
+        private val accessToken: String
     ) : () -> PagingSource<Int, Message> {
-        private val cachedMessages = mutableListOf<Message>()
+        private var cachedMessages = mutableListOf<Message>()
         private var dataSource: MessageDataSource? = null
         private var useCache: Boolean = false
+        private var translateMode: Boolean = false
+
+        private val messages
+            get() = messageFlow
+                .map(::mapToTranslatedMessage)
+        private val loadMessages
+            get() = loadMessagesFlow
+                .map(::mapToTranslatedMessages)
 
         init {
             CoroutineScope(Dispatchers.Default).launch {
-                messageFlow
-                    .onEach {
-                        if (it.messageType == 3) _exitUserEvent.emit(it.userId.orEmpty())
-                        useCache = true
-                        cachedMessages.add(0, it)
-                        dataSource?.invalidate()
-                    }
-                    .collect()
+                // observe message change
+                launch {
+                    messages
+                        .onEach {
+                            if (it.messageType == 3) _exitUserEvent.emit(it.userId.orEmpty())
+                            useCache = true
+                            cachedMessages.add(0, it)
+                            dataSource?.invalidate()
+                        }
+                        .collect()
+                }
+
+                // observe translateMode change
+                launch {
+                    translateModeEvent.onEach { mode ->
+                        translateMode = mode
+
+                        cachedMessages.chunked(30).forEach { messages ->
+                            val translateMap = getTranslateMap(messages) ?: return@forEach
+                            cachedMessages = cachedMessages.map { message ->
+                                val key = message.id.toString()
+                                if (translateMap.containsKey(key)) {
+                                    message.copy(_translatedMessage = translateMap[key]?.text)
+                                } else {
+                                    message
+                                }
+                            }.toMutableList()
+
+                            useCache = true
+                            dataSource?.invalidate()
+                        }
+                    }.collect()
+                }
             }
         }
 
         override fun invoke(): PagingSource<Int, Message> {
             return MessageDataSource(
-                loadMessagesFlow,
+                loadMessages,
                 cachedMessages,
                 useCache,
                 requestLoadMessage = { offset, size ->
@@ -317,6 +396,42 @@ class ChatRepository @Inject constructor(
             ).also {
                 dataSource = it
                 useCache = false
+            }
+        }
+
+        private suspend fun mapToTranslatedMessages(messages: List<Message>): List<Message> {
+            return if (translateMode) {
+                val translateMap = getTranslateMap(messages) ?: return messages
+                messages.map { message ->
+                    val key = message.id.toString()
+                    if (translateMap.containsKey(key)) {
+                        message.copy(_translatedMessage = translateMap[key]?.text)
+                    } else {
+                        message
+                    }
+                }
+            } else {
+                messages
+            }
+        }
+
+        private suspend fun mapToTranslatedMessage(message: Message): Message {
+            return if (translateMode) {
+                val translateMap = getTranslateMap(listOf(message)) ?: return message
+                val key = message.id.toString()
+                message.copy(_translatedMessage = translateMap[key]?.text)
+            } else {
+                message
+            }
+        }
+
+        private suspend fun getTranslateMap(messages: List<Message>): Map<String, TransChatMessage>? {
+            return requestTranslate(accessToken, userId, messages).let { response ->
+                val result = when (response) {
+                    is ResultWrapper.Success -> if (response.data.isSuccess) response.data else null
+                    else -> null
+                } ?: return@let null
+                result.messages.associateBy { it.id }
             }
         }
     }

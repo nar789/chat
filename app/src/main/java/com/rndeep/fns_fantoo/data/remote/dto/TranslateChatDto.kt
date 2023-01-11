@@ -7,4 +7,6 @@ data class TranslateChatDto(
     @SerializedName("status") val status: String,
     @SerializedName("language") val language: List<String>,
     @SerializedName("messages") val messages: List<TransChatMessage>,
-)
+) {
+    val isSuccess get() = status == "success"
+}
