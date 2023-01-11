@@ -376,7 +376,7 @@ class ChatRepository @Inject constructor(
                     translateModeEvent.onEach { mode ->
                         translateMode = mode
 
-                        cachedMessages.chunked(30).forEach { messages ->
+                        cachedMessages.filter { it.isNotTranslated }.chunked(30).forEach { messages ->
                             val translateMap = getTranslateMap(messages) ?: return@forEach
                             cachedMessages = cachedMessages.map { message ->
                                 val key = message.id.toString()

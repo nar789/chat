@@ -24,6 +24,7 @@ data class Message(
             field
         }
     val translatedMessage get() = _translatedMessage ?: message
+    val isNotTranslated get() = _translatedMessage.isNullOrEmpty()
 
     val dateText get() = updated?.let { dateFormat.format(it * 1000).toString() }.orEmpty()
     val hourText
