@@ -16,6 +16,7 @@ class ChatSocketManager @Inject constructor() {
 
     private lateinit var socket: Socket
     private var job: CompletableJob = SupervisorJob()
+    private var ignoreFinish: Boolean = false
 
 
     init {
@@ -30,6 +31,10 @@ class ChatSocketManager @Inject constructor() {
     }
 
     fun connectSocket() {
+        if (socket.connected()) {
+            ignoreFinish = true
+            return
+        }
         Timber.d("try to connecting socket")
 
         job = SupervisorJob()
@@ -90,6 +95,10 @@ class ChatSocketManager @Inject constructor() {
     }
 
     fun finish() {
+        if (ignoreFinish) {
+            ignoreFinish = false
+            return
+        }
         if (job.isActive) {
             job.cancel()
         }
