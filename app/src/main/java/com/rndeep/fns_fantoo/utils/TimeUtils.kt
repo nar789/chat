@@ -9,18 +9,18 @@ import org.threeten.bp.LocalDateTime
 import org.threeten.bp.ZoneId
 import org.threeten.bp.format.DateTimeFormatter
 import java.util.*
-import kotlin.Exception
 
 
 object TimeUtils {
 
     //밀리초 일 경우
     fun diffTimeWithCurrentTime(time: Long): String {
+        if (time == 0L) return ""
         //현재 시간
         var timeString = "Unknown"
         try {
             val currentDate = Date().time
-            val diffTime = currentDate - time
+            val diffTime = currentDate - (time * 1000)
 
             val hours = (diffTime / (1000 * 60 * 60)).toInt()
             val mins = ((diffTime / (1000 * 60)) % 60).toInt()

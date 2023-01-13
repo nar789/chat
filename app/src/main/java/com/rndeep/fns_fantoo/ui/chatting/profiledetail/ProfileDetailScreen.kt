@@ -197,7 +197,7 @@ fun ProfileImage(
                 error = defaultImage,
                 placeholder = defaultImage
             ),
-            contentScale = ContentScale.Fit,
+            contentScale = ContentScale.Crop,
             contentDescription = null
         )
     }

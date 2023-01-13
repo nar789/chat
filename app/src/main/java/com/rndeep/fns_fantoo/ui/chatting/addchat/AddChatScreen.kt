@@ -13,9 +13,7 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.Card
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterVertically
@@ -64,7 +62,8 @@ fun AddChatScreen(viewModel: AddChatViewModel, onBack: () -> Unit) {
             )
 
             if (followList.itemCount > 0
-                || (searchList.itemCount > 0 && query.isNotEmpty() && query.isNotBlank())) {
+                || (searchList.itemCount > 0 && query.isNotEmpty() && query.isNotBlank())
+            ) {
                 val startBtn = createRef()
                 AddChatStartBtn(
                     modifier = Modifier
@@ -85,8 +84,14 @@ fun AddChatScreen(viewModel: AddChatViewModel, onBack: () -> Unit) {
 
 @Composable
 fun AddChatStartBtn(modifier: Modifier, active: Boolean, onClick: () -> Unit) {
+    var btnEnable by remember { mutableStateOf(true) }
     Card(
-        modifier = modifier.clickable { onClick() },
+        modifier = modifier.clickable {
+            if (btnEnable) {
+                onClick()
+                btnEnable = false
+            }
+        },
         elevation = 0.dp,
         shape = RoundedCornerShape(100.dp),
         backgroundColor = colorResource(id = if (active) R.color.primary_default else R.color.gray_200)
