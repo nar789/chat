@@ -43,6 +43,7 @@ import com.rndeep.fns_fantoo.ui.chatting.compose.getImageUrlFromCDN
 fun AddChatScreen(viewModel: AddChatViewModel, onBack: () -> Unit) {
     Surface(modifier = Modifier) {
         val followList = viewModel.followList.collectAsLazyPagingItems()
+        val searchList = viewModel.searchList.collectAsLazyPagingItems()
 
         ConstraintLayout(modifier = Modifier.fillMaxSize()) {
             val (header, content) = createRefs()
@@ -55,14 +56,15 @@ fun AddChatScreen(viewModel: AddChatViewModel, onBack: () -> Unit) {
                 modifier = Modifier.constrainAs(content) {
                     top.linkTo(header.bottom)
                 }, followList = followList,
-                searchList = viewModel.searchList.collectAsLazyPagingItems(),
+                searchList = searchList,
                 checkedUserList = viewModel.checkedUserList,
                 onCheckStateChanged = viewModel::onCheckStateChanged,
                 query = query,
                 onQueryInput = viewModel::updateQuery
             )
 
-            if (followList.itemCount > 0) {
+            if (followList.itemCount > 0
+                || (searchList.itemCount > 0 && query.isNotEmpty() && query.isNotBlank())) {
                 val startBtn = createRef()
                 AddChatStartBtn(
                     modifier = Modifier
