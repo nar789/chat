@@ -9,6 +9,8 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
@@ -145,13 +147,14 @@ fun ChattingScreen(
             } else {
                 BottomEditText(
                     onMessageSent,
-                    onImageSelectorClicked
+                    onImageSelectorClicked,
+                    scrollToBottom = { scrollState.scrollToItem(0) }
                 )
             }
 
             val snapshotMessages = messageList.itemSnapshotList
             // scroll to bottom
-            LaunchedEffect(Unit) {
+            LaunchedEffect(snapshotMessages) {
                 val isScrolledToEnd = scrollState.firstVisibleItemIndex <= 1
                 val lastMessageIsMine =
                     snapshotMessages.firstOrNull()?.isMyMessage(uiState.myId) == true
@@ -449,7 +452,8 @@ var SemanticsPropertyReceiver.keyboardShownProperty by KeyboardShownKey
 @Composable
 fun BottomEditText(
     onMessageSent: (String) -> Unit,
-    onImageSelectorClicked: () -> Unit
+    onImageSelectorClicked: () -> Unit,
+    scrollToBottom: suspend () -> Unit
 ) {
     var textState by rememberSaveable(stateSaver = TextFieldValue.Saver) {
         mutableStateOf(TextFieldValue())
@@ -457,8 +461,11 @@ fun BottomEditText(
     var focusState by remember { mutableStateOf(false) }
     val focusRequester by remember { mutableStateOf(FocusRequester()) }
     var inputActivateMode by remember { mutableStateOf(false) }
+    var scrollToBottomState by remember { mutableStateOf(false) }
 
     val userInputActivated = inputActivateMode || textState.text.isNotEmpty()
+
+    LaunchedEffect(scrollToBottomState) { scrollToBottom() }
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
@@ -478,10 +485,14 @@ fun BottomEditText(
                     onTextChanged = { textState = it },
                     showKeyboard = focusState,
                     onFocusChanged = { focusState = it },
-                    focusRequester = focusRequester
+                    focusRequester = focusRequester,
+                    onClick = { scrollToBottomState = !scrollToBottomState }
                 )
 
-                LaunchedEffect(Unit) { focusRequester.requestFocus() }
+                LaunchedEffect(Unit) {
+                    focusRequester.requestFocus()
+                    scrollToBottom()
+                }
             }
             UserInputSelector(
                 userInputActivated = userInputActivated,
@@ -503,8 +514,13 @@ fun UserInputText(
     onTextChanged: (TextFieldValue) -> Unit,
     showKeyboard: Boolean,
     onFocusChanged: (Boolean) -> Unit,
-    focusRequester: FocusRequester
+    focusRequester: FocusRequester,
+    onClick: () -> Unit
 ) {
+    val source = remember { MutableInteractionSource() }
+
+    if (source.collectIsPressedAsState().value) onClick()
+
     Surface(Modifier.semantics {
         keyboardShownProperty = showKeyboard
     }) {
@@ -531,6 +547,7 @@ fun UserInputText(
                 lineHeight = 20.sp
             ),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+            interactionSource = source
         )
     }
 }
@@ -803,7 +820,7 @@ fun ChatScreenPreview() {
 @Composable
 fun BottomEditTextPreview() {
     MaterialTheme {
-        BottomEditText({}) {}
+        BottomEditText({}, {}) {}
     }
 }
 
