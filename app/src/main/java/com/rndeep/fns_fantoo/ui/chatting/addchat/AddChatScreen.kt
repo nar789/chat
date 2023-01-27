@@ -5,6 +5,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
@@ -13,6 +14,7 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.Card
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
@@ -86,7 +88,9 @@ fun AddChatScreen(viewModel: AddChatViewModel, onBack: () -> Unit) {
 fun AddChatStartBtn(modifier: Modifier, active: Boolean, onClick: () -> Unit) {
     var btnEnable by remember { mutableStateOf(true) }
     Card(
-        modifier = modifier.clickable {
+        modifier = modifier
+            .clip(RoundedCornerShape(100.dp))
+            .clickable {
             if (btnEnable) {
                 onClick()
                 btnEnable = false
@@ -132,7 +136,10 @@ fun AddChatHeader(modifier: Modifier, onBack: () -> Unit) {
                 modifier = Modifier
                     .padding(start = 14.dp)
                     .align(CenterVertically)
-                    .clickable { onBack() },
+                    .clickable(
+                        interactionSource = MutableInteractionSource(),
+                        indication = rememberRipple(bounded = false)
+                    ) { onBack() },
                 alignment = Center
             )
 
@@ -273,10 +280,10 @@ fun FollowerItem(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(start = 20.dp, end = 18.dp)
             .clickable {
                 onClick(userInfo)
             }
+            .padding(start = 20.dp, end = 18.dp)
     ) {
         val defaultImage = painterResource(R.drawable.profile_character11)
         Image(

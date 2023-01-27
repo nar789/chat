@@ -1,18 +1,19 @@
 package com.rndeep.fns_fantoo.ui.chatting.chatlist
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
@@ -90,15 +91,18 @@ fun ChatListHeader(navigateToAddChat: () -> Unit) {
             )
             Image(
                 modifier = Modifier
-                    .fillMaxHeight()
-                    .width(36.dp)
+                    .padding(end = 12.dp)
+                    .size(36.dp, 36.dp)
                     .constrainAs(addBtn) {
                         end.linkTo(parent.end)
                         top.linkTo(parent.top)
                         bottom.linkTo(parent.bottom)
                     }
-                    .padding(end = 12.dp)
-                    .clickable { navigateToAddChat() },
+                    .clickable(
+                        interactionSource = MutableInteractionSource(),
+                        indication = rememberRipple(bounded = false)
+                    ) { navigateToAddChat() }
+                    .padding(5.dp),
                 painter = painterResource(R.drawable.outline_icon_outline_plus),
                 contentDescription = null
             )
@@ -214,11 +218,11 @@ fun ChatListContent(
         Row(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(12.dp)
                 .clickable {
                     if (isOpened) return@clickable
                     onClickChat(chat.id, chat.title ?: "")
                 }
+                .padding(12.dp)
         ) {
             val defaultImage = painterResource(R.drawable.profile_character11)
             Image(
@@ -267,7 +271,9 @@ fun ChatListContent(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 2.dp),
-                    text = if (chat.isImageMessage() && chat.message.isNullOrEmpty()) stringResource(id = R.string.chat_list_image_message) else chat.message ?: "",
+                    text = if (chat.isImageMessage() && chat.message.isNullOrEmpty()) stringResource(
+                        id = R.string.chat_list_image_message
+                    ) else chat.message ?: "",
                     style = FantooChatTypography.h4.copy(color = colorResource(id = R.color.gray_400)),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis

@@ -3,12 +3,13 @@ package com.rndeep.fns_fantoo.ui.chatting.imagepicker
 import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -82,7 +83,10 @@ fun PickerSelector(
         Text(
             modifier = Modifier
                 .padding(top = 20.dp, start = 18.dp)
-                .clickable { onClickCancel() },
+                .clickable(
+                        interactionSource = MutableInteractionSource(),
+                        indication = rememberRipple(bounded = false)
+                    ) { onClickCancel() },
             text = stringResource(R.string.image_picker_cancel_btn),
             fontSize = 14.sp,
             lineHeight = 20.sp,
@@ -111,7 +115,10 @@ fun PickerSelector(
         Text(
             modifier = Modifier
                 .padding(top = 20.dp, end = 18.dp)
-                .clickable { onClickDone() },
+                .clickable(
+                        interactionSource = MutableInteractionSource(),
+                        indication = rememberRipple(bounded = false)
+                    ) { onClickDone() },
             text = stringResource(R.string.image_picker_done_btn),
             fontSize = 14.sp,
             lineHeight = 20.sp,

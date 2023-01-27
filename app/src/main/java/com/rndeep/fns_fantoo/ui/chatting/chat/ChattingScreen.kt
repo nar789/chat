@@ -20,6 +20,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -306,7 +307,10 @@ fun AuthorAndName(
     onClickAuthor: (String) -> Unit
 ) {
     Row(
-        modifier = Modifier.clickable { message.userId?.let(onClickAuthor) },
+        modifier = Modifier.clickable(
+            interactionSource = MutableInteractionSource(),
+            indication = rememberRipple(bounded = false)
+        ) { message.userId?.let(onClickAuthor) },
         verticalAlignment = Alignment.CenterVertically
     ) {
         val defaultImage = painterResource(R.drawable.profile_character1)
@@ -569,7 +573,10 @@ fun UserInputSelector(
     ) {
         Image(
             modifier = Modifier
-                .clickable { onImageSelectorClicked() }
+                .clickable(
+                    interactionSource = MutableInteractionSource(),
+                    indication = rememberRipple(bounded = false)
+                ) { onImageSelectorClicked() }
                 .size(32.dp)
                 .padding(4.dp),
             painter = painterResource(R.drawable.icon_outline_picture),
@@ -639,7 +646,10 @@ fun ChatHeader(
             Image(
                 modifier = Modifier
                     .size(36.dp)
-                    .clickable { onBack() }
+                    .clickable(
+                        interactionSource = MutableInteractionSource(),
+                        indication = rememberRipple(bounded = false)
+                    ) { onBack() }
                     .padding(4.dp)
                     .constrainAs(backBtn) {
                         start.linkTo(parent.start, margin = 10.dp)
@@ -671,7 +681,10 @@ fun ChatHeader(
             Image(
                 modifier = Modifier
                     .size(36.dp)
-                    .clickable { onTranslateClicked() }
+                    .clickable(
+                        interactionSource = MutableInteractionSource(),
+                        indication = rememberRipple(bounded = false)
+                    ) { onTranslateClicked() }
                     .padding(5.dp)
                     .constrainAs(translateBtn) {
                         start.linkTo(title.end)
@@ -686,7 +699,10 @@ fun ChatHeader(
             Image(
                 modifier = Modifier
                     .size(36.dp)
-                    .clickable { onClickMore() }
+                    .clickable(
+                        interactionSource = MutableInteractionSource(),
+                        indication = rememberRipple(bounded = false)
+                    ) { onClickMore() }
                     .padding(5.dp)
                     .constrainAs(moreBtn) {
                         start.linkTo(translateBtn.end)
