@@ -391,15 +391,16 @@ fun ImageMessageItem(
     val defaultImage = painterResource(id = R.drawable.character_main2)
     Image(
         modifier = Modifier
-            .clickable { onImageClicked(message.image.orEmpty()) }
             .padding(4.dp)
-            .widthIn(max = 149.dp)
-            .clip(RoundedCornerShape(12.dp)),
+            .width(149.dp)
+            .clip(RoundedCornerShape(12.dp))
+            .clickable { onImageClicked(message.image.orEmpty()) },
         painter = rememberAsyncImagePainter(
             model = message.image.getChatImageUrl(),
             fallback = defaultImage, error = defaultImage, placeholder = defaultImage
         ),
-        contentDescription = null
+        contentDescription = null,
+        contentScale = ContentScale.FillWidth
     )
 }
 
