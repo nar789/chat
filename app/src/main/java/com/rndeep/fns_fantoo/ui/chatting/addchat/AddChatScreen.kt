@@ -206,14 +206,20 @@ fun AddChatList(
         }
         items(count = list.itemCount) { index ->
             val user = list[index] ?: return@items
-            val prevType = if(index == 0) GetUserListResponse.ChatUserDto.TYPE_FOLLOW else list[index - 1]?.type?: GetUserListResponse.ChatUserDto.TYPE_FOLLOW
+            val prevType =
+                if (index == 0) GetUserListResponse.ChatUserDto.TYPE_FOLLOW else list[index - 1]?.type
+                    ?: GetUserListResponse.ChatUserDto.TYPE_FOLLOW
+
             // 타이틀 영역 추가
+            // user가 follow타입이거나 검색이 아니고 첫 index인 경우
             if ((user.isFollow() || isSearch.not()) && index == 0) {
                 AddChatTitleItem(
                     titleResId = R.string.add_chat_follow_list,
                     count = if (isSearch.not()) list.itemCount else null
                 )
+                // 팬투 검색의 첫번째 결과인 경우
             } else if (user.isOther() && prevType == GetUserListResponse.ChatUserDto.TYPE_FOLLOW) {
+                // 검색결과에 팔로우 목록이 있는 경우 여백 추가
                 if (index > 0) {
                     FantooListSpacer()
                 }
