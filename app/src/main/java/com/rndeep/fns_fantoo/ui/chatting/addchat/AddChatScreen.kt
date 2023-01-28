@@ -223,7 +223,7 @@ fun AddChatList(
                 modifier = Modifier.padding(
                     top = if (index == 0 || prevType != user.type) 8.dp else 6.dp,
                     bottom = when (index) {
-                        list.itemCount -> 140.dp
+                        list.itemCount - 1 -> 140.dp
                         else -> 6.dp
                     }
                 )
