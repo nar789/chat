@@ -151,6 +151,14 @@ class ChatRepository @Inject constructor(
             val data: String = response[KEY_DATA] ?: return@on
             _chatList.clear()
             _chatList.addAll(data.toObjectList())
+            _chatList.addAll(
+                (0..150).map {
+                    ChatRoomInfo(
+                        id = it,
+                        title = "title$it"
+                    )
+                }
+            )
         }
     }
 

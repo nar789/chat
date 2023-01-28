@@ -2,15 +2,10 @@ package com.rndeep.fns_fantoo.ui.chatting.chatlist
 
 import android.annotation.SuppressLint
 import androidx.compose.animation.core.*
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.ripple.rememberRipple
@@ -123,8 +118,12 @@ fun ChatList(
         modifier = Modifier.fillMaxSize(),
         color = colorResource(id = R.color.bg_bg_light_gray_50)
     ) {
-        LazyColumn(modifier = Modifier.fillMaxSize()) {
-            itemsIndexed(chatList) { index, chat ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+        ) {
+            chatList.forEachIndexed { index, chat ->
                 Box(
                     modifier = Modifier.padding(
                         top = if (index == 0) 18.dp else 8.dp,
