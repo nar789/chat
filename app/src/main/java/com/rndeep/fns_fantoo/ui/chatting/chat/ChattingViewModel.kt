@@ -18,12 +18,11 @@ import com.rndeep.fns_fantoo.data.remote.model.chat.Message
 import com.rndeep.fns_fantoo.data.remote.model.chat.ReadInfo
 import com.rndeep.fns_fantoo.repositories.*
 import com.rndeep.fns_fantoo.ui.chatting.chat.model.ChatUiState
+import com.rndeep.fns_fantoo.ui.chatting.chat.model.ChatViewEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -39,6 +38,9 @@ class ChattingViewModel @Inject constructor(
 
     private val _chatUiState by lazy { mutableStateOf(ChatUiState()) }
     val chatUiState: State<ChatUiState> get() = _chatUiState
+
+    private val _viewEvent = Channel<ChatViewEvent>(Channel.BUFFERED)
+    val viewEvent = _viewEvent.receiveAsFlow()
 
     private var chatId: Int = 0
     private var readInfoMap: MutableMap<String, ReadInfo> = mutableMapOf()
@@ -108,6 +110,7 @@ class ChattingViewModel @Inject constructor(
 
     private fun initMessageState() {
         viewModelScope.launch {
+            launch { collectMessageFlow() }
             launch { collectReadInfoFlow() }
             launch { collectImageFlow() }
             launch { collectRefreshChatFlow() }
@@ -198,6 +201,13 @@ class ChattingViewModel @Inject constructor(
             is ResultWrapper.Success -> response.data
             else -> null
         }
+    }
+
+    private suspend fun collectMessageFlow() {
+        chatRepository.messageFlow
+            .collectLatest {
+                _viewEvent.send(ChatViewEvent.SCROLL_TO_BOTTOM)
+            }
     }
 
     private suspend fun collectReadInfoFlow() {

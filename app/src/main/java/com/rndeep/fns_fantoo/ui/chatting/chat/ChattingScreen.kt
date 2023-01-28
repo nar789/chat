@@ -58,18 +58,23 @@ import com.rndeep.fns_fantoo.R
 import com.rndeep.fns_fantoo.data.remote.model.chat.Message
 import com.rndeep.fns_fantoo.data.remote.model.chat.ReadInfo
 import com.rndeep.fns_fantoo.ui.chatting.chat.model.ChatUiState
+import com.rndeep.fns_fantoo.ui.chatting.chat.model.ChatViewEvent
 import com.rndeep.fns_fantoo.ui.chatting.compose.FantooChatTypography
 import com.rndeep.fns_fantoo.ui.chatting.compose.getChatImageUrl
 import com.rndeep.fns_fantoo.ui.chatting.compose.getImageUrlFromCDN
 import com.skydoves.landscapist.rememberDrawablePainter
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 
 @Composable
 fun ChattingScreen(
     uiState: ChatUiState,
+    eventFLow: Flow<ChatViewEvent>,
     modifier: Modifier = Modifier,
     titleText: String,
     onMessageSent: (String) -> Unit,
@@ -97,13 +102,6 @@ fun ChattingScreen(
 
     // True if floating date text is shown.
     var floatingDateShown by remember { mutableStateOf(false) }
-
-    suspend fun hideFloatingDate() {
-        if (floatingDateShown) {
-            delay(500L)
-            floatingDateShown = false
-        }
-    }
 
     Surface(
         modifier = modifier,
@@ -152,28 +150,41 @@ fun ChattingScreen(
                     scrollToBottom = { scrollState.scrollToItem(0) }
                 )
             }
+        }
+    }
 
-            val snapshotMessages = messageList.itemSnapshotList
-            // scroll to bottom
-            LaunchedEffect(snapshotMessages) {
-                val isScrolledToEnd = scrollState.firstVisibleItemIndex <= 1
-                val lastMessageIsMine =
-                    snapshotMessages.firstOrNull()?.isMyMessage(uiState.myId) == true
-                if (isScrolledToEnd || lastMessageIsMine) {
-                    scrollState.scrollToItem(0)
-                }
-            }
-
-            // floating date text visibility animation
-            if (scrollState.isScrollInProgress) {
-                DisposableEffect(Unit) {
-                    jobState?.cancel()
-                    if (snapshotMessages.isNotEmpty() && !floatingDateShown) floatingDateShown =
-                        true
-                    onDispose {
-                        jobState = coroutineScope.launch { hideFloatingDate() }
+    LaunchedEffect(key1 = Unit) {
+        eventFLow.collectLatest { event ->
+            when (event) {
+                ChatViewEvent.SCROLL_TO_BOTTOM -> {
+                    val snapshotMessages = messageList.itemSnapshotList
+                    val isScrolledToEnd = scrollState.firstVisibleItemIndex <= 1
+                    val lastMessageIsMine =
+                        snapshotMessages.firstOrNull()?.isMyMessage(uiState.myId) == true
+                    if (isScrolledToEnd || lastMessageIsMine) {
+                        scrollState.scrollToItem(0)
                     }
                 }
+            }
+        }
+    }
+
+    suspend fun hideFloatingDate() {
+        if (floatingDateShown) {
+            delay(500L)
+            floatingDateShown = false
+        }
+    }
+
+    // floating date text visibility animation
+    if (scrollState.isScrollInProgress) {
+        DisposableEffect(Unit) {
+            val snapshotMessages = messageList.itemSnapshotList
+            jobState?.cancel()
+            if (snapshotMessages.isNotEmpty() && !floatingDateShown) floatingDateShown =
+                true
+            onDispose {
+                jobState = coroutineScope.launch { hideFloatingDate() }
             }
         }
     }
@@ -816,6 +827,7 @@ fun ChatScreenPreview() {
     MaterialTheme {
         ChattingScreen(
             ChatUiState(messages = emptyFlow()),
+            flowOf(),
             Modifier,
             "Dasol",
             onMessageSent = {},

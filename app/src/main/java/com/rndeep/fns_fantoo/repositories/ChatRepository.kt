@@ -70,7 +70,7 @@ class ChatRepository @Inject constructor(
     private val loadMessagesFlow: SharedFlow<List<Message>> get() = _loadMessagesFlow
 
     private val _messageFlow = MutableSharedFlow<Message>()
-    private val messageFlow: SharedFlow<Message> get() = _messageFlow
+    val messageFlow: SharedFlow<Message> get() = _messageFlow
 
     private val _readInfoFlow = MutableSharedFlow<ReadInfo>()
     val readInfoFlow: SharedFlow<ReadInfo?> get() = _readInfoFlow
