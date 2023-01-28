@@ -204,9 +204,10 @@ fun AddChatList(
         if (list.itemCount <= 0) {
             return@LazyColumn
         }
-        var prevType = GetUserListResponse.ChatUserDto.TYPE_FOLLOW
         items(count = list.itemCount) { index ->
             val user = list[index] ?: return@items
+            val prevType = if(index == 0) GetUserListResponse.ChatUserDto.TYPE_FOLLOW else list[index - 1]?.type?: GetUserListResponse.ChatUserDto.TYPE_FOLLOW
+            // 타이틀 영역 추가
             if ((user.isFollow() || isSearch.not()) && index == 0) {
                 AddChatTitleItem(
                     titleResId = R.string.add_chat_follow_list,
@@ -217,8 +218,8 @@ fun AddChatList(
                     FantooListSpacer()
                 }
                 AddChatTitleItem(titleResId = R.string.add_chat_fantoo_list)
-
             }
+
             Box(
                 modifier = Modifier.padding(
                     top = if (index == 0 || prevType != user.type) 8.dp else 6.dp,
@@ -234,8 +235,6 @@ fun AddChatList(
                     onClick = onCheckStateChanged
                 )
             }
-
-            prevType = user.type
         }
     }
 }
