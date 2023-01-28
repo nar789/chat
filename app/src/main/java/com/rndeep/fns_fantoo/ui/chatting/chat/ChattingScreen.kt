@@ -465,11 +465,9 @@ fun BottomEditText(
     var focusState by remember { mutableStateOf(false) }
     val focusRequester by remember { mutableStateOf(FocusRequester()) }
     var inputActivateMode by remember { mutableStateOf(false) }
-    var scrollToBottomState by remember { mutableStateOf(false) }
+    val scope = rememberCoroutineScope()
 
     val userInputActivated = inputActivateMode || textState.text.isNotEmpty()
-
-    LaunchedEffect(scrollToBottomState) { scrollToBottom() }
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
@@ -490,7 +488,7 @@ fun BottomEditText(
                     showKeyboard = focusState,
                     onFocusChanged = { focusState = it },
                     focusRequester = focusRequester,
-                    onClick = { scrollToBottomState = !scrollToBottomState }
+                    onClick = { scope.launch { scrollToBottom() } }
                 )
 
                 LaunchedEffect(Unit) {
