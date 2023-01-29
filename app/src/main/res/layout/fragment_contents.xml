@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.menu.fantooclub.contents.ContentsFragment">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/home_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="true"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/list_item_contents" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        style="@style/Widget.App.FloatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_gravity="center_horizontal|bottom"
+        android:backgroundTint="@color/gray_25"
+        android:src="@drawable/icon_outline_scrolltop"
+        android:visibility="gone"
+        app:backgroundTint="@color/gray_500"
+        app:borderWidth="0.5dp"
+        app:fabSize="mini"
+        app:layout_anchor="@id/home_list"
+        app:layout_anchorGravity="center_horizontal"
+        app:tint="@color/state_enable_gray_900" />
+</FrameLayout>

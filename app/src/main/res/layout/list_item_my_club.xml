@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="6dp"
+    android:layout_marginBottom="6dp">
+
+    <ImageView
+        android:id="@+id/club_img"
+        android:layout_width="38dp"
+        android:layout_height="38dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@drawable/baby_icon" />
+
+    <TextView
+        android:id="@+id/club_title"
+        style="@style/Body21420Regular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@color/gray_870"
+        app:layout_constraintStart_toEndOf="@id/club_img"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Exo hi" />
+
+    <TextView
+        android:id="@+id/club_admin"
+        style="@style/Caption21116Regular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:paddingHorizontal="5dp"
+        android:text="@string/a_operate"
+        android:textColor="@color/gray_25"
+        android:background="@drawable/bg_club_myclub_operation"
+        android:visibility="visible"
+        app:layout_constraintStart_toEndOf="@id/club_title"
+        app:layout_constraintTop_toTopOf="@id/club_title" />
+
+    <TextView
+        android:id="@+id/club_member_cnt"
+        style="@style/Caption11218Regular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="2dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@color/gray_500"
+        app:layout_constraintTop_toBottomOf="@id/club_title"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/club_img"
+        tools:text=" 45,768명"
+        app:drawableStartCompat="@drawable/member_start_icon" />
+
+    <ImageView
+        android:id="@+id/locked_img"
+        android:layout_width="30dp"
+        android:layout_height="18dp"
+        android:layout_marginStart="6dp"
+        android:scaleType="center"
+        android:src="@drawable/icon_fill_club"
+        android:visibility="gone"
+        app:layout_constraintStart_toEndOf="@id/club_title"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/gray_900" />
+
+    <ImageView
+        android:id="@+id/favorite_img"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/icon_fill_bookmark"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/secondary_default" />
+</androidx.constraintlayout.widget.ConstraintLayout>

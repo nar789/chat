@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/gray_25">
+
+    <ImageView
+        android:id="@+id/img"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="18dp"
+        android:src="@drawable/ic_hanryu_times"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/section"
+        style="@style/Caption11218Regular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:textColor="@color/gray_900"
+        app:layout_constraintStart_toEndOf="@id/img"
+        app:layout_constraintTop_toTopOf="@id/img"
+        tools:text="K-드라마" />
+
+    <TextView
+        android:id="@+id/time"
+        style="@style/Caption11218Regular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/gray_400"
+        app:layout_constraintStart_toStartOf="@id/section"
+        app:layout_constraintTop_toBottomOf="@id/section"
+        tools:text="2일 전" />
+
+    <ImageView
+        android:id="@+id/more"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:src="@drawable/icon_outline_more"
+        app:layout_constraintBottom_toBottomOf="@id/img"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/img" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/contents_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:background="?attr/selectableItemBackground"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/img">
+
+        <TextView
+            android:id="@+id/title"
+            style="@style/Body21420Regular"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textColor="@color/gray_870"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="세상에서 가장 소름돋는 라이브\n오늘 데뷔한 신인 가수 외모, 비쥬얼 아티스트, 오늘 데뷔한 신인 가수 외모, 비쥬얼 아티스트" />
+
+        <ImageView
+            android:id="@+id/thumbnail"
+            android:layout_width="match_parent"
+            android:layout_height="276dp"
+            android:layout_marginTop="12dp"
+            android:adjustViewBounds="true"
+            app:layout_constraintTop_toBottomOf="@id/title"
+            tools:src="@drawable/ic_hanryu_times" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageView
+        android:id="@+id/like"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_marginVertical="16dp"
+        android:layout_marginStart="20dp"
+        android:src="@drawable/icon_fill_like"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/contents_container"
+        app:tint="@color/gray_200" />
+
+    <TextView
+        android:id="@+id/like_count"
+        style="@style/Caption11218Regular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:textColor="@color/gray_700"
+        app:layout_constraintBottom_toBottomOf="@id/like"
+        app:layout_constraintStart_toEndOf="@id/like"
+        app:layout_constraintTop_toTopOf="@id/like"
+        tools:text="1,3k" />
+
+    <ImageView
+        android:id="@+id/dislike"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_marginStart="6dp"
+        android:src="@drawable/icon_fill_dislike"
+        app:layout_constraintBottom_toBottomOf="@id/like_count"
+        app:layout_constraintStart_toEndOf="@id/like_count"
+        app:layout_constraintTop_toTopOf="@id/like_count"
+        app:tint="@color/gray_200" />
+
+    <ImageView
+        android:id="@+id/honor"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_marginStart="18dp"
+        android:src="@drawable/icon_fill_honor"
+        app:layout_constraintBottom_toBottomOf="@id/dislike"
+        app:layout_constraintStart_toEndOf="@id/dislike"
+        app:layout_constraintTop_toTopOf="@id/dislike"
+        app:tint="@color/gray_200" />
+
+    <TextView
+        android:id="@+id/honor_count"
+        style="@style/Caption11218Regular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:textColor="@color/gray_700"
+        app:layout_constraintBottom_toBottomOf="@id/honor"
+        app:layout_constraintStart_toEndOf="@id/honor"
+        app:layout_constraintTop_toTopOf="@id/honor"
+        tools:text="234" />
+</androidx.constraintlayout.widget.ConstraintLayout>

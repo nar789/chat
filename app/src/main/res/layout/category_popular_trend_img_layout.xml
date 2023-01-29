@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/llTagContainer"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="8dp">
+
+    <TextView
+        android:id="@+id/tvTrendText"
+        style="@style/Body21420Regular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_border_radius_30_c_gray25_s_gray200"
+        android:paddingHorizontal="10dp"
+        android:text="#안녕하세요"
+        android:textColor="@color/gray_800" />
+</LinearLayout>

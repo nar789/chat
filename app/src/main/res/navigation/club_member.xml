@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/club_member"
+    app:startDestination="@id/clubMemberDetailFragment3">
+    <action
+        android:id="@+id/action_global_clubMemberDetailFragment3"
+        app:destination="@id/clubMemberDetailFragment3"
+        >
+        <argument
+            android:name="clubId"
+            app:argType="string" />
+        <argument
+            android:name="integUid"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="memberId"
+            app:argType="integer" />
+        <argument
+            android:name="myMemberId"
+            app:argType="string" />
+    </action>
+    <fragment
+        android:id="@+id/clubMemberDetailFragment3"
+        android:name="com.rndeep.fns_fantoo.ui.club.settings.ClubMemberDetailFragment"
+        tools:layout="@layout/fragment_club_setting_member_detail"
+        android:label="ClubMemberDetailFragment" >
+        <argument
+            android:name="clubId"
+            app:argType="string" />
+        <argument
+            android:name="integUid"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="memberId"
+            app:argType="integer" />
+        <argument
+            android:name="myMemberId"
+            app:argType="string" />
+
+        <action
+            android:id="@+id/action_clubMemberDetailFragment3_to_club_post"
+            app:destination="@id/club_post" >
+            <argument
+                android:name="previewType"
+                app:argType="string" />
+            <argument
+                android:name="categoryCode"
+                app:argType="string" />
+            <argument
+                android:name="clubId"
+                app:argType="string" />
+            <argument
+                android:name="postId"
+                app:argType="integer" />
+            <argument
+                android:name="replyId"
+                app:argType="integer"/>
+        </action>
+        <action
+            android:id="@+id/action_clubMemberDetailFragment3_to_profileDetailImageViewFragment2"
+            app:destination="@id/profileDetailImageViewFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileDetailImageViewFragment2"
+        android:name="com.rndeep.fns_fantoo.ui.common.ProfileDetailImageViewFragment"
+        android:label="ProfileDetailImageViewFragment" />
+</navigation>

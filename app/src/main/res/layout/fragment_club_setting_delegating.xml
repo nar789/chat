@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_25"
+    tools:ignore="MissingDefaultResource">
+
+    <com.rndeep.fns_fantoo.ui.common.viewgroup.CommonTopbar
+        android:id="@+id/topbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:titleText="@string/k_close_delete_club" />
+
+    <TextView
+        android:id="@+id/tvTitle"
+        style="@style/Title32028Bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/se_k_club_status_is_delegating"
+        android:textColor="@color/gray_900"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/topbar" />
+
+    <TextView
+        android:id="@+id/tvTitle2"
+        style="@style/Body21420Regular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/a_delegating_schedule"
+        android:textColor="@color/primary_500"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvTitle" />
+
+    <View
+        android:id="@+id/v_Divider2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginRight="20dp"
+        android:background="@color/gray_400_opacity12"
+        app:layout_constraintTop_toBottomOf="@id/tvTitle2" />
+
+    <TextView
+        android:id="@+id/tvDelegateTargetTitle"
+        style="@style/Caption11218Regular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/a_delegating_target_member"
+        android:textColor="@color/gray_850"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/v_Divider2" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clDelegateTarget"
+        android:layout_width="match_parent"
+        android:layout_height="98dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/bg_border_radius_16_c_grey50"
+        app:layout_constraintTop_toBottomOf="@id/tvDelegateTargetTitle">
+
+        <ImageView
+            android:id="@+id/ivProfile"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:layout_marginLeft="22dp"
+            android:src="@drawable/profile_character_l"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvNickName"
+            style="@style/Title51622RobotoMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="24dp"
+            android:textColor="@color/gray_900"
+            app:layout_constraintLeft_toRightOf="@id/ivProfile"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvMemberGrade"
+            style="@style/Body21420Regular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/gray_500"
+            app:layout_constraintLeft_toRightOf="@id/ivProfile"
+            app:layout_constraintTop_toBottomOf="@id/tvNickName" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/tvDesc"
+        style="@style/Caption21116Regular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/se_a_delegating_holding_period"
+        android:textColor="@color/gray_500"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/clDelegateTarget" />
+
+    <TextView
+        android:id="@+id/tvDesc1"
+        style="@style/Caption21116Regular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:text="@string/se_b_can_to_cancel_delegating_holding"
+        android:textColor="@color/gray_500"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvDesc" />
+
+    <Button
+        android:id="@+id/btnCancelDelegate"
+        style="@style/button_blue"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
+        android:text="@string/k_cancel_delegating_club"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_900_opacity30"
+    android:paddingHorizontal="42dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clDialogContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_border_radius_32_c_no_s_darkblue10"
+        android:backgroundTint="@color/gray_25"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tvTopTitle"
+            style="@style/Title41824Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="17dp"
+            android:text="@string/k_delegating_agree_by_manager"
+            android:textColor="@color/gray_900"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/ivCloseDialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:layout_marginEnd="18dp"
+            android:src="@drawable/icon_outline_cancel"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvDelegateExplain"
+            style="@style/Caption21116Regular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="@string/se_k_delegate_club_to_you"
+            android:textColor="@color/gray_850"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvTopTitle" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clClubInfoContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="18dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_border_radius_12_c_no"
+            android:backgroundTint="@color/bg_light_gray_50"
+            app:layout_constraintTop_toBottomOf="@id/tvDelegateExplain">
+
+            <CheckBox
+                android:id="@+id/firstCheck"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/checkbox_round_uncheck"
+                android:button="@null"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvFirstCheckMessage"
+                style="@style/Caption21116Regular"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="12dp"
+                android:text="@string/se_k_delegating_complete_when_agree"
+                android:textColor="@color/state_danger"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/firstCheck"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvFirstCheckSubMessage"
+                style="@style/Caption21116Regular"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="12dp"
+                android:text="@string/se_d_delegating_to_cancel_possible_by_manager"
+                android:textColor="@color/gray_700"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/firstCheck"
+                app:layout_constraintTop_toBottomOf="@id/tvFirstCheckMessage" />
+
+            <CheckBox
+                android:id="@+id/secondCheck"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/checkbox_round_uncheck"
+                android:button="@null"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvFirstCheckSubMessage" />
+
+            <TextView
+                android:id="@+id/tvClubMember"
+                style="@style/Caption21116Regular"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="9dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="10dp"
+                android:text="@string/se_a_cannot_cancel_after_delegating_agree"
+                android:textColor="@color/state_danger"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/firstCheck"
+                app:layout_constraintTop_toTopOf="@id/secondCheck" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/tvClubDescription"
+            style="@style/Buttons1420Medium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="18dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center_horizontal"
+            android:text="@string/se_a_agree_to_delegating"
+            android:textAlignment="center"
+            android:textColor="@color/gray_850"
+            app:layout_constraintTop_toBottomOf="@id/clClubInfoContainer" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnAcceptDelegate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="55dp"
+            android:layout_marginTop="20dp"
+            android:includeFontPadding="false"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:minHeight="0dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="@string/a_agree_to_delegate"
+            android:textAppearance="@style/Buttons1420Medium"
+            app:backgroundTint="@color/state_disabled_gray_200"
+            app:cornerRadius="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvClubDescription"
+            app:rippleColor="@color/primary_300" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnRejectDelegate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="55dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:background="?attr/selectableItemBackground"
+            android:includeFontPadding="false"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:minHeight="0dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="@string/g_rejection"
+            android:textAppearance="@style/Buttons1420Medium"
+            android:textColor="@color/state_enable_gray_400"
+            app:backgroundTint="@color/transparent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btnAcceptDelegate" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

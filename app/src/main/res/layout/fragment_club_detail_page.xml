@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/totalContainer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_light_gray_50"
+    android:clipChildren="false"
+    tools:context=".ui.club.detail.ClubPageFragment">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/coordiLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/bg_light_gray_50"
+        android:clipChildren="false">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/clubDetailAppbar"
+            android:layout_width="match_parent"
+            android:layout_height="210dp"
+            android:background="@drawable/profile_club_bg">
+
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:id="@+id/collapsingToolbar"
+                android:layout_width="match_parent"
+                android:layout_height="166dp"
+                android:fitsSystemWindows="true"
+                app:collapsedTitleGravity="center_horizontal"
+                app:collapsedTitleTextAppearance="@style/Title51622Medium"
+                app:contentScrim="@color/transparent"
+                app:expandedTitleGravity="center_horizontal"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                app:titleCollapseMode="fade">
+
+                <RelativeLayout
+                    android:id="@+id/rlTopBarContainer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="60dp">
+                    <!--        클럽 상단 Info-->
+                    <RelativeLayout
+                        android:id="@+id/rlClubPageTopContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <RelativeLayout
+                            android:id="@+id/rlClubInfoContainer"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingHorizontal="20dp">
+
+                            <ImageView
+                                android:id="@+id/ivClubThumbnail"
+                                android:layout_width="38dp"
+                                android:layout_height="38dp"
+                                android:layout_marginEnd="12dp"
+                                android:background="@drawable/bg_border_radius_12_c_no"
+                                android:src="@drawable/profile_club_character" />
+
+                            <LinearLayout
+                                android:id="@+id/llClubInfoContainer"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_toEndOf="@+id/ivClubThumbnail"
+                                android:background="?attr/selectableItemBackground"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/tvClubName"
+                                    style="@style/Title51622RobotoMedium"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text=""
+                                    android:textColor="@color/state_active_gray_900" />
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center_vertical"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/tvClubMemberInfo"
+                                        style="@style/Caption11218Regular"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text=""
+                                        android:textColor="@color/state_active_gray_900" />
+
+                                    <ImageView
+                                        android:id="@+id/ivInformation"
+                                        android:layout_width="16dp"
+                                        android:layout_height="16dp"
+                                        android:layout_marginLeft="4dp"
+                                        android:src="@drawable/icon_fill_information" />
+                                </LinearLayout>
+                            </LinearLayout>
+                        </RelativeLayout>
+
+                        <TextView
+                            android:id="@+id/tvClubInfoText"
+                            style="@style/Caption11218Regular"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/rlClubInfoContainer"
+                            android:layout_marginTop="12dp"
+                            android:layout_marginBottom="14dp"
+                            android:ellipsize="end"
+                            android:lines="2"
+                            android:paddingHorizontal="20dp"
+                            android:text="" />
+                    </RelativeLayout>
+                </RelativeLayout>
+
+                <com.google.android.material.appbar.MaterialToolbar
+                    android:id="@+id/detailToolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:paddingRight="12dp"
+                    android:paddingLeft="2dp"
+                    app:layout_scrollFlags="scroll|enterAlways"
+                    app:contentInsetEnd="0dp"
+                    app:contentInsetRight="0dp"
+                    app:contentInsetStartWithNavigation="0dp"
+                    app:layout_collapseMode="pin"
+                    app:menu="@menu/club_detail_menu"
+                    app:navigationIcon="@drawable/icon_outline_home_n"
+                    app:titleMarginStart="56dp"
+                    app:titleTextAppearance="@style/Title41824Medium"
+                    tools:ignore="RtlSymmetry"/>
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/clubDetailTab"
+                style="@style/ThemeCustom.TabLayout"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:background="@drawable/bg_club_tab"
+                android:backgroundTint="@color/gray_25"
+                android:elevation="2dp"
+                app:tabGravity="fill"
+                app:tabIndicator="@drawable/club_detail_page_tablayout_indicator"
+                app:tabIndicatorColor="@color/gray_900"
+                app:tabIndicatorFullWidth="false"
+                app:tabIndicatorHeight="2dp"
+                app:tabMode="fixed"
+                app:tabRippleColor="@color/gray_200"
+                app:tabSelectedTextColor="@color/gray_900"
+                app:tabTextAppearance="@style/Buttons1420Medium"
+                app:tabTextColor="@color/gray_400">
+            </com.google.android.material.tabs.TabLayout>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/vpClubPagePostList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="1dp"
+            android:background="@color/bg_light_gray_50"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+        <Button
+            android:id="@+id/tvClubJoin"
+            style="@style/Buttons1420Medium"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="bottom"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/bg_border_radius_100_btnactivie"
+            android:elevation="2dp"
+            android:visibility="gone"
+            android:text="@string/g_to_join"
+            android:textColor="@color/state_enable_gray_25" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabClubPost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="92dp"
+        app:maxImageSize="96dp"
+        android:src="@drawable/btn_post_t"
+        app:tint="@null"
+        android:backgroundTint="@color/transparent"
+        android:visibility="visible"
+        app:elevation="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

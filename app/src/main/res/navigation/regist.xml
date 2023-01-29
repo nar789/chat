@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/regist"
+    tools:ignore="InvalidNavigation">
+    <!-- startDestination set runtime in registerActivity -->
+
+    <fragment
+        android:id="@+id/inputEmailFragment"
+        android:name="com.rndeep.fns_fantoo.ui.regist.InputEmailFragment"
+        android:label="InputEmailFragment">
+        <action
+            android:id="@+id/action_inputEmailFragment_to_inputVerifyCodeFragment"
+            app:destination="@id/inputVerifyCodeFragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/inputVerifyCodeFragment"
+        android:name="com.rndeep.fns_fantoo.ui.regist.InputVerifyCodeFragment"
+        android:label="InputVerifyCodeFragment">
+        <action
+            android:id="@+id/action_inputVerifyCodeFragment_to_inputPasswordFragment"
+            app:destination="@id/inputPasswordFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/inputPasswordFragment"
+        android:name="com.rndeep.fns_fantoo.ui.regist.InputPasswordFragment"
+        android:label="InputPasswordFragment">
+        <action
+            android:id="@+id/action_inputPasswordFragment_to_inputEmailFragment"
+            app:destination="@id/inputEmailFragment" />
+        <action
+            android:id="@+id/action_inputPasswordFragment_to_agreeConfirmFragment"
+            app:destination="@id/agreeConfirmFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/agreeConfirmFragment"
+        android:name="com.rndeep.fns_fantoo.ui.regist.AgreeConfirmFragment"
+        android:label="AgreeConfirmFragment">
+        <action
+            android:id="@+id/action_agreeConfirmFragment_to_inputEmailFragment"
+            app:destination="@id/inputEmailFragment" />
+        <action
+            android:id="@+id/action_agreeConfirmFragment_to_policyFragment"
+            app:destination="@id/policyFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/policyFragment"
+        android:name="com.rndeep.fns_fantoo.ui.regist.PolicyFragment"
+        android:label="PolicyFragment">
+        <action
+            android:id="@+id/action_policyFragment_to_agreeConfirmFragment"
+            app:destination="@id/agreeConfirmFragment" />
+    </fragment>
+
+
+</navigation>

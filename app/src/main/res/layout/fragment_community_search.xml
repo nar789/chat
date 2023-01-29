@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_light_gray_50"
+    tools:context=".ui.community.search.CommunitySearchFragment">
+
+    <RelativeLayout
+        android:id="@+id/rlSearchContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/state_enable_gray_25"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="15dp"
+        app:layout_constraintBottom_toTopOf="@id/rlRecentSearchConatiner"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="8dp"
+            android:layout_toStartOf="@+id/tvCancel"
+            android:background="@drawable/bg_border_radius_8_c_darkblue50_s_darkblue100">
+
+            <ImageView
+                android:id="@+id/ivSearchIcon"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="12dp"
+                android:src="@drawable/icon_outline_search" />
+
+            <EditText
+                android:id="@+id/edtSearchWord"
+                style="@style/Body21420Regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="8dp"
+                android:layout_toEndOf="@+id/ivSearchIcon"
+                android:background="@null"
+                android:hint="@string/k_search_post_in_community"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:lines="1"
+                android:maxWidth="250dp" />
+
+            <ImageView
+                android:id="@+id/ivSearchWordClear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/icon_search_cancel"
+                android:visibility="gone" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tvCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:fontFamily="@font/noto_sans_kr"
+            android:gravity="right|center_vertical"
+            android:minWidth="36dp"
+            android:text="@string/c_cancel"
+            android:textColor="@color/gray_800"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/rlRecentSearchConatiner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rlSearchContainer"
+        android:paddingTop="14dp"
+        android:paddingBottom="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rlSearchContainer">
+
+        <TextView
+            android:id="@+id/rvRecentSearchText"
+            style="@style/Title51622RobotoMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:text="@string/c_recently_search"
+            android:textColor="@color/state_active_gray_900"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvAllDelete"
+            style="@style/Caption11218Regular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:text="@string/j_delete_all"
+            android:textColor="@color/gray_600"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcRecentSearchList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/bg_club_search"
+            android:orientation="horizontal"
+            android:paddingVertical="24dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintTop_toBottomOf="@id/rvRecentSearchText" />
+
+        <TextView
+            android:id="@+id/tvNoRecentSearchWord"
+            style="@style/Caption11218Regular"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/bg_club_search"
+            android:gravity="center"
+            android:paddingVertical="32dp"
+            android:text="@string/se_c_not_exist_recently_search_history"
+            android:textColor="@color/gray_500"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/rvRecentSearchText" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlResultContainer"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rlSearchContainer">
+
+        <TextView
+            android:id="@+id/tvResultCount"
+            style="@style/Caption11218Regular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:paddingHorizontal="20dp"
+            android:text="@string/j_all_with_arg"
+            android:visibility="gone" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/tvResultCount"
+            android:layout_marginTop="13dp"
+            android:background="@color/primary_300_opacity12"
+            android:visibility="gone" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcResultList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/tvResultCount"
+            android:layout_marginTop="1dp" />
+
+
+    </RelativeLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clNoSearchList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/rlSearchContainer"
+        android:layout_marginTop="130dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/rlSearchContainer">
+
+        <ImageView
+            android:id="@+id/ivNoSearch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/character_club2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvNoSearchList"
+            style="@style/Body21420Regular"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="14dp"
+            android:gravity="center"
+            android:text="검색된 커뮤니티 게시글이 없습니다."
+            android:textColor="@color/gray_600"
+            app:layout_constraintTop_toBottomOf="@id/ivNoSearch" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.rndeep.fns_fantoo.ui.common.viewgroup.FantooLoadingView
+        android:id="@+id/fantooLoadingView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

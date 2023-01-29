@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/community_notice"
+    app:startDestination="@id/noticePageFragment4">
+
+    <fragment
+        android:id="@+id/noticePageFragment4"
+        android:name="com.rndeep.fns_fantoo.ui.community.board.notice.NoticePageFragment"
+        android:label="fragment_notice_page"
+        tools:layout="@layout/fragment_notice_page" >
+        <argument
+            android:name="noticeInfo"
+            app:argType="com.rndeep.fns_fantoo.ui.community.BoardInfo" />
+        <action
+            android:id="@+id/action_noticePageFragment4_to_communitypost"
+            app:destination="@id/communitypost" >
+            <argument
+                android:name="postType"
+                app:argType="string"
+                />
+            <argument
+                android:name="boardCode"
+                app:argType="string"
+                app:nullable="true"
+                />
+            <argument
+                android:name="postId"
+                app:argType="integer" />
+        </action>
+    </fragment>
+    <include app:graph="@navigation/community_post" />
+</navigation>

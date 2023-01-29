@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/recommendClubContainer"
+    android:background="@color/bg_bg_light_gray_50"
+    android:paddingTop="20dp">
+    <TextView
+        android:id="@+id/tvClubRecommend"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Title41824Medium"
+        android:textColor="@color/gray_900"
+        android:paddingHorizontal="20dp"
+        android:text="클럽 추천의 title"
+        />
+    <TextView
+        android:id="@+id/tvClubRecommendSubTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Body21420Regular"
+        android:textColor="@color/gray_500"
+        android:layout_below="@+id/tvClubRecommend"
+        android:layout_marginTop="5dp"
+        android:paddingHorizontal="20dp"
+        android:text="클럽 추천의 subtext"
+        />
+    <ImageView
+        android:id="@+id/ivRecommendCharacter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/character_main1"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcMyClubCategory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvClubRecommendSubTitle"
+        android:layout_marginTop="19dp"
+
+        />
+    <com.rndeep.fns_fantoo.utils.NestedScrollableHost
+        android:id="@+id/nestBackground"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="19dp"
+        android:layout_below="@+id/rcMyClubCategory"
+        >
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcClubRecommendList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+    </com.rndeep.fns_fantoo.utils.NestedScrollableHost>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clNoClubList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rcMyClubCategory"
+        android:layout_marginTop="19dp"
+        android:visibility="gone"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/Body21420Regular"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="클럽 리스트가 존재하지 않습니다."
+            android:textColor="@color/gray_870"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

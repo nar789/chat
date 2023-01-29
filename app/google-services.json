@@ -1,0 +1,235 @@
+{
+  "project_info": {
+    "project_number": "382755949407",
+    "firebase_url": "https://fandomnetworkservice.firebaseio.com",
+    "project_id": "fandomnetworkservice",
+    "storage_bucket": "fandomnetworkservice.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:382755949407:android:3c21bb425959782ed244ea",
+        "android_client_info": {
+          "package_name": "com.fns.fantoo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "382755949407-ih52ltdr2sicn4lt4grv1kugqt3rbvgv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyASs-O57RDu6xzRe8b0Un-oFWhwl4P9qmw"
+        },
+        {
+          "current_key": "AIzaSyCYHbGgTM8SGM0ukTAunkzmXyaSdufspUU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "382755949407-ih52ltdr2sicn4lt4grv1kugqt3rbvgv.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "382755949407-68i7mnl4avi2j2cms9u0l3pjt3drlld1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.rndeep.fantoo",
+                "app_store_id": "1553859430"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:382755949407:android:a49016e9913f6473d244ea",
+        "android_client_info": {
+          "package_name": "com.rndeep.fns"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "382755949407-5giv6i0niptli12leuphaa0hd34n04m7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rndeep.fns",
+            "certificate_hash": "85974d8d0f8137b67bc40122c63cef71667be8c7"
+          }
+        },
+        {
+          "client_id": "382755949407-7tud4l74p5sr8omun7nm0pf48ls88qkb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rndeep.fns",
+            "certificate_hash": "4116d8e3b9cd9e3345aee03ef80929dc2733076a"
+          }
+        },
+        {
+          "client_id": "382755949407-7tvgccmhsi22cvvavaacco5pac49q7pu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rndeep.fns",
+            "certificate_hash": "7a0804d95bed8ec7cdc4e002bbbcb0f85b908f13"
+          }
+        },
+        {
+          "client_id": "382755949407-aturoi4ma9jtgjnqgge2nc370cpng11b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rndeep.fns",
+            "certificate_hash": "56439f519459a7b9d1c1ea6bf329b36b72f4e90b"
+          }
+        },
+        {
+          "client_id": "382755949407-dbfsv7qupj9725gqcs5nr7ok3q97iga0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rndeep.fns",
+            "certificate_hash": "440a161bbdace8fef52bdb761bbe704f8aa06552"
+          }
+        },
+        {
+          "client_id": "382755949407-h73e3fh4lllo1fe1sani8sd5uk8h6stu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rndeep.fns",
+            "certificate_hash": "537a3eb6fadf1554039e1833f18a173929e421c1"
+          }
+        },
+        {
+          "client_id": "382755949407-pg6c4npjguknhtqct5c3ag0tkdntisg3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rndeep.fns",
+            "certificate_hash": "fe8120f72d026fe06990d2d6d07ce3530e07c87c"
+          }
+        },
+        {
+          "client_id": "382755949407-rn12ledip6orj4ufkmppj9g04k8uhpr0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rndeep.fns",
+            "certificate_hash": "d8ff981395aa1e842a25d466597d65adf1ca0e61"
+          }
+        },
+        {
+          "client_id": "382755949407-s17c0anl3i3qo423os6chrblpe5anvvl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rndeep.fns",
+            "certificate_hash": "390ade5332904db25ac71cf646572b9ff70f9336"
+          }
+        },
+        {
+          "client_id": "382755949407-s3lveqim4e5jscmq72plvi6ghccukikg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rndeep.fns",
+            "certificate_hash": "61a7a7616fec0f06d472db92c1034afa86403d94"
+          }
+        },
+        {
+          "client_id": "382755949407-ih52ltdr2sicn4lt4grv1kugqt3rbvgv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyASs-O57RDu6xzRe8b0Un-oFWhwl4P9qmw"
+        },
+        {
+          "current_key": "AIzaSyCYHbGgTM8SGM0ukTAunkzmXyaSdufspUU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "382755949407-ih52ltdr2sicn4lt4grv1kugqt3rbvgv.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "382755949407-68i7mnl4avi2j2cms9u0l3pjt3drlld1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.rndeep.fantoo",
+                "app_store_id": "1553859430"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:382755949407:android:8f5391be889a5ce4d244ea",
+        "android_client_info": {
+          "package_name": "com.rndeep.fns_fantoo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "382755949407-975scntsqlrtm1drl3idr16fr9itqao3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rndeep.fns_fantoo",
+            "certificate_hash": "390ade5332904db25ac71cf646572b9ff70f9336"
+          }
+        },
+        {
+          "client_id": "382755949407-hekofrgfgn9is5f96ont3jsetjs8q263.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rndeep.fns_fantoo",
+            "certificate_hash": "52238c95b1926b354b3e07b2290e3303fbad53a6"
+          }
+        },
+        {
+          "client_id": "382755949407-vjbtjo36d7ja5tp3a2t6bf1l0bs6kap5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rndeep.fns_fantoo",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "382755949407-ih52ltdr2sicn4lt4grv1kugqt3rbvgv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyASs-O57RDu6xzRe8b0Un-oFWhwl4P9qmw"
+        },
+        {
+          "current_key": "AIzaSyCYHbGgTM8SGM0ukTAunkzmXyaSdufspUU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "382755949407-ih52ltdr2sicn4lt4grv1kugqt3rbvgv.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "382755949407-68i7mnl4avi2j2cms9u0l3pjt3drlld1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.rndeep.fantoo",
+                "app_store_id": "1553859430"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

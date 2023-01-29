@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_gravity="center_horizontal"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/info_container"
+        android:layout_width="276dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="22dp"
+        app:cardCornerRadius="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="18dp">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/follow_btn"
+                style="@style/Caption11218Regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="4dp"
+                android:text="@string/p_follow"
+                android:textColor="@color/gray_25"
+                app:backgroundTint="@color/primary_500"
+                app:cornerRadius="6dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:rippleColor="@color/primary_300"
+                app:strokeColor="@color/gray_25"
+                app:strokeWidth="1dp" />
+
+            <TextView
+                android:id="@+id/title"
+                style="@style/Title41824Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="45dp"
+                android:text="@string/h_hanryutimes"
+                android:textColor="@color/gray_870"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/follower_container"
+                android:layout_width="match_parent"
+                android:layout_height="36dp"
+                android:layout_marginTop="12dp"
+                app:cardBackgroundColor="@color/bg_light_gray_50"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="0dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/title">
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:id="@+id/follower"
+                        style="@style/Caption11218Regular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/p_follower"
+                        android:textColor="@color/gray_400"
+                        app:layout_constraintHorizontal_chainStyle="packed"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/follower_count"/>
+
+                    <TextView
+                        android:id="@+id/follower_count"
+                        style="@style/Caption11218Regular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="9dp"
+                        android:textColor="@color/gray_700"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/follower"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        tools:text="3.4만명"/>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/desc"
+                style="@style/Caption11218Regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="@string/p_follow"
+                android:textAlignment="center"
+                android:textColor="@color/gray_700"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/follower_container"
+                tools:text=" 세계적인 아이돌 그룹인 BTS와 함께할 클럽원모집합니다! 클럽 많은 관심과 사랑 부탁!^^멋진 우리의 BTS 팬클럽 소개를 해드릴까해요!! 클럽 많은 관심과 사랑 부탁드립니다!" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/share_btn"
+                style="@style/Buttons1420Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:contentDescription="@string/g_to_share"
+                android:minWidth="196dp"
+                android:minHeight="36dp"
+                android:paddingHorizontal="72dp"
+                android:paddingVertical="8dp"
+                android:text="@string/g_to_share"
+                android:textColor="@color/white"
+                app:backgroundTint="@color/primary_default"
+                app:cornerRadius="20dp"
+                app:rippleColor="@color/primary_300"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/desc"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/close_btn"
+                style="@style/Buttons1420Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="32dp"
+                android:contentDescription="@string/d_close"
+                android:minWidth="196dp"
+                android:minHeight="36dp"
+                android:paddingHorizontal="72dp"
+                android:paddingVertical="8dp"
+                android:text="@string/d_close"
+                android:textColor="@color/state_enable_gray_400"
+                app:backgroundTint="@color/gray_25"
+                app:strokeColor="@color/gray_25"
+                app:cornerRadius="20dp"
+                app:rippleColor="@color/state_enable_gray_200"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/share_btn"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/logo"
+        android:layout_width="54dp"
+        android:layout_height="54dp"
+        android:background="@drawable/bg_icon_border"
+        android:elevation="2dp"
+        app:contentPadding="1dp"
+        app:layout_constraintEnd_toEndOf="@id/info_container"
+        app:layout_constraintStart_toStartOf="@id/info_container"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

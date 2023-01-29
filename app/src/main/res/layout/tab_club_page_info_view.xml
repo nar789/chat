@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <RelativeLayout
+        android:id="@+id/rlClubInfoContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <ImageView
+            android:id="@+id/ivClubThumbnail"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:background="@drawable/bg_border_radius_32_c_no_s_darkblue10"
+            android:layout_marginRight="10dp"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/ivClubThumbnail"
+            android:orientation="vertical"
+            android:layout_centerVertical="true"
+            >
+            <TextView
+                android:id="@+id/tvClubName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Title41824Medium"
+                android:textColor="@color/state_active_gray_900"
+                android:text="클럽명 영역입니다."
+                />
+            <TextView
+                android:id="@+id/tvClubMemberInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Caption11218Regular"
+                android:textColor="@color/state_active_gray_900"
+                android:text="멤버 12,000명"
+                />
+        </LinearLayout>
+    </RelativeLayout>
+    <TextView
+        android:id="@+id/tvClubInfoText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="20dp"
+        android:layout_below="@+id/rlClubInfoContainer"
+        style="@style/Body11622Regular"
+        android:lines="2"
+        android:ellipsize="end"
+        android:textColor="@color/state_active_gray_900"
+        android:text="asdlkasdkl0"
+        />
+</RelativeLayout>

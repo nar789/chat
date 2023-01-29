@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".ui.menu.mywallet.SafeFragment">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/white"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            app:contentInsetStartWithNavigation="0dp"
+            app:navigationIcon="@drawable/cancel"
+            app:title="@string/g_coffer" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/asset_info_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/padding_margin"
+        app:layout_constraintTop_toBottomOf="@id/appbar">
+
+        <ImageView
+            android:id="@+id/asset_img"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/kingdom_coin_gold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/asset_name"
+            style="@style/Title51622RobotoMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="@string/en_kdg"
+            app:layout_constraintBottom_toBottomOf="@id/asset_img"
+            app:layout_constraintStart_toEndOf="@id/asset_img"
+            app:layout_constraintTop_toTopOf="@id/asset_img" />
+
+        <TextView
+            android:id="@+id/balance_title"
+            style="@style/Body21420Regular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/j_balance"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/asset_img" />
+
+        <TextView
+            android:id="@+id/my_asset"
+            style="@style/Title32028Bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            app:layout_constraintBottom_toBottomOf="@id/balance_title"
+            app:layout_constraintStart_toEndOf="@id/balance_title"
+            app:layout_constraintTop_toTopOf="@id/balance_title"
+            tools:text="1,326,8065 KDG" />
+
+        <TextView
+            android:id="@+id/total_title"
+            style="@style/Body21420Regular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/en_total"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/balance_title" />
+
+        <TextView
+            android:id="@+id/my_total"
+            style="@style/Body21420Regular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            app:layout_constraintBottom_toBottomOf="@id/total_title"
+            app:layout_constraintStart_toEndOf="@id/total_title"
+            app:layout_constraintTop_toTopOf="@id/total_title"
+            tools:text="1,326,8065 KDG" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/withdraw_btn"
+            style="@style/Buttons1420Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/c_widthdraw"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:paddingVertical="11dp"
+            android:paddingHorizontal="22dp"
+            android:text="@string/c_widthdraw"
+            android:textColor="@color/primary_600"
+            app:backgroundTint="@color/primary_100"
+            app:cornerRadius="20dp"
+            app:layout_constraintBottom_toBottomOf="@id/total_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:rippleColor="@color/primary_300" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        app:dividerColor="@color/bg_light_gray_50"
+        app:layout_constraintTop_toBottomOf="@id/asset_info_container" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

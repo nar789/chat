@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="24dp"
+    android:paddingTop="24dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/tvDonatorNickName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        style="@style/Body21420Regular"
+        android:textColor="@color/gray_800"
+        android:text="기부자의 닉네임"
+        />
+
+    <TextView
+        android:id="@+id/tvDonateMoney"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/tvKDGUnit"
+        style="@style/Body21420Regular"
+        android:textColor="@color/primary_default"
+        android:layout_marginEnd="4dp"
+        android:text="기부 금액"
+        />
+
+    <TextView
+        android:id="@+id/tvKDGUnit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        style="@style/Body21420Regular"
+        android:textColor="@color/primary_default"
+        android:text="KDG"
+        />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/topBarrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="tvDonatorNickName,tvKDGUnit"
+        app:barrierDirection="bottom"
+        />
+    <TextView
+        android:id="@+id/tvDonateDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/topBarrier"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="8dp"
+        style="@style/Caption11218Regular"
+        android:textColor="@color/gray_400"
+        android:text="기부 날짜"
+        />
+
+    <TextView
+        android:id="@+id/tvAccountAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/topBarrier"
+        app:layout_constraintEnd_toStartOf="@id/tvKDGUnit2"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="4dp"
+        style="@style/Caption11218Regular"
+        android:textColor="@color/gray_400"
+        android:text="남은 금액"
+        />
+
+    <TextView
+        android:id="@+id/tvKDGUnit2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/topBarrier"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp"
+        style="@style/Caption11218Regular"
+        android:textColor="@color/gray_400"
+        android:text="@string/en_kdg"
+        />
+</androidx.constraintlayout.widget.ConstraintLayout>

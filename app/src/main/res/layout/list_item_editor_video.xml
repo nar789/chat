@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/video_thumbnail"
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        android:layout_marginBottom="14dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@drawable/profile_character1" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/delete_badge"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_margin="8dp"
+        android:background="@color/gray_400"
+        app:contentPadding="6dp"
+        app:layout_constraintEnd_toEndOf="@id/video_thumbnail"
+        app:layout_constraintTop_toTopOf="@id/video_thumbnail"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
+        app:srcCompat="@drawable/icon_outline_cancel"
+        app:strokeColor="@color/gray_100"
+        app:tint="@color/white" />
+
+    <ImageView
+        android:id="@+id/play_icon"
+        android:layout_width="32dp"
+        android:layout_height="36dp"
+        android:src="@drawable/icon_outline_play"
+        app:layout_constraintBottom_toBottomOf="@id/video_thumbnail"
+        app:layout_constraintEnd_toEndOf="@id/video_thumbnail"
+        app:layout_constraintStart_toStartOf="@id/video_thumbnail"
+        app:layout_constraintTop_toTopOf="@id/video_thumbnail"
+        app:tint="@color/gray_25" />
+
+    <TextView
+        android:id="@+id/video_msg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/se_d_can_playing_after_regist"
+        android:textAppearance="@style/Body21420Regular"
+        android:textColor="@color/gray_25"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/play_icon" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

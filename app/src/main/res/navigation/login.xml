@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/login"
+    tools:ignore="InvalidNavigation"
+    app:startDestination="@id/loginWebViewFragment">
+
+    <fragment
+        android:id="@+id/loginSplashFragment"
+        android:name="com.rndeep.fns_fantoo.ui.login.LoginSplashFragment"
+        android:label="LoginSplashFragment" >
+        <action
+            android:id="@+id/action_loginSplashFragment_to_loginPermissionFragment"
+            app:destination="@id/loginPermissionFragment"
+            app:popUpTo="@+id/loginSplashFragment"
+            app:popUpToInclusive="true"
+            />
+        <action
+            android:id="@+id/action_loginSplashFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@+id/loginSplashFragment"
+            app:popUpToInclusive="true"
+            />
+        <action
+            android:id="@+id/action_loginSplashFragment_to_loginWebViewFragment"
+            app:destination="@id/loginWebViewFragment"
+            app:popUpTo="@+id/loginSplashFragment"
+            app:popUpToInclusive="true"
+            />
+    </fragment>
+    <fragment
+        android:id="@+id/loginPermissionFragment"
+        android:name="com.rndeep.fns_fantoo.ui.login.LoginPermissionFragment"
+        android:label="LoginPermissionFragment" >
+        <action
+            android:id="@+id/action_loginPermissionFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@+id/loginPermissionFragment"
+            app:popUpToInclusive="true"
+            />
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.rndeep.fns_fantoo.ui.login.LoginFragment"
+        android:label="LoginFragment" >
+        <action
+            android:id="@+id/action_loginFragment_to_loginEmailFragment"
+            app:destination="@id/loginEmailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/loginEmailFragment"
+        android:name="com.rndeep.fns_fantoo.ui.login.LoginEmailFragment"
+        android:label="loginEmailFragment" >
+        <action
+            android:id="@+id/action_loginEmailFragment_to_loginFindPasswordFragment"
+            app:destination="@id/loginFindPasswordFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/loginFindPasswordFragment"
+        android:name="com.rndeep.fns_fantoo.ui.login.LoginFindPasswordFragment"
+        android:label="loginFindPasswordFragment"
+        />
+    <fragment
+        android:id="@+id/loginWebViewFragment"
+        android:name="com.rndeep.fns_fantoo.ui.login.LoginWebViewFragment"
+        android:label="LoginWebViewFragment" />
+</navigation>

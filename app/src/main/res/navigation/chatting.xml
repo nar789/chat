@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/chatting"
+    app:startDestination="@id/chatListFragment">
+
+    <fragment
+        android:id="@+id/chatListFragment"
+        android:name="com.rndeep.fns_fantoo.ui.chatting.chatlist.ChatListFragment"
+        android:label="fragment_chat_list">
+        <action
+            android:id="@+id/action_chatListFragment_to_chattingFragment"
+            app:destination="@id/chattingFragment" />
+        <action
+            android:id="@+id/action_chatListFragment_to_addChatFragment"
+            app:destination="@id/addChatFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/chattingFragment"
+        android:name="com.rndeep.fns_fantoo.ui.chatting.chat.ChattingFragment"
+        android:label="fragment_chatting">
+        <argument
+            android:name="chatId"
+            app:argType="integer" />
+        <argument
+            android:name="chatTitle"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_chattingFragment_to_imageViewerFragment"
+            app:destination="@id/imageViewerFragment" />
+        <action
+            android:id="@+id/action_chattingFragment_to_imagePickerFragment"
+            app:destination="@id/imagePickerDialog" />
+        <action
+            android:id="@+id/action_chattingFragment_to_chattingSettingDialog"
+            app:destination="@id/chattingSettingDialog" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/imageViewerFragment"
+        android:name="com.rndeep.fns_fantoo.ui.chatting.imageviewer.ImageViewerFragment"
+        android:label="fragment_image_viewer">
+        <argument
+            android:name="imageUrl"
+            app:argType="string"
+            app:nullable="false" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/addChatFragment"
+        android:name="com.rndeep.fns_fantoo.ui.chatting.addchat.AddChatFragment"
+        android:label="framgnet_add_chat">
+        <action
+            android:id="@+id/action_addChatFragment_to_chattingFragment"
+            app:destination="@id/chattingFragment"
+            app:popUpTo="@id/addChatFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/imagePickerDialog"
+        android:name="com.rndeep.fns_fantoo.ui.chatting.imagepicker.ImagePickerDialog"
+        android:label="ImagePickerDialog" />
+
+    <dialog
+        android:id="@+id/chattingSettingDialog"
+        android:name="com.rndeep.fns_fantoo.ui.chatting.chat.ChattingSettingDialog"
+        android:label="ChattingSettingDialog" >
+        <argument
+            android:name="chatId"
+            app:argType="integer" />
+    </dialog>
+</navigation>

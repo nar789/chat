@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/club_post"
+    android:label="club_post_detail"
+    app:startDestination="@id/clubPostDetailFragment">
+    <fragment
+        android:id="@+id/clubPostDetailFragment"
+        android:name="com.rndeep.fns_fantoo.ui.club.post.ClubPostDetailFragment"
+        android:label="ClubPostDetailFragment" >
+        <argument
+            android:name="previewType"
+            app:argType="string"
+            />
+        <argument
+            android:name="categoryCode"
+            app:argType="string"
+            />
+        <argument
+            android:name="clubId"
+            app:argType="string"
+            />
+        <argument
+            android:name="postId"
+            app:argType="integer" />
+        <argument
+            android:name="memberId"
+            app:argType="integer"
+            android:defaultValue="-1"
+            />
+        <argument
+            android:name="replyId"
+            app:argType="integer"
+            android:defaultValue="-1"
+            />
+        <action
+            android:id="@+id/action_detailPost_to_profile"
+            app:destination="@id/profile" >
+            <argument android:name="nickname"
+                app:argType="string" />
+            <argument android:name="clubId"
+                app:argType="string"
+                app:nullable="true"
+                />
+            <argument android:name="memberId"
+                app:argType="string"
+                app:nullable="true"
+                />
+            <argument
+                android:name="isBlock"
+                app:argType="boolean" />
+            <argument
+                android:name="userPhoto"
+                app:argType="string" />
+        </action>
+        <action
+            android:id="@+id/action_clubPostDetailFragment_to_club_comment"
+            app:destination="@id/club_comment" >
+            <argument
+                android:name="isMember"
+                app:argType="boolean"
+                />
+            <argument
+                android:name="postId"
+                app:argType="integer" />
+            <argument
+                android:name="replyId"
+                app:argType="integer" />
+            <argument
+                android:name="categoryCode"
+                app:argType="string"
+                app:nullable="true"
+                />
+            <argument
+                android:name="clubId"
+                app:argType="string"
+                />
+        </action>
+        <action
+            android:id="@+id/action_clubPostDetailFragment_to_clubJoinFragment3"
+            app:destination="@id/clubJoinFragment3" >
+            <argument
+                android:name="clubId"
+                app:argType="string" />
+        </action>
+        <action
+            android:id="@+id/action_clubPostDetailFragment_to_profileImageViewerFragment5"
+            app:destination="@id/profileImageViewerFragment5" >
+            <argument
+                android:name="imageUrl"
+                app:argType="string" />
+        </action>
+        <action
+            android:id="@+id/action_clubPostDetailFragment_to_club_member"
+            app:destination="@id/club_member" />
+        <action
+            android:id="@+id/action_clubPostDetailFragment_to_club_detail_page2"
+            app:destination="@id/club_detail_page"
+            >
+            <argument
+                android:name="clubId"
+                app:argType="string"
+                />
+            <argument
+                android:name="clubCategoryCode"
+                app:argType="string"
+                app:nullable="true"
+                android:defaultValue="null"
+                />
+        </action>
+        <action
+            android:id="@+id/action_clubPostDetailFragment_to_imageListViewerFragment"
+            app:destination="@id/imageListViewerFragment" />
+        <action
+            android:id="@+id/action_clubPostDetailFragment_to_editorFragment"
+            app:destination="@id/editorFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/clubJoinFragment3"
+        android:name="com.rndeep.fns_fantoo.ui.club.join.ClubJoinFragment"
+        android:label="fragment_club_join"
+        tools:layout="@layout/fragment_club_join" >
+        <argument
+            android:name="clubId"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileImageViewerFragment5"
+        android:name="com.rndeep.fns_fantoo.ui.common.ProfileImageViewerFragment"
+        android:label="fragment_profile_image_viewer"
+        tools:layout="@layout/fragment_profile_image_viewer" />
+    <include app:graph="@navigation/profiledetail" />
+    <include app:graph="@navigation/club_comment" />
+    <include app:graph="@navigation/club_member" />
+    <include app:graph="@navigation/club_detail_page" />
+    <fragment
+        android:id="@+id/imageListViewerFragment"
+        android:name="com.rndeep.fns_fantoo.ui.common.ImageListViewerFragment"
+        android:label="fragment_image_list_viewer"
+        tools:layout="@layout/fragment_image_list_viewer" >
+        <argument
+            android:name="imageUrlList"
+            app:argType="string[]"
+            app:nullable="true" />
+        <argument
+            android:name="imagePos"
+            app:argType="integer"
+            />
+    </fragment>
+    <fragment
+        android:id="@+id/editorFragment"
+        android:name="com.rndeep.fns_fantoo.ui.editor.EditorFragment"
+        android:label="fragment_editor"
+        tools:layout="@layout/fragment_editor">
+        <argument
+            android:name="editorInfo"
+            app:argType="com.rndeep.fns_fantoo.ui.editor.EditorInfo" />
+    </fragment>
+</navigation>

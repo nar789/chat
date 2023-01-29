@@ -1,0 +1,236 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'kotlin-parcelize'
+    id 'androidx.navigation.safeargs.kotlin'
+    id 'dagger.hilt.android.plugin'
+    id 'com.google.gms.google-services'
+}
+
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+def googleClientKey = properties.getProperty('google.client.key')
+def facebookAppId = properties.getProperty('facebook.app.id')
+def facebookClientToken = properties.getProperty('facebook.accountkit.client.token')
+def facebookLoginProtocolScheme = properties.getProperty('facebook.login.protocol.scheme')
+def kakaoApiKey = properties.getProperty('kakao.app.key')
+def lineLoginKey = properties.getProperty('line.login.key')
+def cloudFlareKey =properties.getProperty('cloudFlare.account.key')
+
+android {
+    compileSdk 33
+
+    signingConfigs {
+        release {
+            storeFile file('rndeep_androidkey.jks')
+            storePassword 'rndeep12#$'
+            keyPassword 'rndeep12#$'
+            keyAlias 'key1'
+        }
+        debug {
+            storeFile file('rndeep_androidkey.jks')
+            storePassword 'rndeep12#$'
+            keyPassword 'rndeep12#$'
+            keyAlias 'key1'
+        }
+    }
+
+    defaultConfig {
+        applicationId "com.rndeep.fns_fantoo"
+        minSdk 24
+        targetSdk 33
+        versionCode 300
+        versionName "2.0.0"
+        vectorDrawables.useSupportLibrary = true
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        manifestPlaceholders = [kakaoApiKey:kakaoApiKey]
+        resValue "string", "googleClientKey", googleClientKey
+        resValue "string", "facebookAppId", facebookAppId
+        resValue "string", "facebookClientToken", facebookClientToken
+        resValue "string", "facebookLoginProtocolScheme", facebookLoginProtocolScheme
+        resValue "string", "lineLoginKey", lineLoginKey
+        resValue "string", "kakaoApiKey", kakaoApiKey
+        resValue "string", "cloudFlareKey", cloudFlareKey
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+            signingConfig signingConfigs.release
+        }
+    }
+    viewBinding {
+        enabled = true
+    }
+    buildFeatures {
+        compose true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion '1.3.1'
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+    kotlinOptions {
+        jvmTarget = '11'
+    }
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/ASL2.0'
+        exclude("META-INF/*.kotlin_module")
+        resources.excludes.add("META-INF/*")
+    }
+}
+
+dependencies {
+
+    implementation 'androidx.core:core-ktx:1.8.0'
+    implementation 'androidx.appcompat:appcompat:1.4.2'
+    implementation 'com.google.android.material:material:1.6.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    testImplementation 'junit:junit:4.+'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    implementation 'androidx.activity:activity-ktx:1.6.1'
+    
+    //fragment 의존성에 도움을 주는
+    implementation 'androidx.fragment:fragment-ktx:1.5.1'
+    
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
+    
+    // For developers using AndroidX in their applications
+    //https://github.com/googlesamples/easypermissions
+    implementation 'pub.devrel:easypermissions:3.0.0'
+
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$rootProject.lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$rootProject.lifecycle_version"
+
+    // Lifecycles only (without ViewModel or LiveData)
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$rootProject.lifecycle_version"
+
+    // room
+    implementation "androidx.room:room-runtime:$rootProject.room_version"
+    kapt "androidx.room:room-compiler:$rootProject.room_version"
+    implementation "androidx.room:room-ktx:$rootProject.room_version"
+
+    // Navigation
+    implementation "androidx.navigation:navigation-runtime-ktx:$rootProject.navigation_version"
+    implementation "androidx.navigation:navigation-fragment-ktx:$rootProject.navigation_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$rootProject.navigation_version"
+
+    // Glide
+    implementation "com.github.bumptech.glide:glide:$rootProject.glide_version"
+    annotationProcessor "com.github.bumptech.glide:compiler:$rootProject.glide_version"
+
+    // Glide transformations
+    implementation "jp.wasabeef:glide-transformations:$rootProject.glide_transformations_version"
+
+    //retrofit
+    implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$rootProject.retrofit_version"
+    implementation "com.squareup.okhttp3:okhttp:$rootProject.okhttp_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$rootProject.okhttp_version"
+
+    //exoplayer
+    //noinspection GradleDependency
+    implementation "com.google.android.exoplayer:exoplayer:$rootProject.exoplayer_version"
+
+    //Jsoup 라이브러리
+    //noinspection GradleDependency
+    implementation "org.jsoup:jsoup:$rootProject.jsoup_version"
+
+    //GirdLayout
+    implementation "androidx.gridlayout:gridlayout:$rootProject.gridlayour_version"
+
+    //flexbox 유동적인 box 사이즈를 위해
+    implementation "com.google.android.flexbox:flexbox:$rootProject.flexbox_version"
+    
+        //google Auth
+    //https://firebase.googl"e.com/docs/auth/android/google-signin?hl=ko#kotlin+ktx
+    implementation platform("com.google.firebase:firebase-bom:$rootProject.firebase_bom_version")
+    implementation 'com.google.firebase:firebase-auth-ktx'
+    implementation "com.google.android.gms:play-services-auth:$rootProject.play_service_auth_version"
+    implementation 'com.google.firebase:firebase-messaging-ktx'
+    implementation 'com.google.firebase:firebase-dynamic-links-ktx'
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+
+    // Facebook Auth
+    implementation 'com.facebook.android:facebook-login:latest.release'
+    //implementation 'com.facebook.android:account-kit-sdk:5.+'
+    implementation 'com.facebook.android:facebook-android-sdk:latest.release'
+
+    //Line Auth
+    //https://github.com/line/line-sdk-android
+    implementation 'com.linecorp.linesdk:linesdk:5.6.2'
+
+    //Kakao Auth
+    //https://developers.kakao.com/docs/latest/ko/getting-started/sdk-android#apply-sdk
+    implementation "com.kakao.sdk:v2-user:2.9.0" // 카카오 로그인
+    implementation group: 'com.kakao.sdk', name: 'usermgmt', version: project.KAKAO_SDK_VERSION
+    implementation group: 'com.kakao.sdk', name: 'kakaolink', version: project.KAKAO_SDK_VERSION
+
+    //배경의 평균색 측정
+    implementation "androidx.palette:palette-ktx:$rootProject.palette_version"
+
+    // Timber
+    implementation "com.jakewharton.timber:timber:$rootProject.timber_version"
+
+    // Hilt
+    implementation "com.google.dagger:hilt-android:$rootProject.hilt_version"
+    kapt "com.google.dagger:hilt-android-compiler:$rootProject.hilt_version"
+
+    //Data store
+    implementation "androidx.datastore:datastore-preferences:$rootProject.dataStore_version"
+    implementation "androidx.datastore:datastore-core:$rootProject.dataStore_version"
+
+    //viewpager dotIndicator
+    implementation "com.tbuonomo:dotsindicator:$rootProject.dot_indicator"
+
+    //Lottie
+    implementation "com.airbnb.android:lottie:$rootProject.lottie_version"
+
+    //qrCode (zxing)
+    implementation "com.journeyapps:zxing-android-embedded:$rootProject.zxing_version"
+
+    // ThreeTen Android Backport
+    implementation "com.jakewharton.threetenabp:threetenabp:$rootProject.threetenabp_version"
+
+    //paging
+    implementation "androidx.paging:paging-runtime-ktx:$paging_version"
+
+    //tus upload
+    implementation "io.tus.android.client:tus-android-client:$rootProject.tus_android"
+    implementation "io.tus.java.client:tus-java-client:$rootProject.tus_java"
+
+    //jetpack compose
+    implementation "androidx.compose.runtime:runtime:$rootProject.compose_version"
+    implementation "androidx.compose.material:material:$rootProject.compose_version"
+    implementation "androidx.compose.foundation:foundation:$rootProject.compose_version"
+    implementation "androidx.compose.foundation:foundation-layout:$rootProject.compose_version"
+    implementation "androidx.compose.ui:ui:$rootProject.compose_version"
+    implementation "androidx.compose.ui:ui-tooling:$rootProject.compose_version"
+    implementation "androidx.compose.ui:ui-tooling-preview:$rootProject.compose_version"
+    implementation "androidx.constraintlayout:constraintlayout-compose:1.0.1"
+    implementation "androidx.paging:paging-runtime-ktx:3.1.1"
+    implementation "androidx.paging:paging-compose:1.0.0-alpha15"
+    implementation "io.coil-kt:coil-compose:2.1.0"
+    implementation('io.socket:socket.io-client:2.0.0') {
+        exclude group: 'org.json', module: 'json'
+    }
+    implementation "com.github.skydoves:landscapist-glide:1.6.1"
+
+    //핀치 줌 라이브러리
+    implementation "com.github.chrisbanes:PhotoView:2.0.0"
+}

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="10dp">
+
+    <CheckBox
+        android:id="@+id/cbSelect"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginLeft="20dp"
+        android:background="@drawable/round_checkbox_selector"
+        android:button="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/ivProfile"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_marginLeft="12dp"
+        android:src="@drawable/profile_character_m"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/cbSelect"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvNick"
+        style="@style/Body21420Regular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="12dp"
+        android:gravity="center"
+        android:text="클럽 멈버 닉네임"
+        android:textColor="@color/gray_900"
+        app:layout_constraintLeft_toRightOf="@id/ivProfile"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvRequestDate"
+        style="@style/Caption11218Regular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="12dp"
+        android:gravity="center"
+        android:text="신청일"
+        android:textColor="@color/gray_400"
+        app:layout_constraintLeft_toRightOf="@id/ivProfile"
+        app:layout_constraintTop_toBottomOf="@id/tvNick" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

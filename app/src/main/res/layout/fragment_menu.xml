@@ -1,0 +1,609 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_light_gray_50"
+    tools:context=".ui.menu.MenuFragment">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fitsSystemWindows="true">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/actionBarSize"
+                android:background="@color/bg_light_gray_50" />
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nestedScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingTop="10dp"
+            android:paddingBottom="39dp"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="20dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/non_member_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:background="@drawable/bg_menu_list"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/non_member_login"
+                        style="@style/Title51622Medium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="17dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="17dp"
+                        android:textColor="@color/gray_870"
+                        android:text="@string/login_or_signup"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginEnd="16dp"
+                        android:src="@drawable/icon_outline_go"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:tint="@color/state_enable_gray_900" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/profile_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="visible"
+                    android:background="@drawable/bg_menu_list"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/non_member_info">
+
+                    <ImageView
+                        android:id="@+id/profile_img"
+                        android:layout_width="54dp"
+                        android:layout_height="54dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="16dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:src="@drawable/profile_character1" />
+
+                    <TextView
+                        android:id="@+id/nickname"
+                        style="@style/Title51622Medium"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:ellipsize="marquee"
+                        android:textColor="@color/gray_870"
+                        app:layout_constraintBottom_toBottomOf="@id/profile_img"
+                        app:layout_constraintEnd_toStartOf="@id/edit_profile_btn"
+                        app:layout_constraintHorizontal_chainStyle="packed"
+                        app:layout_constraintStart_toEndOf="@id/profile_img"
+                        app:layout_constraintTop_toTopOf="@id/profile_img"
+                        tools:text="Nickname" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/edit_profile_btn"
+                        style="@style/Widget.App.Button.OutlinedButton.IconOnly"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="4dp"
+                        android:contentDescription="@string/menu_profile_edit_text"
+                        app:icon="@drawable/outline_icon_edit"
+                        app:iconTint="@color/gray_900"
+                        app:layout_constraintBottom_toBottomOf="@id/profile_img"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/profile_img"
+                        app:rippleColor="@color/gray_200" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/library_info_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="9dp"
+                    android:background="@drawable/bg_menu_list"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/profile_info">
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/my_text_guideline_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent="0.3" />
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/my_text_guideline_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent="0.7" />
+
+                    <TextView
+                        android:id="@+id/my_write"
+                        style="@style/Caption11218Regular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:text="@string/j_wrote_post"
+                        android:textColor="@color/gray_900"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@id/my_text_guideline_1"
+                        app:layout_constraintStart_toStartOf="parent"
+                        tools:text="작성 글" />
+
+                    <TextView
+                        android:id="@+id/my_write_num"
+                        style="@style/Body21420Regular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:textColor="@color/gray_800"
+                        app:layout_constraintEnd_toEndOf="@id/my_text_guideline_1"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="3" />
+
+                    <View
+                        android:id="@+id/vertical_divider_1"
+                        android:layout_width="1dp"
+                        android:layout_height="40dp"
+                        android:layout_marginVertical="20dp"
+                        android:background="@color/bg_light_gray_50"
+                        android:orientation="vertical"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="@id/my_text_guideline_1"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/my_write_comment"
+                        style="@style/Caption11218Regular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:text="@string/j_wrote_rely"
+                        android:textColor="@color/gray_900"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@id/my_text_guideline_2"
+                        app:layout_constraintStart_toStartOf="@id/my_text_guideline_1"
+                        tools:text="작성 댓글" />
+
+                    <TextView
+                        android:id="@+id/my_comment_num"
+                        style="@style/Body21420Regular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:textColor="@color/gray_800"
+                        app:layout_constraintEnd_toEndOf="@id/my_text_guideline_2"
+                        app:layout_constraintStart_toStartOf="@id/my_text_guideline_1"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="25" />
+
+                    <View
+                        android:id="@+id/vertical_divider_2"
+                        android:layout_width="1dp"
+                        android:layout_height="40dp"
+                        android:layout_marginVertical="20dp"
+                        android:background="@color/bg_light_gray_50"
+                        android:orientation="vertical"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="@id/my_text_guideline_2"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/my_save"
+                        style="@style/Caption11218Regular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:text="@string/j_save"
+                        android:textColor="@color/gray_900"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@id/my_text_guideline_2"
+                        tools:text="저장" />
+
+                    <TextView
+                        android:id="@+id/my_save_num"
+                        style="@style/Body21420Regular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:textColor="@color/gray_800"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@id/my_text_guideline_2"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="9" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/complete_profile"
+                    android:layout_width="match_parent"
+                    android:layout_height="122dp"
+                    android:layout_marginTop="9dp"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="20dp"
+                    android:background="@drawable/bg_menu_list"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/library_info_container">
+
+                    <TextView
+                        android:id="@+id/complete_profile_text"
+                        style="@style/Body21420Regular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/p_complete_profile"
+                        android:textColor="@color/gray_870"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="프로필 완성하기" />
+
+                    <TextView
+                        android:id="@+id/complete_profile_number"
+                        style="@style/Body21420Regular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        android:text="@string/complete_profile_number_text"
+                        android:textColor="@color/gray_870"
+                        app:layout_constraintEnd_toStartOf="@id/complete_profile_more_ic"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="1/6 완성" />
+
+                    <ImageView
+                        android:id="@+id/complete_profile_more_ic"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_marginStart="4dp"
+                        android:src="@drawable/ic_more"
+                        app:layout_constraintBottom_toBottomOf="@id/complete_profile_number"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/complete_profile_number"
+                        app:tint="@color/state_enable_gray_200" />
+
+                    <TextView
+                        android:id="@+id/complete_profile_explain"
+                        style="@style/Caption11218Regular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="@string/complete_profile_explain_text"
+                        android:textColor="@color/gray_600"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/complete_profile_text"
+                        tools:text="프로필을 모두 완성하면 500 FANit을 드립니다." />
+
+<!--                    <com.google.android.material.progressindicator.LinearProgressIndicator-->
+<!--                        android:id="@+id/complete_profile_progress"-->
+<!--                        style="@style/Widget.App.linearProgressIndicatorStyle"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginTop="24dp"-->
+<!--                        android:layout_marginBottom="2dp"-->
+<!--                        android:indeterminate="false"-->
+<!--                        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                        app:layout_constraintEnd_toEndOf="parent"-->
+<!--                        app:layout_constraintStart_toStartOf="parent"-->
+<!--                        app:layout_constraintTop_toBottomOf="@id/complete_profile_explain"-->
+<!--                        app:trackCornerRadius="100dp" />-->
+
+                    <com.rndeep.fns_fantoo.ui.common.SegmentedProgressBar
+                        android:id="@+id/complete_profile_progress"
+                        android:layout_width="match_parent"
+                        android:layout_height="8dp"
+                        android:layout_marginTop="24dp"
+                        android:layout_marginBottom="2dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/complete_profile_explain"
+                        app:cornerRadius="20dp"
+                        app:dividerColor="@color/gray_25"
+                        app:dividerWidth="1dp"
+                        app:divisions="6"
+                        app:progressBarBackgroundColor="@color/gray_200_opacity60"
+                        app:progressBarColor="@color/primary_default" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <TextView
+                    android:id="@+id/menu_my_title"
+                    style="@style/Caption11218Regular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginStart="16dp"
+                    android:textColor="@color/gray_800"
+                    android:text="@string/MY"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/complete_profile"
+                    tools:text="MY" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/menu_my_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/bg_menu_list"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/menu_my_title">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/my_club_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="16dp"
+                        android:layout_marginTop="12dp"
+                        android:background="?selectableItemBackground"
+                        android:paddingVertical="8dp"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:id="@+id/my_club"
+                            style="@style/Body21420Regular"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/n_my_club"
+                            android:textColor="@color/gray_870"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <ImageView
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:src="@drawable/ic_more"
+                            app:layout_constraintBottom_toBottomOf="@id/my_club"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/my_club"
+                            app:tint="@color/state_enable_gray_200" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <com.google.android.material.divider.MaterialDivider
+                        android:id="@+id/my_menu_divider_1"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginHorizontal="16dp"
+                        app:dividerColor="@color/bg_light_gray_50"
+                        app:layout_constraintTop_toBottomOf="@id/my_club_container" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/my_wallet_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginHorizontal="16dp"
+                        android:paddingVertical="8dp"
+                        android:background="?selectableItemBackground"
+                        app:layout_constraintTop_toBottomOf="@id/my_menu_divider_1">
+
+                        <TextView
+                            android:id="@+id/my_wallet"
+                            style="@style/Body21420Regular"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/gray_870"
+                            android:text="@string/n_my_wallet"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"/>
+
+                        <ImageView
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:src="@drawable/ic_more"
+                            app:tint="@color/state_enable_gray_200"
+                            app:layout_constraintTop_toTopOf="@id/my_wallet"
+                            app:layout_constraintBottom_toBottomOf="@id/my_wallet"
+                            app:layout_constraintEnd_toEndOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <com.google.android.material.divider.MaterialDivider
+                        android:id="@+id/my_menu_divider_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginHorizontal="16dp"
+                        app:dividerColor="@color/bg_light_gray_50"
+                        app:layout_constraintTop_toBottomOf="@id/my_wallet_container" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/invite_friend_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="15dp"
+                        android:layout_marginHorizontal="16dp"
+                        android:paddingVertical="8dp"
+                        android:background="?selectableItemBackground"
+                        app:layout_constraintTop_toBottomOf="@id/my_menu_divider_2"
+                        app:layout_constraintBottom_toBottomOf="parent">
+
+                        <TextView
+                            android:id="@+id/invite_friend"
+                            style="@style/Body21420Regular"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/gray_870"
+                            android:text="@string/c_invite_friend"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"/>
+
+                        <ImageView
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:src="@drawable/ic_more"
+                            app:tint="@color/state_enable_gray_200"
+                            app:layout_constraintTop_toTopOf="@id/invite_friend"
+                            app:layout_constraintBottom_toBottomOf="@id/invite_friend"
+                            app:layout_constraintEnd_toEndOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <TextView
+                    android:id="@+id/menu_contents_title"
+                    style="@style/Caption11218Regular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="13dp"
+                    android:layout_marginStart="16dp"
+                    android:textColor="@color/gray_800"
+                    android:text="@string/k_contents"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/menu_my_view"
+                    tools:text="컨텐츠" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/menu_contents_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="15dp"
+                    android:paddingHorizontal="16dp"
+                    android:background="@drawable/bg_menu_list"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/menu_contents_title"
+                    app:layout_constraintBottom_toBottomOf="parent">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/event_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?selectableItemBackground"
+                        android:paddingVertical="8dp"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:id="@+id/event"
+                            style="@style/Body21420Regular"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/a_event"
+                            android:textColor="@color/gray_870"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <ImageView
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:src="@drawable/ic_more"
+                            app:layout_constraintBottom_toBottomOf="@id/event"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/event"
+                            app:tint="@color/state_enable_gray_200" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <com.google.android.material.divider.MaterialDivider
+                        android:id="@+id/contents_menu_divider_1"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="8dp"
+                        app:dividerColor="@color/bg_light_gray_50"
+                        app:layout_constraintTop_toBottomOf="@id/event_container" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/fantoo_tv_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:paddingVertical="8dp"
+                        android:background="?selectableItemBackground"
+                        app:layout_constraintTop_toBottomOf="@id/contents_menu_divider_1">
+
+                        <TextView
+                            android:id="@+id/fantoo_tv"
+                            style="@style/Body21420Regular"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/gray_870"
+                            android:text="@string/p_fantoo_tv"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"/>
+
+                        <ImageView
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:src="@drawable/ic_more"
+                            app:tint="@color/state_enable_gray_200"
+                            app:layout_constraintTop_toTopOf="@id/fantoo_tv"
+                            app:layout_constraintBottom_toBottomOf="@id/fantoo_tv"
+                            app:layout_constraintEnd_toEndOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <com.google.android.material.divider.MaterialDivider
+                        android:id="@+id/contents_menu_divider_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="8dp"
+                        app:dividerColor="@color/bg_light_gray_50"
+                        app:layout_constraintTop_toBottomOf="@id/fantoo_tv_container" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/hanryu_times_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:paddingVertical="8dp"
+                        android:background="?selectableItemBackground"
+                        app:layout_constraintTop_toBottomOf="@id/contents_menu_divider_2"
+                        app:layout_constraintBottom_toBottomOf="parent">
+
+                        <TextView
+                            android:id="@+id/hanryu_times"
+                            style="@style/Body21420Regular"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/gray_870"
+                            android:text="@string/h_hanryutimes"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"/>
+
+                        <ImageView
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:src="@drawable/ic_more"
+                            app:tint="@color/state_enable_gray_200"
+                            app:layout_constraintTop_toTopOf="@id/hanryu_times"
+                            app:layout_constraintBottom_toBottomOf="@id/hanryu_times"
+                            app:layout_constraintEnd_toEndOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</FrameLayout>

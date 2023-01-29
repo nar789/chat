@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_25"
+    tools:context=".ui.menu.library.ClubLibraryFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chip_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            app:layout_constraintBottom_toBottomOf="@id/divider"
+            app:layout_constraintTop_toTopOf="parent"
+            app:singleSelection="true"
+            app:selectionRequired="true">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_write"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:gravity="center_vertical"
+                android:text="@string/j_wrote_post"
+                app:chipBackgroundColor="@color/bg_chip_library"
+                app:chipMinHeight="24dp"
+                app:chipMinTouchTargetSize="32dp" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_comment"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/j_wrote_rely"
+                app:chipBackgroundColor="@color/bg_chip_library"
+                app:chipMinHeight="24dp"
+                app:chipMinTouchTargetSize="32dp" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_save"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/j_save"
+                app:chipBackgroundColor="@color/bg_chip_library"
+                app:chipMinHeight="24dp"
+                app:chipMinTouchTargetSize="32dp" />
+        </com.google.android.material.chip.ChipGroup>
+
+        <com.google.android.material.divider.MaterialDivider
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="48dp"
+            app:dividerColor="@color/gray_400_opacity12"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/library_list"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:clipToPadding="true"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintTop_toBottomOf="@id/divider"
+            tools:listitem="@layout/list_item_library_posts" />
+
+        <ImageView
+            android:id="@+id/empty_img"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="170dp"
+            android:src="@drawable/character_club2"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/empty_msg"
+            style="@style/Body21420Regular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:text="@string/se_j_no_write_post"
+            android:textColor="@color/gray_600"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/empty_img" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>

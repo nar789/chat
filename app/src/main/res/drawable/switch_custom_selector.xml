@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+<!--    선택 안됐을 시-->
+    <item android:state_checked="false"
+        android:drawable="@drawable/switch_custom_off_bg"
+        />
+<!--    선택 됐을 시 -->
+    <item android:state_checked="true"
+        android:drawable="@drawable/switch_custom_on_bg"
+        />
+
+</selector>

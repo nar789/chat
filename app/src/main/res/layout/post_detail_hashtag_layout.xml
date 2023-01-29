@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tvSortText"
+        style="@style/Body21420Regular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_border_radius_60_c_gray50_s_gray100"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="4.88dp"
+        android:text="# 태그"
+        android:textColor="@color/gray_850" />
+
+
+</LinearLayout>

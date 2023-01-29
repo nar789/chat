@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_25"
+    >
+
+    <com.rndeep.fns_fantoo.ui.common.viewgroup.CommonTopbar
+        android:id="@+id/topbar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tailText="@string/j_save"
+        app:titleText="@string/p_setting_profile" />
+
+    <!-- profile -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_Main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="104dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivProfile"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/profile_character_xl"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/ivBadge"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:background="@drawable/icon_camera_badge"
+            android:padding="5.2dp"
+            android:src="@drawable/icon_fill_camera"
+            app:layout_constraintBottom_toBottomOf="@id/ivProfile"
+            app:layout_constraintRight_toRightOf="@id/ivProfile" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginRight="20dp"
+        app:layout_constraintTop_toBottomOf="@id/cl_Main">
+
+        <TextView
+            android:id="@+id/tv_NickTitle"
+            style="@style/Caption11218Regular"
+            android:layout_width="wrap_content"
+            android:layout_height="28dp"
+            android:text="@string/n_nickname"
+            android:textColor="@color/gray_800"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvNickWordCount"
+            style="@style/Caption11218Regular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/gray_300"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <RelativeLayout
+            android:id="@+id/ll_input_area"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:layout_marginTop="4dp"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/tv_NickTitle">
+
+            <com.rndeep.fns_fantoo.ui.common.viewgroup.CommonEditTextLayout
+                android:id="@+id/cEtLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:buttonText="@string/j_check_duplicate"
+                app:hintText="@string/se_n_write_nickname" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tvNormalDesc"
+            style="@style/Caption11218Regular"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="@string/se_n_change_nickname_notice_2"
+            android:textColor="@color/gray_500"
+            app:layout_constraintTop_toBottomOf="@id/ll_input_area" />
+
+        <TextView
+            android:id="@+id/tvWarning"
+            style="@style/Caption11218Regular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:textColor="@color/text_color_selector_primary500_state_danger"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ll_input_area" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.rndeep.fns_fantoo.ui.common.viewgroup.FantooLoadingView
+        android:id="@+id/loadingView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="gone"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

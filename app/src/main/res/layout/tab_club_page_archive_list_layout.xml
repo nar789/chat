@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_club_search">
+
+    <TextView
+        android:id="@+id/tvArchiveTypeName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        app:layout_goneMarginBottom="20dp"
+        android:background="@drawable/bg_club_archive_imageboard"
+        android:fontFamily="@font/noto_sans_kr"
+        android:includeFontPadding="false"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="2dp"
+        android:text="이미지"
+        android:textColor="@color/state_enable_gray_25"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/rcImageList"
+        app:layout_constraintEnd_toStartOf="@id/tvArchiveName"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvArchiveName"
+        style="@style/Body21420Regular"
+        android:layout_width="0dp"
+        android:layout_height="24dp"
+        app:layout_goneMarginTop="20dp"
+        android:layout_marginTop="20dp"
+        app:layout_goneMarginBottom="20dp"
+        android:layout_marginStart="8dp"
+        android:gravity="center_vertical"
+        android:lines="1"
+        android:ellipsize="end"
+        android:text="게시판 이름"
+        android:textColor="@color/gray_870"
+        app:layout_goneMarginStart="20dp"
+        app:layout_constraintStart_toEndOf="@id/tvArchiveTypeName"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/tvArchiveCount"
+        app:layout_constraintBottom_toBottomOf="@id/tvArchiveTypeName"
+        />
+
+    <TextView
+        android:id="@+id/tvArchiveCount"
+        style="@style/Buttons1420Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/bg_border_radius_6_c_no"
+        android:backgroundTint="@color/btn_enable"
+        android:gravity="center"
+        android:paddingHorizontal="6dp"
+        android:paddingVertical="3dp"
+        android:text="223"
+        android:textColor="@color/gray_870"
+        app:layout_constraintBottom_toBottomOf="@id/tvArchiveName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tvArchiveName"
+        app:layout_constraintTop_toTopOf="@id/tvArchiveName" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcImageList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:orientation="horizontal"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@id/tvArchiveTypeName"
+        app:layout_constraintTop_toBottomOf="@id/tvArchiveTypeName" />
+</androidx.constraintlayout.widget.ConstraintLayout>

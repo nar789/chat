@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rlRealTimeContainer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="24dp"
+    android:background="@color/gray_25"
+    >
+
+    <TextView
+        android:id="@+id/tvRealTimeTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        style="@style/Title51622RobotoMedium"
+        android:textColor="@color/gray_900"
+        android:paddingHorizontal="20dp"
+        android:text="실시간 이슈 TOP"
+        android:visibility="visible"
+        />
+    <TextView
+        android:id="@+id/tvTimeRange"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/tvRealTimeTitle"
+        android:layout_marginEnd="20dp"
+        style="@style/Caption11218Regular"
+        android:layout_alignBottom="@+id/tvRealTimeTitle"
+        android:textColor="@color/gray_400"
+        android:text=""
+        android:visibility="gone"
+        />
+    <TextView
+        android:id="@+id/tvMoreIssue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvRealTimeTitle"
+        android:background="@drawable/bg_border_radius_20_btnenable"
+        style="@style/Buttons1420Medium"
+        android:textColor="@color/primary_600"
+        android:gravity="center"
+        android:layout_marginHorizontal="20dp"
+        android:paddingVertical="11dp"
+        android:layout_marginTop="6dp"
+        android:text="@string/d_more_see"
+        android:visibility="gone"
+        />
+</RelativeLayout>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/bg_light_gray_50"
+    tools:context=".ui.club.notice.ClubNoticeFragment">
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/noticeAppBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:elevation="2dp"
+        android:background="@color/state_active_gray_25"
+        android:fitsSystemWindows="true">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/noticeToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:paddingEnd="10dp"
+            app:contentInsetStartWithNavigation="0dp"
+            app:navigationIcon="@drawable/icon_outline_back"
+            app:title="@string/g_notice"
+            app:titleTextAppearance="@style/Title41824Medium"
+            />
+    </com.google.android.material.appbar.AppBarLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcNoticeList"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="1dp"
+        app:layout_constraintTop_toBottomOf="@id/noticeAppBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@color/bg_light_gray_50" />
+    <include
+        android:id="@+id/layoutNoListView"
+        layout="@layout/no_post_list_layout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/noticeAppBar"
+        android:visibility="gone"
+        />
+    <com.rndeep.fns_fantoo.ui.common.viewgroup.FantooLoadingView
+        android:id="@+id/fantooLoadingView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home"
+    app:startDestination="@id/homeTabFragment">
+
+    <fragment
+        android:id="@+id/selectConcernFragment"
+        android:name="com.rndeep.fns_fantoo.ui.menu.editprofile.interest.SelectInterestFragment"
+        android:label="fragment_select_concern"
+        tools:layout="@layout/fragment_select_interest" />
+    <fragment
+        android:id="@+id/profileImageViewerFragment"
+        android:name="com.rndeep.fns_fantoo.ui.common.ProfileImageViewerFragment"
+        android:label="fragment_profile_image_viewer"
+        tools:layout="@layout/fragment_profile_image_viewer">
+        <argument
+            android:name="imageUrl"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/homeTabFragment"
+        android:name="com.rndeep.fns_fantoo.ui.home.HomeTabFragment"
+        android:label="fragment_home_tab"
+        tools:layout="@layout/fragment_home_tab" >
+        <action
+            android:id="@+id/action_homeTabFragment_to_menu"
+            app:destination="@id/menu"
+            >
+        </action>
+        <action
+            android:id="@+id/action_homeTabFragment_to_trendPostFragment"
+            app:destination="@id/trendPostFragment" />
+        <action
+            android:id="@+id/action_homeTabFragment_to_club_page_detail"
+            app:destination="@id/club_detail_page" >
+            <argument
+                android:name="clubId"
+                app:argType="string"
+                />
+        </action>
+        <action
+            android:id="@+id/action_homeTabFragment_to_clubJoinFragment2"
+            app:destination="@id/clubJoinFragment2" />
+        <action
+            android:id="@+id/action_homeTabFragment_to_homeAlarmFragment"
+            app:destination="@id/homeAlarmFragment" />
+        <action
+            android:id="@+id/action_homeTabFragment_to_communitypost"
+            app:destination="@id/communitypost" >
+            <argument
+                android:name="postType"
+                app:argType="string"
+                />
+            <argument
+                android:name="boardCode"
+                app:argType="string"
+                app:nullable="true"
+                />
+            <argument
+                android:name="postId"
+                app:argType="integer" />
+        </action>
+        <action
+            android:id="@+id/action_homeTabFragment_to_club_post"
+            app:destination="@id/club_post" >
+            <argument
+                android:name="previewType"
+                app:argType="string"
+                />
+            <argument
+                android:name="categoryCode"
+                app:argType="string"
+                />
+            <argument
+                android:name="clubId"
+                app:argType="string"
+                />
+            <argument
+                android:name="postId"
+                app:argType="integer" />
+        </action>
+        <action
+            android:id="@+id/action_homeTabFragment_to_editProfileFragment3"
+            app:destination="@id/editProfileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editProfileFragment"
+        android:name="com.rndeep.fns_fantoo.ui.menu.editprofile.EditProfileFragment"
+        android:label="fragment_edit_profile"
+        tools:layout="@layout/fragment_edit_profile" >
+        <action
+            android:id="@+id/action_editProfileFragment_to_nicknameFragment"
+            app:destination="@id/nicknameFragment" />
+        <action
+            android:id="@+id/action_editProfileFragment_to_selectConcernFragment"
+            app:destination="@id/selectConcernFragment" />
+        <action
+            android:id="@+id/action_editProfileFragment_to_profileImageViewerFragment"
+            app:destination="@id/profileImageViewerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/trendPostFragment"
+        android:name="com.rndeep.fns_fantoo.ui.home.tabpopular.trendpostlist.TrendPostFragment"
+        android:label="fragment_trend_post"
+        tools:layout="@layout/fragment_trend_post" >
+        <argument android:name="trendName"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_trendPostFragment_to_communitypost"
+            app:destination="@id/communitypost" >
+            <argument
+                android:name="postType"
+                app:argType="string"
+                />
+            <argument
+                android:name="boardCode"
+                app:argType="string"
+                app:nullable="true"
+                />
+            <argument
+                android:name="postId"
+                app:argType="integer" />
+        </action>
+        <action
+            android:id="@+id/action_trendPostFragment_to_club_post"
+            app:destination="@id/club_post" >
+            <argument
+                android:name="previewType"
+                app:argType="string"
+                />
+            <argument
+                android:name="categoryCode"
+                app:argType="string"
+                />
+            <argument
+                android:name="clubId"
+                app:argType="string"
+                />
+            <argument
+                android:name="postId"
+                app:argType="integer" />
+        </action>
+    </fragment>
+    <include app:graph="@navigation/club_detail_page" />
+    <fragment
+        android:id="@+id/clubJoinFragment2"
+        android:name="com.rndeep.fns_fantoo.ui.club.join.ClubJoinFragment"
+        android:label="fragment_club_join"
+        tools:layout="@layout/fragment_club_join" >
+        <argument
+            android:name="clubId"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/homeAlarmFragment"
+        android:name="com.rndeep.fns_fantoo.ui.home.alram.HomeAlarmFragment"
+        android:label="fragment_home_alarm"
+        tools:layout="@layout/fragment_home_alarm" />
+    <fragment
+        android:id="@+id/nicknameFragment"
+        android:name="com.rndeep.fns_fantoo.ui.menu.editprofile.nickname.NicknameFragment"
+        android:label="fragment_nickname"
+        tools:layout="@layout/fragment_nickname" />
+
+    <include app:graph="@navigation/community_post" />
+    <include app:graph="@navigation/club_post" />
+</navigation>

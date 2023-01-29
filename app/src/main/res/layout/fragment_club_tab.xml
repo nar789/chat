@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_light_gray_50"
+    tools:context=".ui.club.ClubTabFragment">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/clubAppbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/state_active_gray_25">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/clubToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:menu="@menu/club_top_menu"
+            app:title="@string/k_club"
+            app:titleMarginStart="20dp"
+            app:contentInsetStart="0dp"
+            app:contentInsetLeft="0dp"
+            app:contentInsetStartWithNavigation="0dp"
+            app:titleTextColor="@color/gray_900"
+            app:titleTextAppearance="@style/Title32028Bold"
+            tools:ignore="RtlSymmetry" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefresh"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/clubAppbar"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="-1dp"
+        android:layout_marginBottom="1dp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcClub"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    <com.rndeep.fns_fantoo.ui.common.viewgroup.FantooLoadingView
+        android:id="@+id/fantooLoadingView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+</RelativeLayout>

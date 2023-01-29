@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/gray_25"
+    android:paddingHorizontal="20dp"
+    android:paddingTop="16dp"
+    android:paddingBottom="8dp"
+    >
+    <ImageView
+        android:id="@+id/ivProfileThumbnail"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginTop="2dp"
+        android:src="@drawable/profile_club_character"
+        app:layout_constraintBottom_toBottomOf="@id/tvNickName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tvBoardTitle" />
+
+    <TextView
+        android:id="@+id/tvBoardTitle"
+        style="@style/Caption11218Regular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="게시판명"
+        android:textColor="@color/gray_900"
+        app:layout_constraintStart_toEndOf="@id/ivProfileThumbnail"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@id/barrier2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="tvBoardTitle" />
+
+    <TextView
+        android:id="@+id/tvNickName"
+        style="@style/Caption11218Regular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="NickName"
+        android:textColor="@color/gray_400"
+        app:layout_constraintStart_toEndOf="@id/ivProfileThumbnail"
+        app:layout_constraintTop_toBottomOf="@id/barrier2" />
+
+    <ImageView
+        android:id="@+id/ivGrayDot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="7.7dp"
+        android:layout_marginEnd="20dp"
+        app:tint="@color/gray_200"
+        android:background="@drawable/dot_grey"
+        app:layout_constraintBottom_toBottomOf="@id/tvNickName"
+        app:layout_constraintEnd_toStartOf="@id/tvCreateDate"
+        app:layout_constraintStart_toEndOf="@id/tvNickName"
+        app:layout_constraintTop_toBottomOf="@id/barrier2" />
+
+    <TextView
+        android:id="@+id/tvCreateDate"
+        style="@style/Caption11218Regular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="7.7dp"
+        android:text="2일 전"
+        android:textColor="@color/gray_400"
+        app:layout_constraintStart_toEndOf="@id/ivGrayDot"
+        app:layout_constraintTop_toBottomOf="@id/barrier2" />
+
+    <ImageView
+        android:id="@+id/ivCommentOption"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:padding="6dp"
+        android:src="@drawable/icon_outline_more"
+        app:layout_constraintBottom_toBottomOf="@id/barrier1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="RtlSymmetry" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="tvNickName,ivCommentOption" />
+
+    <!--    <androidx.constraintlayout.widget.ConstraintLayout-->
+    <!--        android:id="@+id/clContentContainer"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginTop="4dp"-->
+    <!--        android:background="?attr/selectableItemBackgroundBorderless"-->
+    <!--        android:backgroundTint="@color/gray_25"-->
+    <!--        app:layout_constraintTop_toBottomOf="@id/barrier1">-->
+
+    <TextView
+        android:id="@+id/tvContent"
+        style="@style/Body21420Regular"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:backgroundTint="@color/gray_25"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:text="consectetur 테스트 댓글 문장. "
+        android:textColor="@color/gray_870"
+        app:layout_constraintEnd_toEndOf="@id/ivCommentOption"
+        app:layout_constraintStart_toStartOf="@id/tvNickName"
+        app:layout_constraintTop_toBottomOf="@id/barrier1" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcCommentImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toStartOf="@id/tvNickName"
+        app:layout_constraintTop_toBottomOf="@id/tvContent"
+        android:visibility="visible"
+        tools:itemCount="3" />
+
+    <View
+        android:id="@+id/dividerView"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/gray_400_opacity12"
+        app:layout_constraintEnd_toEndOf="@id/ivCommentOption"
+        app:layout_constraintStart_toStartOf="@id/tvNickName"
+        app:layout_constraintTop_toBottomOf="@id/rcCommentImage"
+        app:layout_goneMarginTop="20dp" />
+
+    <TextView
+        android:id="@+id/tvPostTitle"
+        style="@style/Caption11218Regular"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:backgroundTint="@color/gray_25"
+        android:ellipsize="end"
+        android:lines="1"
+        android:text="게시글 제목"
+        android:textColor="@color/gray_870"
+        app:layout_constraintEnd_toEndOf="@id/ivCommentOption"
+        app:layout_constraintStart_toStartOf="@id/tvNickName"
+        app:layout_constraintTop_toBottomOf="@+id/dividerView" />
+
+    <ImageView
+        android:id="@+id/ivTitleMove"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:src="@drawable/icon_outline_go"
+        app:layout_constraintBottom_toBottomOf="@id/tvPostTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tvPostTitle"
+        app:tint="@color/state_enable_gray_400" />
+
+    <!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
+</androidx.constraintlayout.widget.ConstraintLayout>

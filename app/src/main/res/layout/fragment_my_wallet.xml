@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_light_gray_50"
+    tools:context=".ui.menu.mywallet.MyWalletFragment">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/actionBarSize"
+            android:background="@color/bg_light_gray_50"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            app:contentInsetStartWithNavigation="0dp"
+            app:navigationIcon="@drawable/back"
+            app:title="@string/n_my_wallet" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/my_wallet_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/layout_margin"
+        app:layout_constraintTop_toBottomOf="@id/appbar"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="0dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/padding_margin">
+
+            <TextView
+                android:id="@+id/asset_title"
+                style="@style/Title32028Bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/gray_900"
+                android:text="@string/j_assets"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/kdg_img"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="18dp"
+                android:src="@drawable/kingdom_coin_gold"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/asset_title" />
+
+            <TextView
+                android:id="@+id/kdg_title"
+                style="@style/Caption11218Regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:text="@string/en_kdg"
+                android:visibility="gone"
+                app:layout_constraintStart_toEndOf="@id/kdg_img"
+                app:layout_constraintTop_toTopOf="@id/kdg_img" />
+
+            <TextView
+                android:id="@+id/my_kdg"
+                style="@style/Title51622RobotoMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@id/kdg_img"
+                app:layout_constraintStart_toEndOf="@id/kdg_img"
+                tools:text="1,326,8065" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/kdg_history_btn"
+                style="@style/Buttons1420Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:paddingVertical="8dp"
+                android:paddingHorizontal="22dp"
+                android:contentDescription="@string/n_history"
+                android:text="@string/n_history"
+                android:textColor="@color/primary_600"
+                android:visibility="gone"
+                app:cornerRadius="20dp"
+                app:backgroundTint="@color/primary_100"
+                app:rippleColor="@color/primary_300"
+                app:layout_constraintBottom_toBottomOf="@id/kdg_img"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/kdg_img" />
+
+            <ImageView
+                android:id="@+id/fanit_img"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/fanit_round"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/kdg_img" />
+
+            <TextView
+                android:id="@+id/fanit_title"
+                style="@style/Caption11218Regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:text="@string/en_fanit"
+                app:layout_constraintStart_toEndOf="@id/fanit_img"
+                app:layout_constraintTop_toTopOf="@id/fanit_img" />
+
+            <TextView
+                android:id="@+id/my_fanit"
+                style="@style/Title51622RobotoMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                app:layout_constraintBottom_toBottomOf="@id/fanit_img"
+                app:layout_constraintStart_toEndOf="@id/fanit_img"
+                tools:text="1,326,8065" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/fanit_history_btn"
+                style="@style/Buttons1420Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:paddingVertical="8dp"
+                android:paddingHorizontal="22dp"
+                android:contentDescription="@string/n_history"
+                android:textColor="@color/primary_600"
+                android:text="@string/n_history"
+                app:cornerRadius="20dp"
+                app:backgroundTint="@color/primary_100"
+                app:rippleColor="@color/primary_300"
+                app:layout_constraintBottom_toBottomOf="@id/fanit_img"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/fanit_img" />
+
+            <ImageView
+                android:id="@+id/honor_img"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="38dp"
+                android:src="@drawable/honor"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/fanit_img" />
+
+            <TextView
+                android:id="@+id/honor_title"
+                style="@style/Caption11218Regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:text="@string/en_honor"
+                android:visibility="gone"
+                app:layout_constraintStart_toEndOf="@id/honor_img"
+                app:layout_constraintTop_toTopOf="@id/honor_img" />
+
+            <TextView
+                android:id="@+id/my_honor"
+                style="@style/Title51622RobotoMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@id/honor_img"
+                app:layout_constraintStart_toEndOf="@id/honor_img"
+                tools:text="1,326,8065" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/honor_history_btn"
+                style="@style/Buttons1420Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:paddingVertical="8dp"
+                android:paddingHorizontal="22dp"
+                android:contentDescription="@string/n_history"
+                android:textColor="@color/primary_600"
+                android:text="@string/n_history"
+                android:visibility="gone"
+                app:cornerRadius="20dp"
+                app:backgroundTint="@color/primary_100"
+                app:rippleColor="@color/primary_300"
+                app:layout_constraintBottom_toBottomOf="@id/honor_img"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/honor_img" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

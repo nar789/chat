@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/layout_margin"
+    android:layout_marginVertical="@dimen/layout_bottom_margin"
+    android:background="@color/gray_25">
+
+    <ImageView
+        android:id="@+id/img"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@drawable/profile_character1" />
+
+    <TextView
+        android:id="@+id/title"
+        style="@style/Caption11218Regular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:textColor="@color/gray_900"
+        app:layout_constraintStart_toEndOf="@id/img"
+        app:layout_constraintTop_toTopOf="@id/img"
+        tools:text="커뮤니티 카테고리명" />
+
+    <TextView
+        android:id="@+id/nickname"
+        style="@style/Caption11218Regular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/gray_400"
+        app:layout_constraintStart_toStartOf="@id/title"
+        app:layout_constraintTop_toBottomOf="@id/title"
+        tools:text="nickname" />
+
+    <ImageView
+        android:id="@+id/dot"
+        android:layout_width="4dp"
+        android:layout_height="4dp"
+        android:layout_marginStart="8dp"
+        android:src="@drawable/dot_grey"
+        app:layout_constraintBottom_toBottomOf="@id/nickname"
+        app:layout_constraintStart_toEndOf="@id/nickname"
+        app:layout_constraintTop_toTopOf="@id/nickname"
+        app:tint="@color/gray_200" />
+
+    <TextView
+        android:id="@+id/time"
+        style="@style/Caption11218Regular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:textColor="@color/gray_400"
+        app:layout_constraintBottom_toBottomOf="@id/dot"
+        app:layout_constraintStart_toEndOf="@id/dot"
+        app:layout_constraintTop_toTopOf="@id/dot"
+        tools:text="2일 전" />
+
+<!--    <ImageView-->
+<!--        android:id="@+id/more"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="8dp"-->
+<!--        android:src="@drawable/icon_outline_more"-->
+<!--        app:layout_constraintBottom_toBottomOf="@id/img"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="@id/img" />-->
+
+    <TextView
+        android:id="@+id/comment"
+        style="@style/Body21420Regular"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:textColor="@color/gray_870"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/img"
+        tools:text="Lorem ipsum \ndolor sit amet,Lorem ipsum dolor sit amet, consectetur adipiscing elit. " />
+
+    <ImageView
+        android:id="@+id/comment_img"
+        android:layout_width="164dp"
+        android:layout_height="154dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/divider"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/comment"
+        tools:src="@drawable/profile_character1" />
+
+    <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        app:dividerColor="@color/gray_400_opacity12"
+        app:layout_constraintTop_toBottomOf="@id/comment_img" />
+
+    <TextView
+        android:id="@+id/original_contents"
+        style="@style/Body21420Regular"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@color/gray_870"
+        app:layout_constraintEnd_toStartOf="@id/go"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divider"
+        tools:text="게시물 제목입니다.게시물 제목입니다.게시물 제목입니다.게시물 제목입니다." />
+
+    <ImageView
+        android:id="@+id/go"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/icon_outline_go"
+        app:layout_constraintBottom_toBottomOf="@id/original_contents"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/original_contents"
+        app:layout_constraintTop_toTopOf="@id/original_contents"
+        app:tint="@color/gray_400" />
+</androidx.constraintlayout.widget.ConstraintLayout>
