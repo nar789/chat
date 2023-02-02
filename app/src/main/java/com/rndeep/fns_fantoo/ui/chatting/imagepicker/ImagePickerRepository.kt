@@ -84,21 +84,30 @@ class ImageDataSource(private val contentResolver: ContentResolver) : PagingSour
         limit: Int,
         offset: Int
     ): Cursor? = when {
-        Build.VERSION.SDK_INT >= Build.VERSION_CODES.O -> {
+        Build.VERSION.SDK_INT >= Build.VERSION_CODES.R -> {
             val selection = createSelectionBundle(limit, offset)
             contentResolver.query(collection, projection, selection, null)
         }
         else -> {
-            val orderDirection = "DESC"
-            val selectionArgs =
-                "(${MediaStore.Files.FileColumns.MEDIA_TYPE} IN ${MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE})"
-            val order =
-                "${MediaStore.Images.Media.DATE_TAKEN} $orderDirection limit $limit offset $offset"
-            contentResolver.query(collection, projection, selectionArgs, null, order)
+            val order = "${getTimeField()} DESC limit $limit offset $offset"
+           contentResolver.query(
+                MediaStore.Files.getContentUri("external"),
+                projection,
+                "(${MediaStore.Files.FileColumns.MEDIA_TYPE} IN (${MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE}))",
+                null,
+               order
+            )
+        }
+    }
+    private fun getTimeField(): String {
+        return if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
+            MediaStore.MediaColumns.DATE_ADDED
+        } else {
+            MediaStore.Images.ImageColumns.DATE_TAKEN
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
+    @RequiresApi(Build.VERSION_CODES.R)
     fun createSelectionBundle(
         limit: Int, offset: Int
     ) = Bundle().apply {
