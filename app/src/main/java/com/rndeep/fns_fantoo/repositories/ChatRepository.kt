@@ -187,7 +187,8 @@ class ChatRepository @Inject constructor(
 
     private fun convertType3Message(message: Message) {
         if (message.messageType == 3) {
-            message.message = context.getString(R.string.se_n_who_left_chatting, message.displayName)
+            message.message =
+                context.getString(R.string.se_n_who_left_chatting, message.displayName)
         }
     }
 
@@ -298,10 +299,16 @@ class ChatRepository @Inject constructor(
     fun getMessageFlow(
         conversationId: Int,
         userId: String,
-        accessToken: String
+        accessToken: String,
+        languages: List<String>
     ): Flow<PagingData<Message>> = Pager(
         config = PagingConfig(pageSize = 30),
-        pagingSourceFactory = MessageDataSourceFactory(conversationId, userId, accessToken)
+        pagingSourceFactory = MessageDataSourceFactory(
+            conversationId,
+            userId,
+            accessToken,
+            languages
+        )
     ).flow
 
     fun setTranslateMode(translateMode: Boolean) {
@@ -313,10 +320,11 @@ class ChatRepository @Inject constructor(
     private suspend fun requestTranslate(
         accessToken: String,
         userId: String,
-        messages: List<Message>
+        messages: List<Message>,
+        languages: List<String>
     ): ResultWrapper<TranslateChatDto> = safeApiCall(Dispatchers.IO) {
         val request = TranslationRequest(
-            language = listOf("en"),
+            language = languages,
             messages = messages.map {
                 TranslationRequest.MessageDto(
                     id = it.id.toString(),
@@ -343,7 +351,8 @@ class ChatRepository @Inject constructor(
     private inner class MessageDataSourceFactory(
         private val conversationId: Int,
         private val userId: String,
-        private val accessToken: String
+        private val accessToken: String,
+        private val languages: List<String>
     ) : () -> PagingSource<Int, Message> {
         private var cachedMessages = mutableListOf<Message>()
         private var dataSource: MessageDataSource? = null
@@ -440,7 +449,7 @@ class ChatRepository @Inject constructor(
         }
 
         private suspend fun getTranslateMap(messages: List<Message>): Map<String, TransChatMessage>? {
-            return requestTranslate(accessToken, userId, messages).let { response ->
+            return requestTranslate(accessToken, userId, messages, languages).let { response ->
                 val result = when (response) {
                     is ResultWrapper.Success -> if (response.data.isSuccess) response.data else null
                     else -> null

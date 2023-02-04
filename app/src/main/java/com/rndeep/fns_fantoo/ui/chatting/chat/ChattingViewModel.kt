@@ -50,6 +50,8 @@ class ChattingViewModel @Inject constructor(
         private set
     lateinit var accessToken: String
         private set
+    lateinit var languageCode: String
+        private set
     private lateinit var myName: String
     private lateinit var myPhoto: String
 
@@ -58,6 +60,11 @@ class ChattingViewModel @Inject constructor(
             myUid = dataStoreRepository.getString(DataStoreKey.PREF_KEY_UID).orEmpty()
             accessToken =
                 dataStoreRepository.getString(DataStoreKey.PREF_KEY_ACCESS_TOKEN).toString()
+            languageCode =
+                dataStoreRepository.getString(DataStoreKey.PREF_KEY_SELECT_LANGUAGE_CODE)
+                    ?: dataStoreRepository.getString(DataStoreKey.PREF_KEY_LANGUAGE_CODE)
+                    ?: "en"
+
             _chatUiState.value = _chatUiState.value.copy(myId = myUid)
 
             val userInfo = fetchUserInfo()
@@ -87,8 +94,12 @@ class ChattingViewModel @Inject constructor(
 
     private fun initMessageFlow() {
         _chatUiState.value = _chatUiState.value.copy(
-            messages = chatRepository.getMessageFlow(chatId, myUid, accessToken)
-                .map { pagingData ->
+            messages = chatRepository.getMessageFlow(
+                chatId,
+                myUid,
+                accessToken,
+                listOf(languageCode)
+            ).map { pagingData ->
                     pagingData.map { findUserProfile(it) }
                 }.cachedIn(viewModelScope)
         )
